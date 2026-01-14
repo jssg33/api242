@@ -15,7 +15,7 @@ app.use(morgan("dev"));
 const PORT = process.env.PORT || 3000;
 
 // You can hardcode the connection for quick testing (NOT recommended for prod):
-// const MONGODB_URI = "mongodb+srv://242sa:test12345@cluster0.dqnu2ja.mongodb.net/myDatabase?appName=Cluster0";
+// const MONGODB_URI = "mongodb+srv://242sa:test12345@cluster0.dqnu2ja.mongodb.net/242?appName=Cluster0";
 
 // Prefer environment variable for security:
 const { MONGODB_URI } = process.env;
@@ -23,7 +23,7 @@ const { MONGODB_URI } = process.env;
 if (!MONGODB_URI) {
   console.error(
     "❌ MONGODB_URI is not set. Create a .env file or export the variable. Example:\n" +
-    "MONGODB_URI='mongodb+srv://242sa:<db_password>@cluster0.dqnu2ja.mongodb.net/myDatabase?appName=Cluster0'"
+    "MONGODB_URI='mongodb+srv://242sa:test12345@cluster0.dqnu2ja.mongodb.net/242?appName=Cluster0'"
   );
   process.exit(1);
 }
