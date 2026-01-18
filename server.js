@@ -1,4 +1,3 @@
-
 // server.js
 const express = require("express");
 const mongoose = require("mongoose");
@@ -30,14 +29,16 @@ async function connectDB() {
 }
 
 // ----- Models -----
+
+// USER MODEL
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    fullname: {
       type: String,
       required: true,
       trim: true,
       minlength: 1,
-      maxlength: 100,
+      maxlength: 150,
     },
     email: {
       type: String,
@@ -47,13 +48,58 @@ const userSchema = new mongoose.Schema(
       unique: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
+    plainpassword: {
+      type: String,
+      required: true,
+      minlength: 4,
+      maxlength: 200,
+    },
   },
   { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
 
-// ----- Routes -----
+// LICENSE MODEL
+const licenseSchema = new mongoose.Schema(
+  {
+    licenseid: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    version: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    installdate: {
+      type: String, // or Date if you prefer
+      required: true,
+    },
+    enddate: {
+      type: String, // or Date
+      required: true,
+    },
+    customerid: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const License = mongoose.model("License", licenseSchema);
+
+// ----- ROUTES -----
+
+// =========================
+// USERS CRUD
+// =========================
+
+// GET all users
 app.get("/users", async (req, res) => {
   try {
     const users = await User.find().lean();
@@ -64,6 +110,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// CREATE user
 app.post("/users", async (req, res) => {
   try {
     const user = await User.create(req.body);
@@ -74,6 +121,107 @@ app.post("/users", async (req, res) => {
       return res.status(409).json({ error: "Email already exists" });
     }
     res.status(400).json({ error: err.message });
+  }
+});
+
+// GET single user
+app.get("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(400).json({ error: "Invalid ID" });
+  }
+});
+
+// UPDATE user
+app.put("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE user
+app.delete("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json({ message: "User deleted" });
+  } catch (err) {
+    res.status(400).json({ error: "Invalid ID" });
+  }
+});
+
+// =========================
+// LICENSES CRUD
+// =========================
+
+// GET all licenses
+app.get("/licenses", async (req, res) => {
+  try {
+    const licenses = await License.find().lean();
+    res.json(licenses);
+  } catch (err) {
+    console.error("GET /licenses error:", err);
+    res.status(500).json({ error: "Failed to fetch licenses" });
+  }
+});
+
+// CREATE license
+app.post("/licenses", async (req, res) => {
+  try {
+    const license = await License.create(req.body);
+    res.status(201).json(license);
+  } catch (err) {
+    console.error("POST /licenses error:", err);
+    if (err.code === 11000) {
+      return res.status(409).json({ error: "License ID already exists" });
+    }
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// GET single license
+app.get("/licenses/:id", async (req, res) => {
+  try {
+    const license = await License.findById(req.params.id).lean();
+    if (!license) return res.status(404).json({ error: "License not found" });
+    res.json(license);
+  } catch (err) {
+    res.status(400).json({ error: "Invalid ID" });
+  }
+});
+
+// UPDATE license
+app.put("/licenses/:id", async (req, res) => {
+  try {
+    const license = await License.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!license) return res.status(404).json({ error: "License not found" });
+    res.json(license);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE license
+app.delete("/licenses/:id", async (req, res) => {
+  try {
+    const license = await License.findByIdAndDelete(req.params.id);
+    if (!license) return res.status(404).json({ error: "License not found" });
+    res.json({ message: "License deleted" });
+  } catch (err) {
+    res.status(400).json({ error: "Invalid ID" });
   }
 });
 
