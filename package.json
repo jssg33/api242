@@ -6,7 +6,7 @@
   "license": "greenvillegreen",
   "scripts": 
   { "start": "node server.js",
-    "install": "yarn add express mongoose morgan dotenv"
+    "buildapi": "yarn add express mongoose morgan dotenv"
   }, 
   "dependencies": 
   { "express": "^4.19.2", "mongoose": "^8.0.0", "cors": "^2.8.5" } 
