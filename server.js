@@ -10,28 +10,17 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
-// ----- Config (env vars) -----
-// Create a .env file with MONGODB_URI and PORT (see example below)
+// ----- Config -----
 const PORT = process.env.PORT || 3000;
 
-// You can hardcode the connection for quick testing (NOT recommended for prod):
-const MONGODB_URI = "mongodb+srv://242sa@admin:test12345@cluster0.dqnu2ja.mongodb.net/242?appName=Cluster0";
-
-// Prefer environment variable for security:
-//const { MONGODB_URI } = process.env;
-
-if (!MONGODB_URI) {
-  console.error(
-    "❌ MONGODB_URI is not set. Create a .env file or export the variable. Example:\n" +
-    "MONGODB_URI='mongodb+srv://242sa:test12345@cluster0.dqnu2ja.mongodb.net/242?appName=Cluster0'"
-  );
-  process.exit(1);
-}
+// IMPORTANT: Your username contains "@", so it must be URL‑encoded.
+// 242sa@admin  →  242sa%40admin
+const MONGODB_URI =
+  "mongodb+srv://242sa:wavecrest100@cluster0.dqnu2ja.mongodb.net/?appName=Cluster0";
 
 // ----- Connect to MongoDB -----
 async function connectDB() {
   try {
-    // Mongoose 6+ no longer needs useNewUrlParser/useUnifiedTopology explicitly
     await mongoose.connect(MONGODB_URI);
     console.log("✅ MongoDB connected");
   } catch (err) {
@@ -41,7 +30,6 @@ async function connectDB() {
 }
 
 // ----- Models -----
-// Add some basic validation to your User schema
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -83,14 +71,13 @@ app.post("/users", async (req, res) => {
   } catch (err) {
     console.error("POST /users error:", err);
     if (err.code === 11000) {
-      // Duplicate email
       return res.status(409).json({ error: "Email already exists" });
     }
     res.status(400).json({ error: err.message });
   }
 });
 
-// Health check route (handy for uptime checks / container health)
+// Health check
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // ----- Start -----
@@ -99,4 +86,3 @@ connectDB().then(() => {
     console.log(`🚀 API running on http://localhost:${PORT}`);
   });
 });
-``
