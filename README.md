@@ -22,6 +22,7 @@ Phases -> Rapid Development Phase will provide massive numbers of changes usuall
 Once the base App is workable we will move to a change control model and version controls.
 
 The first 4 APIS are working:
-Users
-Licenses
-LicenseLogs
+1)Users
+2)Licenses
+3)LicenseLogs
+4)DownloadLogs
