@@ -4,9 +4,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "My API",
-      version: "1.0.0",
-      description: "API documentation for my Express app",
+      title: "GreenLicenseManager",
+      version: "1.1.0",
+      description: "API documentation for my Express License Manager App",
     },
   },
   apis: ["./routes/*.js"], // Path to your route files
