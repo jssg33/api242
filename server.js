@@ -22,19 +22,58 @@ const swaggerOptions = {
 
     components: {
       schemas: {
-        License: {
-          type: "object",
-          required: ["licenseKey", "companyId", "product"],
-          properties: {
-            id: { type: "string" },
-            licenseKey: { type: "string" },
-            companyId: { type: "string" },
-            product: { type: "string" },
-            seats: { type: "number" },
-            expiresAt: { type: "string", format: "date-time" },
-            createdAt: { type: "string", format: "date-time" }
-          }
-        },
+       License: {
+  type: "object",
+  required: [
+    "licenseid",
+    "version",
+    "installdate",
+    "enddate",
+    "customerid"
+  ],
+  properties: {
+    id: {
+      type: "string",
+      description: "MongoDB ObjectId"
+    },
+    licenseid: {
+      type: "string",
+      description: "Unique license identifier"
+    },
+    version: {
+      type: "string",
+      description: "Software version"
+    },
+    installdate: {
+      type: "string",
+      description: "Installation date (YYYY-MM-DD)"
+    },
+    enddate: {
+      type: "string",
+      description: "Expiration date (YYYY-MM-DD)"
+    },
+    customerid: {
+      type: "string",
+      description: "Customer identifier"
+    },
+    createdAt: {
+      type: "string",
+      format: "date-time"
+    },
+    updatedAt: {
+      type: "string",
+      format: "date-time"
+    }
+  },
+  example: {
+    licenseid: "LIC-001",
+    version: "1.0.0",
+    installdate: "2025-01-01",
+    enddate: "2026-01-01",
+    customerid: "COMP-001"
+  }
+},
+
 
         LicenseLog: {
           type: "object",
