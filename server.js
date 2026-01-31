@@ -15,13 +15,222 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "My API",
+      title: "Wavecrest API",
       version: "1.0.0",
-      description: "API documentation for my Express server",
+      description: "API documentation for all endpoints",
     },
+
+    components: {
+      schemas: {
+        License: {
+          type: "object",
+          required: ["licenseKey", "companyId", "product"],
+          properties: {
+            id: { type: "string" },
+            licenseKey: { type: "string" },
+            companyId: { type: "string" },
+            product: { type: "string" },
+            seats: { type: "number" },
+            expiresAt: { type: "string", format: "date-time" },
+            createdAt: { type: "string", format: "date-time" }
+          }
+        },
+
+        LicenseLog: {
+          type: "object",
+          required: ["licenseId", "action"],
+          properties: {
+            id: { type: "string" },
+            licenseId: { type: "string" },
+            action: { type: "string" },
+            details: { type: "string" },
+            createdAt: { type: "string", format: "date-time" }
+          }
+        }
+      }
+    },
+
+    paths: {
+      "/licenses": {
+        get: {
+          summary: "Get all licenses",
+          tags: ["Licenses"],
+          responses: {
+            200: {
+              description: "List of licenses",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "array",
+                    items: { $ref: "#/components/schemas/License" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        post: {
+          summary: "Create a new license",
+          tags: ["Licenses"],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/License" }
+              }
+            }
+          },
+          responses: {
+            201: { description: "License created" }
+          }
+        }
+      },
+
+      "/licenses/{id}": {
+        get: {
+          summary: "Get a license by ID",
+          tags: ["Licenses"],
+          parameters: [
+            {
+              in: "path",
+              name: "id",
+              required: true,
+              schema: { type: "string" }
+            }
+          ],
+          responses: {
+            200: {
+              description: "License found",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/License" }
+                }
+              }
+            },
+            404: { description: "Not found" }
+          }
+        },
+        put: {
+          summary: "Update a license",
+          tags: ["Licenses"],
+          parameters: [
+            {
+              in: "path",
+              name: "id",
+              required: true,
+              schema: { type: "string" }
+            }
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/License" }
+              }
+            }
+          },
+          responses: {
+            200: { description: "License updated" }
+          }
+        },
+        delete: {
+          summary: "Delete a license",
+          tags: ["Licenses"],
+          parameters: [
+            {
+              in: "path",
+              name: "id",
+              required: true,
+              schema: { type: "string" }
+            }
+          ],
+          responses: {
+            200: { description: "License deleted" }
+          }
+        }
+      },
+
+      "/licenselogs": {
+        get: {
+          summary: "Get all license logs",
+          tags: ["LicenseLogs"],
+          responses: {
+            200: {
+              description: "List of license logs",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "array",
+                    items: { $ref: "#/components/schemas/LicenseLog" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        post: {
+          summary: "Create a license log entry",
+          tags: ["LicenseLogs"],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/LicenseLog" }
+              }
+            }
+          },
+          responses: {
+            201: { description: "License log created" }
+          }
+        }
+      },
+
+      "/licenselogs/{id}": {
+        get: {
+          summary: "Get a license log by ID",
+          tags: ["LicenseLogs"],
+          parameters: [
+            {
+              in: "path",
+              name: "id",
+              required: true,
+              schema: { type: "string" }
+            }
+          ],
+          responses: {
+            200: {
+              description: "License log found",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/LicenseLog" }
+                }
+              }
+            },
+            404: { description: "Not found" }
+          }
+        },
+        delete: {
+          summary: "Delete a license log",
+          tags: ["LicenseLogs"],
+          parameters: [
+            {
+              in: "path",
+              name: "id",
+              required: true,
+              schema: { type: "string" }
+            }
+          ],
+          responses: {
+            200: { description: "License log deleted" }
+          }
+        }
+      }
+    }
   },
-  apis: ["./routes/*.js"], // your route files
+
+  apis: [] // not using route annotations right now
 };
+
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
