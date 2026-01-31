@@ -1,4 +1,4 @@
-const Instance = require("../models/Instance");
+const Instance = require("../models/instance");
 
 exports.getAllInstances = async (req, res) => {
   try {
