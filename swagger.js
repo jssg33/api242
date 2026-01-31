@@ -9,7 +9,7 @@ const options = {
       description: "API documentation for my Express License Manager App",
     },
   },
-apis: ["./routes", ...] // Path to your route files
+apis: ["./routes", "./"] // Path to your route files
 };
 
 module.exports = swaggerJsdoc(options);
