@@ -15,8 +15,8 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Wavecrest API",
-      version: "1.0.0",
+      title: "GreenLicenseManager",
+      version: "1.0.1",
       description: "API documentation for all endpoints",
     },
 
@@ -228,7 +228,7 @@ const swaggerOptions = {
     }
   },
 
-  apis: [] // not using route annotations right now
+  apis: ["./routes", ...] // not using route annotations right now
 };
 
 
