@@ -1,4 +1,4 @@
-const Company = require("../models/Company");
+const Company = require("../models/company");
 
 exports.getAllCompanies = async (req, res) => {
   const companies = await Company.find();
