@@ -7,6 +7,26 @@ const app = express();
 // ----- Middleware (must come BEFORE routes) -----
 app.use(express.json());
 app.use(morgan("dev"));
+// ----- Swagger Setup -----
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "My API",
+      version: "1.0.0",
+      description: "API documentation for my Express server",
+    },
+  },
+  apis: ["./routes/*.js"], // your route files
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // ----- Config -----
 const PORT = process.env.PORT || 3000;
