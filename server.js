@@ -1,19 +1,16 @@
-// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
 const app = express();
 
-// ----- Middleware -----
+// ----- Middleware (must come BEFORE routes) -----
 app.use(express.json());
 app.use(morgan("dev"));
 
 // ----- Config -----
 const PORT = process.env.PORT || 3000;
 
-// IMPORTANT: Your username contains "@", so it must be URL‑encoded.
-// 242sa@admin  →  242sa%40admin
 const MONGODB_URI =
   "mongodb+srv://242sa:wavecrest100@cluster0.dqnu2ja.mongodb.net/?appName=Cluster0";
 
@@ -28,18 +25,13 @@ async function connectDB() {
   }
 }
 
-// ----- MODELS -----
+// --------------------------------------------------
+// MODELS (your existing inline models stay as-is)
+// --------------------------------------------------
 
-// USER MODEL
 const userSchema = new mongoose.Schema(
   {
-    fullname: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 1,
-      maxlength: 150,
-    },
+    fullname: { type: String, required: true, trim: true, minlength: 1, maxlength: 150 },
     email: {
       type: String,
       required: true,
@@ -48,76 +40,31 @@ const userSchema = new mongoose.Schema(
       unique: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
-    plainpassword: {
-      type: String,
-      required: true,
-      minlength: 4,
-      maxlength: 200,
-    },
+    plainpassword: { type: String, required: true, minlength: 4, maxlength: 200 },
   },
   { timestamps: true }
 );
-
 const User = mongoose.model("User", userSchema);
 
-// LICENSE MODEL
 const licenseSchema = new mongoose.Schema(
   {
-    licenseid: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    version: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    installdate: {
-      type: String,
-      required: true,
-    },
-    enddate: {
-      type: String,
-      required: true,
-    },
-    customerid: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    licenseid: { type: String, required: true, unique: true, trim: true },
+    version: { type: String, required: true, trim: true },
+    installdate: { type: String, required: true },
+    enddate: { type: String, required: true },
+    customerid: { type: String, required: true, trim: true },
   },
   { timestamps: true }
 );
-
 const License = mongoose.model("License", licenseSchema);
 
-// LICENSE LOG MODEL
 const licenseLogSchema = new mongoose.Schema(
   {
-    licenseid: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    accessdate: {
-      type: String,
-      required: true,
-    },
-    userid: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    shard: {
-      type: String,
-      required: true,
-    },
-    instanceid: {
-      type: String,
-      required: true,
-    },
+    licenseid: { type: String, required: true, trim: true },
+    accessdate: { type: String, required: true },
+    userid: { type: String, required: true, trim: true },
+    shard: { type: String, required: true },
+    instanceid: { type: String, required: true },
     licensestatus: {
       type: String,
       required: true,
@@ -126,49 +73,37 @@ const licenseLogSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 const LicenseLog = mongoose.model("LicenseLog", licenseLogSchema);
 
-// DOWNLOAD LOG MODEL
 const downloadLogSchema = new mongoose.Schema(
   {
-    downloadsource: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    date: {
-      type: String,
-      required: true,
-    },
-    userid: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    useremail: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-    },
-    referralsource: {
-      type: String,
-      required: true,
-      trim: true,
-    }
+    downloadsource: { type: String, required: true, trim: true },
+    date: { type: String, required: true },
+    userid: { type: String, required: true, trim: true },
+    useremail: { type: String, required: true, trim: true, lowercase: true },
+    referralsource: { type: String, required: true, trim: true },
   },
   { timestamps: true }
 );
-
 const DownloadLog = mongoose.model("DownloadLog", downloadLogSchema);
 
-// ----- ROUTES -----
+// --------------------------------------------------
+// NEW ROUTES (Company / Branch / Instance)
+// --------------------------------------------------
 
-// =========================
+const companyRoutes = require("./routes/companyRoutes");
+const branchRoutes = require("./routes/branchRoutes");
+const instanceRoutes = require("./routes/instanceRoutes");
+
+app.use("/companies", companyRoutes);
+app.use("/branches", branchRoutes);
+app.use("/instances", instanceRoutes);
+
+// --------------------------------------------------
+// OLD INLINE CRUD ROUTES (unchanged)
+// --------------------------------------------------
+
 // USERS CRUD
-// =========================
-
 app.get("/users", async (req, res) => {
   try {
     const users = await User.find().lean();
@@ -223,10 +158,7 @@ app.delete("/users/:id", async (req, res) => {
   }
 });
 
-// =========================
-// LICENSES CRUD
-// =========================
-
+// LICENSE CRUD
 app.get("/licenses", async (req, res) => {
   try {
     const licenses = await License.find().lean();
@@ -281,10 +213,7 @@ app.delete("/licenses/:id", async (req, res) => {
   }
 });
 
-// =========================
 // LICENSE LOG CRUD
-// =========================
-
 app.get("/licenselogs", async (req, res) => {
   try {
     const logs = await LicenseLog.find().lean();
@@ -336,10 +265,7 @@ app.delete("/licenselogs/:id", async (req, res) => {
   }
 });
 
-// =========================
 // DOWNLOAD LOG CRUD
-// =========================
-
 app.get("/downloadlogs", async (req, res) => {
   try {
     const logs = await DownloadLog.find().lean();
@@ -400,3 +326,4 @@ connectDB().then(() => {
     console.log(`🚀 API running on http://localhost:${PORT}`);
   });
 });
+
