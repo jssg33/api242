@@ -228,7 +228,7 @@ const swaggerOptions = {
     }
   },
 
-  apis: ["./routes", "./"] // not using route annotations right now
+  apis: ["./routes/*.js", "./swagger.js", "./server.js"] // not using route annotations right now
 };
 
 
