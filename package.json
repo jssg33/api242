@@ -6,8 +6,8 @@
   "license": "greenvillegreen",
   "scripts": 
   { "start": "node server.js",
-    "buildapi": "yarn add express mongoose morgan dotenv swagger-ui-express swagger-jsdoc"
+    "buildapi": "yarn add express mongoose morgan dotenv swagger-ui-express swagger-jsdoc cors"
   }, 
   "dependencies": 
-  { "express": "^4.19.2", "mongoose": "^8.0.0", "cors": "^2.8.5", "swagger-ui-express": "^5.x.x", "swagger-jsdoc": "^6.x.x" } 
+  { "express": "^4.19.2", "mongoose": "^8.0.0", "cors": "^2.8.5", "swagger-ui-express": "^5.x.x", "swagger-jsdoc": "^6.x.x" , "cors": "^2.8.5"} 
 }
