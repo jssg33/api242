@@ -4,6 +4,13 @@ const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 
+//MOVE MODELS FROM SERVER.JS TO PROPER HOME
+
+const User = require("./models/user"); 
+const License = require("./models/license"); 
+const LicenseLog = require("./models/licenselog"); 
+const DownloadLog = require("./models/downloadlog");
+
 // ----- Middleware (must come BEFORE routes) -----
 app.use(express.json());
 app.use(morgan("dev"));
@@ -296,68 +303,6 @@ async function connectDB() {
     process.exit(1);
   }
 }
-
-// --------------------------------------------------
-// MODELS (your existing inline models stay as-is)
-// --------------------------------------------------
-
-const userSchema = new mongoose.Schema(
-  {
-    fullname: { type: String, required: true, trim: true, minlength: 1, maxlength: 150 },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-      unique: true,
-      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
-    },
-    plainpassword: { type: String, required: true, minlength: 4, maxlength: 200 },
-  },
-  { timestamps: true }
-);
-const User = mongoose.model("User", userSchema);
-
-const licenseSchema = new mongoose.Schema(
-  {
-    licenseid: { type: String, required: true, unique: true, trim: true },
-    version: { type: String, required: true, trim: true },
-    installdate: { type: String, required: true },
-    enddate: { type: String, required: true },
-    customerid: { type: String, required: true, trim: true },
-  },
-  { timestamps: true }
-);
-const License = mongoose.model("License", licenseSchema);
-
-const licenseLogSchema = new mongoose.Schema(
-  {
-    licenseid: { type: String, required: true, trim: true },
-    accessdate: { type: String, required: true },
-    userid: { type: String, required: true, trim: true },
-    shard: { type: String, required: true },
-    instanceid: { type: String, required: true },
-    licensestatus: {
-      type: String,
-      required: true,
-      enum: ["active", "inactive", "expired", "revoked"],
-    },
-  },
-  { timestamps: true }
-);
-const LicenseLog = mongoose.model("LicenseLog", licenseLogSchema);
-
-const downloadLogSchema = new mongoose.Schema(
-  {
-    downloadsource: { type: String, required: true, trim: true },
-    date: { type: String, required: true },
-    userid: { type: String, required: true, trim: true },
-    useremail: { type: String, required: true, trim: true, lowercase: true },
-    referralsource: { type: String, required: true, trim: true },
-  },
-  { timestamps: true }
-);
-const DownloadLog = mongoose.model("DownloadLog", downloadLogSchema);
 
 // --------------------------------------------------
 // NEW ROUTES (Company / Branch / Instance)
