@@ -24,6 +24,11 @@ app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
+const productRoutes = require("./routes/productRoutes"); 
+const reviewRoutes = require("./routes/reviewRoutes");
+// NEW: Register product + review routes 
+app.use("/products", productRoutes); 
+app.use("/reviews", reviewRoutes);
 
 // Health check
 app.get("/health", (req, res) => res.json({ status: "ok" }));
