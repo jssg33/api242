@@ -89,7 +89,7 @@ const cartSchema = new mongoose.Schema(
     },
 
     // Replaces parkname
-    licensename: {
+    productname: {
       type: String,
       trim: true
     },
@@ -113,7 +113,7 @@ const cartSchema = new mongoose.Schema(
     },
 
     // Replaces parkGuid
-    licenseGuid: {
+    productGuid: {
       type: String,
       trim: true
     },
