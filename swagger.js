@@ -39,7 +39,7 @@ const options = {
 
     companyId: {
       type: "string",
-      description: "ObjectId reference to Company"
+      default: "NotSet"
     },
 
     branchId: {
