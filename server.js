@@ -3,20 +3,29 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
-const swaggerJsdoc = require("swagger-jsdoc");
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE"], allowedHeaders: ["Content-Type", "Authorization"] }));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Swagger
 const swaggerSpec = require("./swagger");
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Routes
+// -------------------------
+// ROUTES
+// -------------------------
+
+// Existing routes
 app.use("/users", require("./routes/userRoutes"));
 app.use("/licenses", require("./routes/licenseRoutes"));
 app.use("/licenselogs", require("./routes/licenseLogRoutes"));
@@ -24,25 +33,33 @@ app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
-const productRoutes = require("./routes/productRoutes"); 
-const reviewRoutes = require("./routes/reviewRoutes");
-const cartRoutes = require("../models/cart");
-const cartMasterRoutes = require("../models/cartMaster");
-const cartItemRoutes = require("../models/cartItem");
 
-// NEW: Register product + review routes 
-app.use("/products", productRoutes); 
+// New: Product + Review routes
+const productRoutes = require("./routes/productRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+
+// New: Cart-related routes (corrected to use ROUTES, not MODELS)
+const cartRoutes = require("./routes/cartRoutes");
+const cartMasterRoutes = require("./routes/cartMasterRoutes");
+const cartItemRoutes = require("./routes/cartItemRoutes");
+
+// Register new routes
+app.use("/products", productRoutes);
 app.use("/reviews", reviewRoutes);
-app.use("/cart", cartRoutes); 
-app.use("/cartmaster", cartMasterRoutes); 
+app.use("/cart", cartRoutes);
+app.use("/cartmaster", cartMasterRoutes);
 app.use("/cartitems", cartItemRoutes);
 
 // Health check
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
-// DB + Start
+// -------------------------
+// DATABASE + SERVER START
+// -------------------------
+
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI = "mongodb+srv://242sa:wavecrest100@cluster0.dqnu2ja.mongodb.net/?appName=Cluster0";
+const MONGODB_URI =
+  "mongodb+srv://242sa:wavecrest100@cluster0.dqnu2ja.mongodb.net/?appName=Cluster0";
 
 async function connectDB() {
   try {
@@ -55,5 +72,7 @@ async function connectDB() {
 }
 
 connectDB().then(() => {
-  app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
+  app.listen(PORT, () =>
+    console.log(`API running on http://localhost:${PORT}`)
+  );
 });
