@@ -7,7 +7,11 @@ const branchSchema = new mongoose.Schema(
       ref: "Company",
       required: true
     },
-
+   compId: {
+      type: String,
+      required: true,
+      trim: true
+    },
     name: {
       type: String,
       required: true,
