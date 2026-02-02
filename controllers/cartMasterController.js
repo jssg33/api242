@@ -1,4 +1,4 @@
-const CartMaster = require("../models/cartMaster");
+const CartMaster = require("../models/cartmaster");
 
 exports.getAllCartMasters = async (req, res) => {
   try {
