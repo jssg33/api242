@@ -11,18 +11,71 @@ const options = {
 
     components: {
       schemas: {
-        User: {
-          type: "object",
-          required: ["fullname", "email", "plainpassword"],
-          properties: {
-            id: { type: "string" },
-            fullname: { type: "string" },
-            email: { type: "string" },
-            plainpassword: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
-        },
+       User: {
+  type: "object",
+  required: ["fullname", "email", "password"],
+  properties: {
+    id: { type: "string" },
+
+    fullname: {
+      type: "string",
+      maxLength: 150
+    },
+
+    email: {
+      type: "string",
+      format: "email"
+    },
+
+    password: {
+      type: "string",
+      minLength: 4,
+      maxLength: 200
+    },
+
+    phone: {
+      type: "string"
+    },
+
+    companyId: {
+      type: "string",
+      description: "ObjectId reference to Company"
+    },
+
+    branchId: {
+      type: "string",
+      description: "ObjectId reference to Branch"
+    },
+
+    role: {
+      type: "string",
+      enum: ["admin", "manager", "user", "superuser"],
+      default: "user"
+    },
+
+    corporateuser: {
+      type: "string",
+      description: "Indicates corporate user status",
+      default: "False"
+    },
+
+    status: {
+      type: "string",
+      enum: ["active", "inactive", "pending"],
+      default: "active"
+    },
+
+    createdAt: {
+      type: "string",
+      format: "date-time"
+    },
+
+    updatedAt: {
+      type: "string",
+      format: "date-time"
+    } 
+  }
+ },
 
         License: {
           type: "object",
