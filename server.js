@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE"], allowedHeaders: ["Content-Type", "Authorization"] }));
 
 // Swagger
-const swaggerSpec = swaggerJsdoc(require("./swaggerOptions"));
+const swaggerSpec = require("./swagger");
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
