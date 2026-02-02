@@ -35,8 +35,8 @@ const userSchema = new mongoose.Schema(
 
     // Optional relationship to Company
     companyId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Company"
+      type: String,
+      trim: true
     },
 
     // Optional relationship to Branch
