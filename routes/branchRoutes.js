@@ -10,28 +10,62 @@ const branchController = require("../controllers/branchController");
  *       type: object
  *       required:
  *         - companyId
+ *         - compId
  *         - name
+ *         - address1
+ *         - city
+ *         - state
+ *         - zip
+ *         - country
  *       properties:
  *         id:
  *           type: string
  *           description: Auto-generated MongoDB ObjectId
  *         companyId:
  *           type: string
- *           description: The ID of the company this branch belongs to
+ *           description: MongoDB ObjectId reference to Company
+ *         compId:
+ *           type: string
+ *           description: Business identifier for the branch (string)
  *         name:
  *           type: string
  *           description: Branch name
- *         location:
+ *         address1:
  *           type: string
- *           description: Branch location
+ *         address2:
+ *           type: string
+ *         city:
+ *           type: string
+ *         state:
+ *           type: string
+ *         zip:
+ *           type: string
+ *         country:
+ *           type: string
+ *         phone:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
  *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
  *           type: string
  *           format: date-time
  *       example:
  *         id: "67a1b2c3d4e5f6a7b8c9d0e1"
  *         companyId: "66f1a2b3c4d5e6f7a8b9c0d1"
+ *         compId: "VZFED001"
  *         name: "East Coast Branch"
- *         location: "Charlotte, NC"
+ *         address1: "123 Main St"
+ *         address2: "Suite 200"
+ *         city: "Charlotte"
+ *         state: "NC"
+ *         zip: "28202"
+ *         country: "USA"
+ *         phone: "803-867-5309"
+ *         email: "branch@example.com"
  *         createdAt: "2025-01-30T12:34:56.000Z"
  */
 
@@ -156,4 +190,3 @@ router.put("/:id", branchController.updateBranch);
 router.delete("/:id", branchController.deleteBranch);
 
 module.exports = router;
-
