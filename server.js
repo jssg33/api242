@@ -26,9 +26,16 @@ app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 const productRoutes = require("./routes/productRoutes"); 
 const reviewRoutes = require("./routes/reviewRoutes");
+const cartRoutes = require("../models/cart");
+const cartMasterRoutes = require("../models/cartMaster");
+const cartItemRoutes = require("../models/cartItem");
+
 // NEW: Register product + review routes 
 app.use("/products", productRoutes); 
 app.use("/reviews", reviewRoutes);
+app.use("/cart", cartRoutes); 
+app.use("/cartmaster", cartMasterRoutes); 
+app.use("/cartitems", cartItemRoutes);
 
 // Health check
 app.get("/health", (req, res) => res.json({ status: "ok" }));
