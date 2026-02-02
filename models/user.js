@@ -48,8 +48,14 @@ const userSchema = new mongoose.Schema(
     // Role-based access control
     role: {
       type: String,
-      enum: ["admin", "manager", "user"],
+      enum: ["admin", "manager", "user", "superuser"],
       default: "user"
+    },
+    // User Type
+    corporateuser: {
+      type: String,
+      trim: true,
+      default: "False"
     },
 
     // Account status
