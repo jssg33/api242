@@ -41,8 +41,8 @@ const userSchema = new mongoose.Schema(
 
     // Optional relationship to Branch
     branchId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Branch"
+      type: String,
+      trim: true
     },
 
     // Role-based access control
