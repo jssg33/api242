@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
-const swaggerUi = require("swagger-ui-express");
+
 
 const app = express();
 
@@ -18,8 +18,11 @@ app.use(
 );
 
 // Swagger
-const swaggerSpec = require("./swagger");
-app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerUi = require("swagger-ui-express"); 
+const swaggerSpec = require("./swagger"); 
+const basicAuth = require("express-basic-auth"); 
+//PASSWORD PROTECT SWAGGER
+app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }), swaggerUi.serve, swaggerUi.setup(swaggerSpec) );
 
 // -------------------------
 // ROUTES
