@@ -5,22 +5,17 @@ const userSchema = new mongoose.Schema(
     // -------------------------------------------------
     // Core Identity
     // -------------------------------------------------
-    id: { type: Number },
-    userid: { type: Number },
+    id: Number,
+    userid: Number,
+    useridstring: { type: String, trim: true }, // merged from userprofile
+    uidstring: { type: String, trim: true },    // keep existing for compatibility
 
     firstname: { type: String, trim: true },
     lastname: { type: String, trim: true },
-    username: { type: String, trim: true },
-
-    fullname: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 1,
-      maxlength: 150
-    },
-
+    fullname: { type: String, required: true, trim: true, minlength: 1, maxlength: 150 },
     displayname: { type: String, trim: true },
+    username: { type: String, trim: true },
+    pronoun: { type: String, trim: true }, // added
 
     email: {
       type: String,
@@ -32,13 +27,16 @@ const userSchema = new mongoose.Schema(
     },
 
     phone: { type: String, trim: true },
+    cellphone: { type: String, trim: true }, // added
+    sms: Number, // added
     fax: { type: String, trim: true },
     btnphone: { type: String, trim: true },
 
     dateOfBirth: { type: String, trim: true },
+    maritalstatus: { type: String, trim: true }, // added
 
     // -------------------------------------------------
-    // Address Information
+    // Address
     // -------------------------------------------------
     address1: { type: String, trim: true },
     address2: { type: String, trim: true },
@@ -48,21 +46,15 @@ const userSchema = new mongoose.Schema(
     country: { type: String, trim: true },
 
     // -------------------------------------------------
-    // Authentication & Security
+    // Authentication
     // -------------------------------------------------
-    password: {
-      type: String,
-      required: true,
-      minlength: 4,
-      maxlength: 200
-    },
-
+    password: { type: String, required: true, minlength: 4, maxlength: 200 },
     plainpassword: { type: String, trim: true },
     hashedpassword: { type: String, trim: true },
     passwordtype: { type: Number, default: 0 },
 
     resettoken: { type: String, trim: true },
-    resettokenexpiration: { type: Date },
+    resettokenexpiration: Date,
 
     usertwofactorenabled: { type: Boolean, default: false },
     usertwofactortype: { type: String, trim: true },
@@ -73,22 +65,28 @@ const userSchema = new mongoose.Schema(
     twofactorproviderauthstring: { type: String, trim: true },
 
     // -------------------------------------------------
-    // Employment / Corporate IDs
+    // Employment
     // -------------------------------------------------
     employee: { type: Boolean, default: false },
     employeeid: { type: String, trim: true },
+
+    buid: Number,       // added
+    managerid: Number,  // added
+    regionid: Number,   // added
+
     microsoftid: { type: String, trim: true },
     ncrid: { type: String, trim: true },
     oracleid: { type: String, trim: true },
     azureid: { type: String, trim: true },
 
     // -------------------------------------------------
-    // Company / Branch / Role
+    // Company / Branch
     // -------------------------------------------------
-    companyId: { type: String, trim: true }, // original
-    companyid: { type: Number },            // numeric version
+    companyId: { type: String, trim: true },
+    companyid: { type: String, trim: true }, // unified to string to match userprofile
 
     branchId: { type: String, trim: true },
+    branchid: Number, // added numeric version
 
     role: {
       type: String,
@@ -96,11 +94,7 @@ const userSchema = new mongoose.Schema(
       default: "user"
     },
 
-    corporateuser: {
-      type: String,
-      trim: true,
-      default: "False"
-    },
+    corporateuser: { type: String, trim: true, default: "False" },
 
     status: {
       type: String,
@@ -109,30 +103,32 @@ const userSchema = new mongoose.Schema(
     },
 
     // -------------------------------------------------
-    // Account Status / Actions
+    // Education
     // -------------------------------------------------
-    accountstatus: { type: String, trim: true },
-    accountactiondate: { type: String, trim: true },
-    accountactiondescription: { type: String, trim: true },
+    university: { type: String, trim: true },
+    university1: { type: String, trim: true },
+    university2: { type: String, trim: true },
 
     // -------------------------------------------------
-    // Groups / Permissions
+    // Social Links
     // -------------------------------------------------
-    groupid1: { type: String, trim: true },
-    groupid2: { type: String, trim: true },
-    groupid3: { type: String, trim: true },
-    groupid4: { type: String, trim: true },
-    groupid5: { type: String, trim: true },
+    linkedinurl: { type: String, trim: true },
+    instagramurl: { type: String, trim: true },
+    vimeourl: { type: String, trim: true },
+    facebookurl: { type: String, trim: true },
+    googleurl: { type: String, trim: true },
 
     // -------------------------------------------------
-    // Misc System Fields
+    // System Fields
     // -------------------------------------------------
-    jid: { type: Number },
+    jid: Number,
     btn: { type: String, trim: true },
     iscertified: { type: Boolean, default: false },
 
-    uidstring: { type: String, trim: true },
     activepictureurl: { type: String, trim: true },
+
+    defaultinstanceid: { type: String, trim: true },
+    defaultshardid: { type: String, trim: true },
 
     cartMasterIndex: { type: Number, default: 0 },
     userProfileIndex: { type: Number, default: 0 }
