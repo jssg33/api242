@@ -11,41 +11,91 @@ const options = {
 
     components: {
       schemas: {
-       User: {
+     User: {
   type: "object",
   required: ["fullname", "email", "password"],
   properties: {
-    id: { type: "string" },
+    // -------------------------------------------------
+    // Core Identity
+    // -------------------------------------------------
+    id: { type: "number" },
+    userid: { type: "number" },
+    useridstring: { type: "string" },
+    uidstring: { type: "string" },
 
-    fullname: {
-      type: "string",
-      maxLength: 150
-    },
+    firstname: { type: "string" },
+    lastname: { type: "string" },
+    fullname: { type: "string", maxLength: 150 },
+    displayname: { type: "string" },
+    username: { type: "string" },
+    pronoun: { type: "string" },
+    maritalstatus: { type: "string" },
 
-    email: {
-      type: "string",
-      format: "email"
-    },
+    email: { type: "string", format: "email" },
 
-    password: {
-      type: "string",
-      minLength: 4,
-      maxLength: 200
-    },
+    // -------------------------------------------------
+    // Contact
+    // -------------------------------------------------
+    phone: { type: "string" },
+    cellphone: { type: "string" },
+    sms: { type: "number" },
+    fax: { type: "string" },
+    btnphone: { type: "string" },
 
-    phone: {
-      type: "string"
-    },
+    dateOfBirth: { type: "string" },
 
-    companyId: {
-      type: "string",
-      default: "NotSet"
-    },
+    // -------------------------------------------------
+    // Address
+    // -------------------------------------------------
+    address1: { type: "string" },
+    address2: { type: "string" },
+    city: { type: "string" },
+    state: { type: "string" },
+    postalzip: { type: "string" },
+    country: { type: "string" },
 
-    branchId: {
-      type: "string",
-      description: "ObjectId reference to Branch"
-    },
+    // -------------------------------------------------
+    // Authentication
+    // -------------------------------------------------
+    password: { type: "string", minLength: 4, maxLength: 200 },
+    plainpassword: { type: "string" },
+    hashedpassword: { type: "string" },
+    passwordtype: { type: "number" },
+
+    resettoken: { type: "string" },
+    resettokenexpiration: { type: "string", format: "date-time" },
+
+    usertwofactorenabled: { type: "boolean" },
+    usertwofactortype: { type: "string" },
+    usertwofactorkeysmsdestination: { type: "string" },
+    twofactorkeyemaildestination: { type: "string" },
+    twofactorprovider: { type: "string" },
+    twofactorprovidertoken: { type: "string" },
+    twofactorproviderauthstring: { type: "string" },
+
+    // -------------------------------------------------
+    // Employment
+    // -------------------------------------------------
+    employee: { type: "boolean" },
+    employeeid: { type: "string" },
+
+    buid: { type: "number" },
+    managerid: { type: "number" },
+    regionid: { type: "number" },
+
+    microsoftid: { type: "string" },
+    ncrid: { type: "string" },
+    oracleid: { type: "string" },
+    azureid: { type: "string" },
+
+    // -------------------------------------------------
+    // Company / Branch
+    // -------------------------------------------------
+    companyId: { type: "string" },
+    companyid: { type: "string" },
+
+    branchId: { type: "string" },
+    branchid: { type: "number" },
 
     role: {
       type: "string",
@@ -53,11 +103,7 @@ const options = {
       default: "user"
     },
 
-    corporateuser: {
-      type: "string",
-      description: "Indicates corporate user status",
-      default: "False"
-    },
+    corporateuser: { type: "string", default: "False" },
 
     status: {
       type: "string",
@@ -65,17 +111,44 @@ const options = {
       default: "active"
     },
 
-    createdAt: {
-      type: "string",
-      format: "date-time"
-    },
+    // -------------------------------------------------
+    // Education
+    // -------------------------------------------------
+    university: { type: "string" },
+    university1: { type: "string" },
+    university2: { type: "string" },
 
-    updatedAt: {
-      type: "string",
-      format: "date-time"
-    } 
+    // -------------------------------------------------
+    // Social Links
+    // -------------------------------------------------
+    linkedinurl: { type: "string" },
+    instagramurl: { type: "string" },
+    vimeourl: { type: "string" },
+    facebookurl: { type: "string" },
+    googleurl: { type: "string" },
+
+    // -------------------------------------------------
+    // System Fields
+    // -------------------------------------------------
+    jid: { type: "number" },
+    btn: { type: "string" },
+    iscertified: { type: "boolean" },
+
+    activepictureurl: { type: "string" },
+
+    defaultinstanceid: { type: "string" },
+    defaultshardid: { type: "string" },
+
+    cartMasterIndex: { type: "number" },
+    userProfileIndex: { type: "number" },
+
+    // -------------------------------------------------
+    // Timestamps
+    // -------------------------------------------------
+    createdAt: { type: "string", format: "date-time" },
+    updatedAt: { type: "string", format: "date-time" }
   }
- },
+},
 
         License: {
           type: "object",
