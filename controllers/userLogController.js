@@ -1,4 +1,4 @@
-const UserLog = require('../models/UserLog');
+const UserLog = require('../models/userlog');
 
 // GET all logs
 exports.getAllLogs = async (req, res) => {
