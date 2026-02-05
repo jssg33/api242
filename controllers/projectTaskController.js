@@ -1,5 +1,3 @@
-// controllers/ProjectTaskController.js
-
 const ProjectTask = require("../models/ProjectTask");
 
 // GET all project tasks
