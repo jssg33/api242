@@ -80,7 +80,7 @@ app.use("/cards", require("./routes/cardsRoutes"));
 
 // Scopes & Project Tasks (2) 
 app.use("/scopes", require("./routes/scopeRoutes")); 
-app.use("/projecttasks", require("./routes/projectTaskRoutes"));
+//app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 
 // -------------------------
 // TOTAL ROUTES: 29
