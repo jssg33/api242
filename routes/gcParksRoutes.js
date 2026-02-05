@@ -1,3 +1,7 @@
+const express = require("express");
+const router = express.Router();
+const { getGCParks } = require("../controllers/gcParksController");
+
 /**
  * @swagger
  * components:
@@ -80,6 +84,13 @@
 
 /**
  * @swagger
+ * tags:
+ *   name: GCPARKS
+ *   description: Parks + Embedded Reviews DTO
+ */
+
+/**
+ * @swagger
  * /api/GCPARKS:
  *   get:
  *     summary: Returns the GC PARKS DTO (Parks + Embedded Reviews)
@@ -94,3 +105,6 @@
  *               items:
  *                 $ref: '#/components/schemas/GCPark'
  */
+router.get("/", getGCParks);
+
+module.exports = router;
