@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/ProjectTaskController");
+const controller = require("../controllers/ProjectTasksController");
 
 /**
  * @swagger
@@ -20,19 +20,14 @@ const controller = require("../controllers/ProjectTaskController");
  *       properties:
  *         name:
  *           type: string
- *           description: The task name
  *         description:
  *           type: string
- *           description: Details about the task
  *         url:
  *           type: string
- *           description: Optional link related to the task
  *         projectId:
  *           type: string
- *           description: ID of the project this task belongs to
  *         customerId:
  *           type: string
- *           description: ID of the customer associated with this task
  *       example:
  *         name: "Design Homepage"
  *         description: "Create wireframes and mockups"
