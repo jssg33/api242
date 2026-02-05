@@ -1,7 +1,7 @@
 // controllers/gcParksController.js
 
 const Park = require("../models/Park");
-const Review = require("../models/Review");
+const Review = require("../models/review");
 
 exports.getGCParks = async (req, res) => {
   try {
