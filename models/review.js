@@ -2,18 +2,21 @@ const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema(
   {
-    // Reference to the product being reviewed
-    productId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+    // Unified author field (used for CGPARKS + product reviews)
+    uid: {
+      type: String,
       required: true
     },
 
-    // Reference to the user who wrote the review
-    userId: {
+    // Optional: product review linkage
+    productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true
+      ref: "Product"
+    },
+
+    // Optional: park review linkage
+    parkId: {
+      type: Number
     },
 
     // Rating 1–5
@@ -24,7 +27,7 @@ const reviewSchema = new mongoose.Schema(
       max: 5
     },
 
-    // Optional title for the review
+    // Optional title (product reviews)
     title: {
       type: String,
       trim: true
@@ -37,10 +40,19 @@ const reviewSchema = new mongoose.Schema(
       trim: true
     },
 
-    // Optional: mark if the user actually purchased the product
+    // Optional: product purchase verification
     verifiedPurchase: {
       type: Boolean,
       default: false
+    },
+
+    // CGPARKS fields
+    dateWritten: {
+      type: String
+    },
+
+    dateVisited: {
+      type: String
     }
   },
   { timestamps: true }
