@@ -28,21 +28,21 @@ app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }
 // ROUTES
 // -------------------------
 
-// Users & Accounts (3)
+// Users & Accounts (2)
 app.use("/users", require("./routes/userRoutes"));
 app.use("/usernotices", require("./routes/userNoticeRoutes"));
-app.use("/userlogs", require("./routes/userLogRoutes"));
 
 // Companies & Branches (3)
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 
-// Logging (4)
+// Logging & Security (5)
 app.use("/api/apilogs", require("./routes/apiLogRoutes"));
 app.use("/api/adminlogs", require("./routes/adminLogRoutes"));
 app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
 app.use("/licenselogs", require("./routes/licenseLogRoutes"));
+app.use("/userlogs", require("./routes/userLogRoutes"));
 
 // Licensing (1)
 app.use("/licenses", require("./routes/licenseRoutes"));
