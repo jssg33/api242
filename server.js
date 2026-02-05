@@ -50,9 +50,10 @@ app.use("/licenses", require("./routes/licenseRoutes"));
 // Parks (1)
 app.use("/parks", require("./routes/parkRoutes"));
 
-// DTOs (1)
+// DTOs (2)
 app.use("/api/GCPARKS", require("./routes/gcParksRoutes"));
 app.use("/api/gcparks", require("./routes/gcParksRoutes")); // lowercase alias
+app.use("/api/CGCART", require("./routes/cgCartRoutes"));
 
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
@@ -78,7 +79,7 @@ app.use("/reservations", require("./routes/reservationRoutes"));
 app.use("/cards", require("./routes/cardsRoutes"));
 
 // -------------------------
-// TOTAL ROUTES: 26
+// TOTAL ROUTES: 27
 // -------------------------
 
 
