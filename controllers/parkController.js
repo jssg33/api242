@@ -1,4 +1,4 @@
-const Park = require("../models/parkModel");
+const Park = require("../models/Park");
 
 // -------------------------------------------------
 // GET /parks
