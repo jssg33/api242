@@ -37,21 +37,32 @@ app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 
-// New: Product + Review routes
+// Product + Review routes
 const productRoutes = require("./routes/productRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+app.use("/products", productRoutes);
+app.use("/reviews", reviewRoutes);
 
-// New: Cart-related routes (corrected to use ROUTES, not MODELS)
+// Cart routes
 const cartRoutes = require("./routes/cartRoutes");
 const cartMasterRoutes = require("./routes/cartMasterRoutes");
 const cartItemRoutes = require("./routes/cartItemRoutes");
-
-// Register new routes
-app.use("/products", productRoutes);
-app.use("/reviews", reviewRoutes);
 app.use("/cart", cartRoutes);
 app.use("/cartmaster", cartMasterRoutes);
 app.use("/cartitems", cartItemRoutes);
+
+// NEW: Logging & batch routes
+const apiLogRoutes = require("./routes/apiLogRoutes");
+const adminLogRoutes = require("./routes/adminLogRoutes");
+const batchRoutes = require("./routes/batchRoutes");
+app.use("/api/apilogs", apiLogRoutes);
+app.use("/api/adminlogs", adminLogRoutes);
+app.use("/api/batches", batchRoutes);
+
+// NEW: CGPARKS DTO route
+const gcParksRoutes = require("./routes/gcParksRoutes");
+app.use("/api/GCPARKS", gcParksRoutes);
+app.use("/api/gcparks", gcParksRoutes); // optional lowercase alias
 
 // Health check
 app.get("/health", (req, res) => res.json({ status: "ok" }));
