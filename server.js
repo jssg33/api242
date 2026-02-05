@@ -28,44 +28,59 @@ app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }
 // ROUTES
 // -------------------------
 
-// Existing routes
+// Users & Accounts (3)
 app.use("/users", require("./routes/userRoutes"));
-app.use("/licenses", require("./routes/licenseRoutes"));
-app.use("/licenselogs", require("./routes/licenseLogRoutes"));
-app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
+app.use("/usernotices", require("./routes/userNoticeRoutes"));
+app.use("/userlogs", require("./routes/userLogRoutes"));
+
+// Companies & Branches (3)
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 
-// Product + Review routes
-const productRoutes = require("./routes/productRoutes");
-const reviewRoutes = require("./routes/reviewRoutes");
-app.use("/products", productRoutes);
-app.use("/reviews", reviewRoutes);
+// Logging (4)
+app.use("/api/apilogs", require("./routes/apiLogRoutes"));
+app.use("/api/adminlogs", require("./routes/adminLogRoutes"));
+app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
+app.use("/licenselogs", require("./routes/licenseLogRoutes"));
 
-// Cart routes
-const cartRoutes = require("./routes/cartRoutes");
-const cartMasterRoutes = require("./routes/cartMasterRoutes");
-const cartItemRoutes = require("./routes/cartItemRoutes");
-app.use("/cart", cartRoutes);
-app.use("/cartmaster", cartMasterRoutes);
-app.use("/cartitems", cartItemRoutes);
+// Licensing (1)
+app.use("/licenses", require("./routes/licenseRoutes"));
 
-// NEW: Logging & batch routes
-const apiLogRoutes = require("./routes/apiLogRoutes");
-const adminLogRoutes = require("./routes/adminLogRoutes");
-const batchRoutes = require("./routes/batchRoutes");
-app.use("/api/apilogs", apiLogRoutes);
-app.use("/api/adminlogs", adminLogRoutes);
-app.use("/api/batches", batchRoutes);
+// Parks (1)
+app.use("/parks", require("./routes/parkRoutes"));
 
-// NEW: CGPARKS DTO route
-const gcParksRoutes = require("./routes/gcParksRoutes");
-app.use("/api/GCPARKS", gcParksRoutes);
-app.use("/api/gcparks", gcParksRoutes); // optional lowercase alias
+// DTOs (1)
+app.use("/api/GCPARKS", require("./routes/gcParksRoutes"));
+app.use("/api/gcparks", require("./routes/gcParksRoutes")); // lowercase alias
 
-// Health check
-app.get("/health", (req, res) => res.json({ status: "ok" }));
+// Batch Processing (1)
+app.use("/api/batches", require("./routes/batchRoutes"));
+
+// Commerce / Sales (7)
+app.use("/products", require("./routes/productRoutes"));
+app.use("/reviews", require("./routes/reviewRoutes"));
+app.use("/salescatalogue", require("./routes/salesCatalogueRoutes"));
+app.use("/invoices", require("./routes/invoiceRoutes"));
+app.use("/invoicelineitems", require("./routes/invoiceLineItemRoutes"));
+app.use("/payments", require("./routes/paymentRoutes"));
+app.use("/refunds", require("./routes/refundRoutes"));
+
+// Cart System (3)
+app.use("/cart", require("./routes/cartRoutes"));
+app.use("/cartmaster", require("./routes/cartMasterRoutes"));
+app.use("/cartitems", require("./routes/cartItemRoutes"));
+
+// Reservations (1)
+app.use("/reservations", require("./routes/reservationRoutes"));
+
+// Cards (1)
+app.use("/cards", require("./routes/cardsRoutes"));
+
+// -------------------------
+// TOTAL ROUTES: 26
+// -------------------------
+
 
 // -------------------------
 // DATABASE + SERVER START
