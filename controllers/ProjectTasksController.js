@@ -1,7 +1,8 @@
+
 const ProjectTask = require("../models/ProjectTask");
 
 // GET all project tasks
-exports.getAllProjectTasks = async (req, res) => {
+exports.getProjectTasks = async (req, res) => {
   try {
     const tasks = await ProjectTask.find();
     res.json(tasks);
