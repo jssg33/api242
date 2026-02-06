@@ -268,64 +268,62 @@ const options = {
         }
       },
 
-      // ---------------- LICENSES ----------------
-      "/licenses": {
-        get: {
-          tags: ["Licenses"],
-          summary: "Get all licenses",
-          responses: {
-            200: {
-              description: "List of licenses",
-              content: {
-                "application/json": {
-                  schema: { type: "array", items: { $ref: "#/components/schemas/License" } }
-                }
-              }
-            }
-          }
+    License: {
+      type: "object",
+      required: [
+        "licenseid",
+        "version",
+        "installdate",
+        "enddate",
+        "customerid",
+        "productid",
+        "description",
+        "releaseyear"
+      ],
+      properties: {
+        licenseid: {
+          type: "string",
+          example: "LIC-001"
         },
-        post: {
-          tags: ["Licenses"],
-          summary: "Create a new license",
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": { schema: { $ref: "#/components/schemas/License" } }
-            }
-          },
-          responses: { 201: { description: "License created" } }
-        }
-      },
+        version: {
+          type: "string",
+          example: "1.0.0"
+        },
+        installdate: {
+          type: "string",
+          example: "2024-01-01"
+        },
+        enddate: {
+          type: "string",
+          example: "2025-01-01"
+        },
+        customerid: {
+          type: "string",
+          example: "CUST-123"
+        },
 
-      "/licenses/{id}": {
-        get: {
-          tags: ["Licenses"],
-          summary: "Get a license by ID",
-          parameters: [{ in: "path", name: "id", required: true, schema: { type: "string" } }],
-          responses: {
-            200: { description: "License found" },
-            404: { description: "Not found" }
-          }
+        // NEW FIELDS
+        productid: {
+          type: "string",
+          example: "PROD-456"
         },
-        put: {
-          tags: ["Licenses"],
-          summary: "Update a license",
-          parameters: [{ in: "path", name: "id", required: true, schema: { type: "string" } }],
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": { schema: { $ref: "#/components/schemas/License" } }
-            }
-          },
-          responses: { 200: { description: "License updated" } }
+        description: {
+          type: "string",
+          example: "Enterprise license for Product X"
         },
-        delete: {
-          tags: ["Licenses"],
-          summary: "Delete a license",
-          parameters: [{ in: "path", name: "id", required: true, schema: { type: "string" } }],
-          responses: { 200: { description: "License deleted" } }
+        releaseyear: {
+          type: "string",
+          example: "2024"
+        },
+
+        createdAt: {
+          type: "string"
+        },
+        updatedAt: {
+          type: "string"
         }
-      },
+      }
+    },
 
       // ---------------- LICENSE LOGS ----------------
       "/licenselogs": {
