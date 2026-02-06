@@ -1,4 +1,4 @@
-const UserContact = require("../models/userContactsModel");
+const UserContact = require("../models/usercontacts");
 
 // CREATE
 exports.createContact = async (req, res) => {
