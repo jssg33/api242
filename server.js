@@ -28,9 +28,11 @@ app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }
 // ROUTES
 // -------------------------
 
-// Users & Accounts (2)
+// Users & Accounts (4)
 app.use("/users", require("./routes/userRoutes"));
 app.use("/usernotices", require("./routes/userNoticeRoutes"));
+app.use("/usercontacts", require("./routes/userContactRoutes"));
+app.use("/userhelp", require("./routes/userHelpRoutes"));
 
 // Companies & Branches (3)
 app.use("/companies", require("./routes/companyRoutes"));
@@ -83,7 +85,7 @@ app.use("/scopes", require("./routes/scopeRoutes"));
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 
 // -------------------------
-// TOTAL ROUTES: 29
+// TOTAL ROUTES: 31
 // -------------------------
 
 
