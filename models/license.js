@@ -7,8 +7,14 @@ const licenseSchema = new mongoose.Schema(
     installdate: { type: String, required: true },
     enddate: { type: String, required: true },
     customerid: { type: String, required: true, trim: true },
+
+    // New fields
+    productid: { type: String, required: true, trim: true },
+    description: { type: String, required: true, trim: true },
+    releaseyear: { type: String, required: true, trim: true },
   },
   { timestamps: true }
 );
 
 module.exports = mongoose.model("License", licenseSchema);
+
