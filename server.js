@@ -30,7 +30,7 @@ app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }
 
 // Users & Accounts (4)
 app.use("/users", require("./routes/userRoutes"));
-app.use("/usernotices", require("./routes/userNoticeRoutes"));
+app.use("/api/notices", require("./routes/userNoticeRoutes"));
 app.use("/usercontacts", require("./routes/userContactRoutes"));
 app.use("/userhelp", require("./routes/userHelpRoutes"));
 
