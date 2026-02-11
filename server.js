@@ -84,12 +84,12 @@ app.use("/cards", require("./routes/cardsRoutes"));
 app.use("/scopes", require("./routes/scopeRoutes")); 
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 
-//ADDING AUTH TO THE CONTROLLER
 // ------------------------------- // Route modules // ------------------------------- 
-const authRoutes = require("./routes/authRoutes"); 
 const userSessionRoutes = require("./routes/UserSessionRoutes"); 
-// ------------------------------- // Mount API routes // ------------------------------- 
 app.use("/api/usersessions", userSessionRoutes); 
+
+//ADDING AUTH TO THE CONTROLLER
+const authRoutes = require("./routes/authRoutes"); 
 app.use("/api/auth", authRoutes); 
 
 
