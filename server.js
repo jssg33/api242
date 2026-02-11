@@ -84,8 +84,18 @@ app.use("/cards", require("./routes/cardsRoutes"));
 app.use("/scopes", require("./routes/scopeRoutes")); 
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 
+//ADDING AUTH TO THE CONTROLLER
+// ------------------------------- // Route modules // ------------------------------- 
+const authRoutes = require("./routes/auth.routes"); 
+const userSessionRoutes = require("./routes/UserSessionRoutes"); 
+// ------------------------------- // Mount API routes // ------------------------------- 
+app.use("/api/auth", authRoutes); 
+app.use("/api/usersessions", userSessionRoutes); 
+
+
+
 // -------------------------
-// TOTAL ROUTES: 31
+// TOTAL ROUTES: 33
 // -------------------------
 
 
