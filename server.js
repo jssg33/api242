@@ -86,7 +86,7 @@ app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 
 // ------------------------------- // Route modules // ------------------------------- 
 const userSessionRoutes = require("./routes/UserSessionRoutes"); 
-app.use("/api/usersessions", userSessionRoutes); 
+app.use("/usersessions", userSessionRoutes); 
 
 //ADDING AUTH TO THE CONTROLLER
 const authRoutes = require("./routes/authRoutes"); 
