@@ -89,8 +89,9 @@ app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 const authRoutes = require("./routes/authRoutes"); 
 const userSessionRoutes = require("./routes/UserSessionRoutes"); 
 // ------------------------------- // Mount API routes // ------------------------------- 
-app.use("/api/auth", authRoutes); 
 app.use("/api/usersessions", userSessionRoutes); 
+app.use("/api/auth", authRoutes); 
+
 
 
 
