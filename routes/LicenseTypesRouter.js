@@ -42,14 +42,10 @@ const LicenseTypesController = require('../controllers/LicenseTypesController');
  *     responses:
  *       200:
  *         description: List of license types
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/LicenseType'
  */
-router.get('/', LicenseTypesController.getAll);
+router.get('/', (req, res, next) => {
+    LicenseTypesController.getAll(req, res, next);
+});
 
 /**
  * @swagger
@@ -57,19 +53,10 @@ router.get('/', LicenseTypesController.getAll);
  *   get:
  *     summary: Get a license type by ID
  *     tags: [LicenseTypes]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *     responses:
- *       200:
- *         description: License type found
- *       404:
- *         description: Not found
  */
-router.get('/:id', LicenseTypesController.getById);
+router.get('/:id', (req, res, next) => {
+    LicenseTypesController.getById(req, res, next);
+});
 
 /**
  * @swagger
@@ -77,17 +64,10 @@ router.get('/:id', LicenseTypesController.getById);
  *   post:
  *     summary: Create a new license type
  *     tags: [LicenseTypes]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/LicenseType'
- *     responses:
- *       201:
- *         description: Created successfully
  */
-router.post('/', LicenseTypesController.create);
+router.post('/', (req, res, next) => {
+    LicenseTypesController.create(req, res, next);
+});
 
 /**
  * @swagger
@@ -95,23 +75,10 @@ router.post('/', LicenseTypesController.create);
  *   put:
  *     summary: Update a license type
  *     tags: [LicenseTypes]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/LicenseType'
- *     responses:
- *       200:
- *         description: Updated successfully
  */
-router.put('/:id', LicenseTypesController.update);
+router.put('/:id', (req, res, next) => {
+    LicenseTypesController.update(req, res, next);
+});
 
 /**
  * @swagger
@@ -119,16 +86,9 @@ router.put('/:id', LicenseTypesController.update);
  *   delete:
  *     summary: Delete a license type
  *     tags: [LicenseTypes]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *     responses:
- *       200:
- *         description: Deleted successfully
  */
-router.delete('/:id', LicenseTypesController.delete);
+router.delete('/:id', (req, res, next) => {
+    LicenseTypesController.delete(req, res, next);
+});
 
 module.exports = router;
