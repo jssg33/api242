@@ -10,7 +10,7 @@ const {
   ResetPasswordRequestProfile
 } = require("../dto/authDto");
 
-const controller = require("../controllers/auth.controller");
+const controller = require("../controllers/authController");
 
 function validate(dtoClass) {
   return (req, res, next) => {
