@@ -53,7 +53,10 @@ const reviewSchema = new mongoose.Schema(
 
     dateVisited: {
       type: String
-    }
+    },
+    userId: {
+      type: String
+    },
   },
   { timestamps: true }
 );
