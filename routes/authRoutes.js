@@ -8,7 +8,7 @@ const {
   ForgotPasswordRequest,
   ResetPasswordRequest,
   ResetPasswordRequestProfile
-} = require("../dto/authDto");
+} = require("../dtos/authDto");
 
 const controller = require("../controllers/authController");
 
