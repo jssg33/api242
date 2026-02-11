@@ -92,8 +92,9 @@ app.use("/usersessions", userSessionRoutes);
 const authRoutes = require("./routes/authRoutes"); 
 app.use("/auth", authRoutes); 
 
-
-
+//LICENSETYPES
+const LicenseTypesRouter = require('./routes/LicenseTypesRouter'); 
+app.use('/api/licensetypes', LicenseTypesRouter);
 
 // -------------------------
 // TOTAL ROUTES: 33
