@@ -150,63 +150,84 @@ const options = {
   }
 },
 
-        License: {
-          type: "object",
-          required: ["licenseid", "version", "installdate", "enddate", "customerid"],
-          properties: {
-            id: { type: "string" },
-            licenseid: { type: "string" },
-            version: { type: "string" },
-            installdate: { type: "string" },
-            enddate: { type: "string" },
-            customerid: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
-        },
-
-        LicenseLog: {
-          type: "object",
-          required: ["licenseid", "accessdate", "userid", "shard", "instanceid", "licensestatus"],
-          properties: {
-            id: { type: "string" },
-            licenseid: { type: "string" },
-            accessdate: { type: "string" },
-            userid: { type: "string" },
-            shard: { type: "string" },
-            instanceid: { type: "string" },
-            licensestatus: {
-              type: "string",
-              enum: ["active", "inactive", "expired", "revoked"]
-            },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
-        },
-
-        DownloadLog: {
-          type: "object",
-          required: ["downloadsource", "date", "userid", "useremail", "referralsource"],
-          properties: {
-            id: { type: "string" },
-            downloadsource: { type: "string" },
-            date: { type: "string" },
-            userid: { type: "string" },
-            useremail: { type: "string" },
-            referralsource: { type: "string" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
+      "/licenses": {
+  "get": {
+    "tags": ["Licenses"],
+    "summary": "Get all licenses",
+    "responses": {
+      "200": {
+        "description": "List of licenses",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/License" }
+            }
           }
         }
       }
+    }
+  },
+  "post": {
+    "tags": ["Licenses"],
+    "summary": "Create a new license",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": { "$ref": "#/components/schemas/License" }
+        }
+      }
     },
+    "responses": { "201": { "description": "License created" } }
+  }
+},
 
-    tags: [
-      { name: "Users", description: "User management" },
-      { name: "Licenses", description: "License management" },
-      { name: "LicenseLogs", description: "License log entries" },
-      { name: "DownloadLogs", description: "Download log entries" }
+"/licenses/{licenseid}": {
+  "get": {
+    "tags": ["Licenses"],
+    "summary": "Get a license by ID",
+    "parameters": [
+      { "in": "path", "name": "licenseid", "required": true, "schema": { "type": "string" } }
     ],
+    "responses": {
+      "200": {
+        "description": "License found",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/License" }
+          }
+        }
+      },
+      "404": { "description": "License not found" }
+    }
+  },
+  "put": {
+    "tags": ["Licenses"],
+    "summary": "Update a license",
+    "parameters": [
+      { "in": "path", "name": "licenseid", "required": true, "schema": { "type": "string" } }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": { "$ref": "#/components/schemas/License" }
+        }
+      }
+    },
+    "responses": { "200": { "description": "License updated" } }
+  },
+  "delete": {
+    "tags": ["Licenses"],
+    "summary": "Delete a license",
+    "parameters": [
+      { "in": "path", "name": "licenseid", "required": true, "schema": { "type": "string" } }
+    ],
+    "responses": { "200": { "description": "License deleted" } }
+  }
+},
+
 
     paths: {
       // ---------------- USERS ----------------
