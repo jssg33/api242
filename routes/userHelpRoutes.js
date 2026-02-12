@@ -67,10 +67,6 @@ const controller = require("../controllers/userHelpController");
  *         ticketstatus:
  *           type: string
  *           example: "Open"
- *         createdAt:
- *           type: string
- *         updatedAt:
- *           type: string
  */
 
 /**
