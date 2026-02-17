@@ -68,7 +68,7 @@ app.use("/invoices", require("./routes/invoiceRoutes"));
 app.use("/invoicelineitems", require("./routes/invoiceLineItemRoutes"));
 app.use("/payments", require("./routes/paymentRoutes"));
 app.use("/refunds", require("./routes/refundRoutes"));
-app.use('/api/testimonials', require('./routes/testimonialsRoutes');
+app.use('/api/testimonials', require('./routes/testimonialsRoutes'));
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
