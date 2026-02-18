@@ -81,9 +81,11 @@ app.use("/reservations", require("./routes/reservationRoutes"));
 // Cards (1)
 app.use("/cards", require("./routes/cardsRoutes"));
 
-// Scopes & Project Tasks (2) 
+// Releases, Scopes & Project Tasks - Software Engineering(3) 
 app.use("/scopes", require("./routes/scopeRoutes")); 
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
+app.use('/api/releases', require('./routes/releaseRoutes'));
+
 
 // ------------------------------- // Route modules // ------------------------------- 
 const userSessionRoutes = require("./routes/UserSessionRoutes"); 
