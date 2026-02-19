@@ -1,4 +1,3 @@
-// routes/releaseRoutes.js
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/releaseController');
@@ -19,6 +18,18 @@ const controller = require('../controllers/releaseController');
  *     responses:
  *       200:
  *         description: List of releases
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Release'
+ */
+router.get('/', controller.getReleases);
+
+/**
+ * @swagger
+ * /api/releases:
  *   post:
  *     summary: Create a new release
  *     tags: [Releases]
@@ -32,7 +43,6 @@ const controller = require('../controllers/releaseController');
  *       201:
  *         description: Release created
  */
-router.get('/', controller.getReleases);
 router.post('/', controller.createRelease);
 
 /**
@@ -45,9 +55,21 @@ router.post('/', controller.createRelease);
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Release found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Release'
+ */
+router.get('/:id', controller.getReleaseById);
+
+/**
+ * @swagger
+ * /api/releases/{id}:
  *   put:
  *     summary: Update a release
  *     tags: [Releases]
@@ -55,6 +77,8 @@ router.post('/', controller.createRelease);
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -64,6 +88,12 @@ router.post('/', controller.createRelease);
  *     responses:
  *       200:
  *         description: Release updated
+ */
+router.put('/:id', controller.updateRelease);
+
+/**
+ * @swagger
+ * /api/releases/{id}:
  *   delete:
  *     summary: Delete a release
  *     tags: [Releases]
@@ -71,12 +101,12 @@ router.post('/', controller.createRelease);
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Release deleted
  */
-router.get('/:id', controller.getReleaseById);
-router.put('/:id', controller.updateRelease);
 router.delete('/:id', controller.deleteRelease);
 
 module.exports = router;
