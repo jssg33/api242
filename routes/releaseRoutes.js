@@ -4,6 +4,49 @@ const controller = require('../controllers/releaseController');
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Release:
+ *       type: object
+ *       required:
+ *         - vendor
+ *         - majorCodeBase
+ *         - majorCodeDescription
+ *         - minorCodeVariant
+ *         - minorCodeDescription
+ *         - releaseDate
+ *         - updates
+ *       properties:
+ *         vendor:
+ *           type: string
+ *           example: "Cisco"
+ *         majorCodeBase:
+ *           type: string
+ *           example: "10"
+ *         majorCodeDescription:
+ *           type: string
+ *           example: "Major platform update"
+ *         minorCodeVariant:
+ *           type: string
+ *           example: "10.2"
+ *         minorCodeDescription:
+ *           type: string
+ *           example: "Security patch"
+ *         releaseDate:
+ *           type: string
+ *           format: date
+ *           example: "2024-01-15"
+ *         updates:
+ *           type: object
+ *           example:
+ *             fixes:
+ *               - "Patched CVE-2024-1234"
+ *             features:
+ *               - "Added new API endpoint"
+ */
+
+/**
+ * @swagger
  * tags:
  *   name: Releases
  *   description: Software release management
@@ -24,12 +67,7 @@ const controller = require('../controllers/releaseController');
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Release'
- */
-router.get('/', controller.getReleases);
-
-/**
- * @swagger
- * /api/releases:
+ *
  *   post:
  *     summary: Create a new release
  *     tags: [Releases]
@@ -43,6 +81,7 @@ router.get('/', controller.getReleases);
  *       201:
  *         description: Release created
  */
+router.get('/', controller.getReleases);
 router.post('/', controller.createRelease);
 
 /**
@@ -64,12 +103,9 @@ router.post('/', controller.createRelease);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Release'
- */
-router.get('/:id', controller.getReleaseById);
-
-/**
- * @swagger
- * /api/releases/{id}:
+ *       404:
+ *         description: Release not found
+ *
  *   put:
  *     summary: Update a release
  *     tags: [Releases]
@@ -88,12 +124,9 @@ router.get('/:id', controller.getReleaseById);
  *     responses:
  *       200:
  *         description: Release updated
- */
-router.put('/:id', controller.updateRelease);
-
-/**
- * @swagger
- * /api/releases/{id}:
+ *       404:
+ *         description: Release not found
+ *
  *   delete:
  *     summary: Delete a release
  *     tags: [Releases]
@@ -106,7 +139,11 @@ router.put('/:id', controller.updateRelease);
  *     responses:
  *       200:
  *         description: Release deleted
+ *       404:
+ *         description: Release not found
  */
+router.get('/:id', controller.getReleaseById);
+router.put('/:id', controller.updateRelease);
 router.delete('/:id', controller.deleteRelease);
 
 module.exports = router;
