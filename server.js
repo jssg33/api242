@@ -46,8 +46,10 @@ app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
 app.use("/licenselogs", require("./routes/licenseLogRoutes"));
 app.use("/userlogs", require("./routes/userLogRoutes"));
 
-// Licensing (1)
+// Licensing (2)
 app.use("/licenses", require("./routes/licenseRoutes"));
+const LicenseTypesRouter = require('./routes/LicenseTypesRouter'); 
+app.use('/api/licensetypes', LicenseTypesRouter);
 
 // Parks (1)
 app.use("/parks", require("./routes/parkRoutes"));
@@ -81,12 +83,14 @@ app.use("/reservations", require("./routes/reservationRoutes"));
 // Cards (1)
 app.use("/cards", require("./routes/cardsRoutes"));
 
-// Releases, Scopes & Project Tasks - Software Engineering(3) 
+// Releases, Scopes & Project Tasks - Software Engineering(4) 
 app.use("/scopes", require("./routes/scopeRoutes")); 
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 app.use('/api/releases', require('./routes/releaseRoutes'));
+const projectRoutes = require("./routes/projects"); 
+app.use("/api/projects", projectRoutes);
 
-
+//SSO(2)
 // ------------------------------- // Route modules // ------------------------------- 
 const userSessionRoutes = require("./routes/UserSessionRoutes"); 
 app.use("/usersessions", userSessionRoutes); 
@@ -95,12 +99,14 @@ app.use("/usersessions", userSessionRoutes);
 const authRoutes = require("./routes/authRoutes"); 
 app.use("/auth", authRoutes); 
 
-//LICENSETYPES
-const LicenseTypesRouter = require('./routes/LicenseTypesRouter'); 
-app.use('/api/licensetypes', LicenseTypesRouter);
+//END USER STUFF - MY STUFF(1)
+const songRoutes = require("./routes/songs"); 
+app.use("/api/songs", songRoutes);
+
+
 
 // -------------------------
-// TOTAL ROUTES: 33
+// TOTAL ROUTES: 37
 // -------------------------
 
 
