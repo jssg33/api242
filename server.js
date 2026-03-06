@@ -33,6 +33,8 @@ app.use("/users", require("./routes/userRoutes"));
 app.use("/api/notices", require("./routes/userNoticeRoutes"));
 app.use("/usercontacts", require("./routes/userContactRoutes"));
 app.use("/userhelp", require("./routes/userHelpRoutes"));
+const userProjectRoutes = require('./routes/UserProjectRoutes');
+app.use('/userprojects', userProjectRoutes);
 
 // Companies & Branches (3)
 app.use("/companies", require("./routes/companyRoutes"));
