@@ -59,6 +59,13 @@ const ProjectSchema = new mongoose.Schema({
         required: false,
         index: true,
         trim: true
+    },
+
+        logo: {
+        type: String,
+        required: false,
+        index: true,
+        trim: true
     }
 });
 
