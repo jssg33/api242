@@ -35,7 +35,7 @@ const ProjectController = require("../controllers/ProjectController");
  *           type: string
  *         companyid:
  *           type: string
- *         logo:
+ *         logoUrl:
  *           type: string
  */
 
