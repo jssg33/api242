@@ -1,3 +1,4 @@
+// routes/projects.js
 const express = require("express");
 const router = express.Router();
 const ProjectController = require("../controllers/ProjectController");
@@ -38,7 +39,7 @@ const ProjectController = require("../controllers/ProjectController");
 
 /**
  * @swagger
- * /projects:
+ * /api/projects:
  *   post:
  *     summary: Create a new project
  *     tags: [Projects]
@@ -52,11 +53,11 @@ const ProjectController = require("../controllers/ProjectController");
  *       201:
  *         description: Project created
  */
-router.post("/projects", ProjectController.createProject);
+router.post("/", ProjectController.createProject);
 
 /**
  * @swagger
- * /projects:
+ * /api/projects:
  *   get:
  *     summary: Get all projects
  *     tags: [Projects]
@@ -64,11 +65,11 @@ router.post("/projects", ProjectController.createProject);
  *       200:
  *         description: List of projects
  */
-router.get("/projects", ProjectController.getAllProjects);
+router.get("/", ProjectController.getAllProjects);
 
 /**
  * @swagger
- * /projects/user/{userid}:
+ * /api/projects/user/{userid}:
  *   get:
  *     summary: Get projects by user ID
  *     tags: [Projects]
@@ -82,11 +83,11 @@ router.get("/projects", ProjectController.getAllProjects);
  *       200:
  *         description: List of projects for the user
  */
-router.get("/projects/user/:userid", ProjectController.getProjectsByUser);
+router.get("/user/:userid", ProjectController.getProjectsByUser);
 
 /**
  * @swagger
- * /projects/instance/{instanceid}:
+ * /api/projects/instance/{instanceid}:
  *   get:
  *     summary: Get projects by instance ID
  *     tags: [Projects]
@@ -100,11 +101,11 @@ router.get("/projects/user/:userid", ProjectController.getProjectsByUser);
  *       200:
  *         description: List of projects for the instance
  */
-router.get("/projects/instance/:instanceid", ProjectController.getProjectsByInstance);
+router.get("/instance/:instanceid", ProjectController.getProjectsByInstance);
 
 /**
  * @swagger
- * /projects/{id}:
+ * /api/projects/{id}:
  *   get:
  *     summary: Get a project by ID
  *     tags: [Projects]
@@ -118,11 +119,11 @@ router.get("/projects/instance/:instanceid", ProjectController.getProjectsByInst
  *       200:
  *         description: Project data
  */
-router.get("/projects/:id", ProjectController.getProjectById);
+router.get("/:id", ProjectController.getProjectById);
 
 /**
  * @swagger
- * /projects/{id}:
+ * /api/projects/{id}:
  *   put:
  *     summary: Update a project
  *     tags: [Projects]
@@ -142,11 +143,11 @@ router.get("/projects/:id", ProjectController.getProjectById);
  *       200:
  *         description: Updated project
  */
-router.put("/projects/:id", ProjectController.updateProject);
+router.put("/:id", ProjectController.updateProject);
 
 /**
  * @swagger
- * /projects/{id}:
+ * /api/projects/{id}:
  *   delete:
  *     summary: Delete a project
  *     tags: [Projects]
@@ -160,6 +161,6 @@ router.put("/projects/:id", ProjectController.updateProject);
  *       200:
  *         description: Project deleted
  */
-router.delete("/projects/:id", ProjectController.deleteProject);
+router.delete("/:id", ProjectController.deleteProject);
 
 module.exports = router;
