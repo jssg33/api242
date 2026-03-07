@@ -61,7 +61,7 @@ const ProjectSchema = new mongoose.Schema({
         trim: true
     },
 
-        logo: {
+        logoUrl: {
         type: String,
         required: false,
         index: true,
