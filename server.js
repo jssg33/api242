@@ -90,7 +90,7 @@ app.use("/scopes", require("./routes/scopeRoutes"));
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 app.use('/api/releases', require('./routes/releaseRoutes'));
 const projectRoutes = require("./routes/projects"); 
-app.use("/projects", projectRoutes);
+app.use("/api/projects", projectRoutes);
 
 //SSO(2)
 // ------------------------------- // Route modules // ------------------------------- 
