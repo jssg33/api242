@@ -50,7 +50,7 @@ const controller = require("../controllers/projectMilestoneController");
 
 /**
  * @swagger
- * /api/milestones:
+ * /projectmilestones:
  *   post:
  *     summary: Create a new milestone
  *     tags: [ProjectMilestones]
@@ -68,7 +68,7 @@ router.post("/", controller.createMilestone);
 
 /**
  * @swagger
- * /api/milestones:
+ * /projectmilestones:
  *   get:
  *     summary: Get all milestones
  *     tags: [ProjectMilestones]
@@ -80,7 +80,7 @@ router.get("/", controller.getAllMilestones);
 
 /**
  * @swagger
- * /api/milestones/{id}:
+ * /projectmilestones/{id}:
  *   get:
  *     summary: Get milestone by ID
  *     tags: [ProjectMilestones]
@@ -100,7 +100,7 @@ router.get("/:id", controller.getMilestoneById);
 
 /**
  * @swagger
- * /api/milestones/{id}:
+ * /projectmilestones/{id}:
  *   put:
  *     summary: Update a milestone
  *     tags: [ProjectMilestones]
@@ -124,7 +124,7 @@ router.put("/:id", controller.updateMilestone);
 
 /**
  * @swagger
- * /api/milestones/{id}:
+ * /projectmilestones/{id}:
  *   delete:
  *     summary: Delete a milestone
  *     tags: [ProjectMilestones]
@@ -142,7 +142,7 @@ router.delete("/:id", controller.deleteMilestone);
 
 /**
  * @swagger
- * /api/milestones/project/{projectId}:
+ * /projectmilestones/project/{projectId}:
  *   get:
  *     summary: Get milestones for a project
  *     tags: [ProjectMilestones]
@@ -160,7 +160,7 @@ router.get("/project/:projectId", controller.getMilestonesByProject);
 
 /**
  * @swagger
- * /api/milestones/user/{userId}:
+ * /projectmilestones/user/{userId}:
  *   get:
  *     summary: Get milestones assigned to a user
  *     tags: [ProjectMilestones]
