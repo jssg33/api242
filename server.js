@@ -94,6 +94,9 @@ app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 app.use('/api/releases', require('./routes/releaseRoutes'));
 const projectRoutes = require("./routes/projects"); 
 app.use("/api/projects", projectRoutes);
+const projectMilestoneRoutes = require("./routes/projectMilestoneRoutes");
+app.use("/projectmilestones", projectMilestoneRoutes);
+
 
 //SSO(2)
 // ------------------------------- // Route modules // ------------------------------- 
