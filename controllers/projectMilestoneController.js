@@ -1,5 +1,5 @@
 // controllers/projectMilestoneController.js
-const { ProjectMilestone, Project, User } = require("../models");
+const { ProjectMilestone, Project, User } = require("../models/ProjectMilestones.js");
 
 exports.createMilestone = async (req, res) => {
   try {
