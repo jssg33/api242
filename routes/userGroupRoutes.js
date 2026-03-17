@@ -21,13 +21,10 @@ const userGroupController = require("../controllers/userGroupController");
  *       properties:
  *         id:
  *           type: integer
- *           description: Auto-generated ID
  *         userId:
  *           type: integer
- *           description: ID of the user
  *         groupId:
  *           type: integer
- *           description: ID of the group
  *         role:
  *           type: string
  *           default: member
@@ -44,7 +41,7 @@ const userGroupController = require("../controllers/userGroupController");
 
 /**
  * @swagger
- * /api/user-groups:
+ * /usergroups:
  *   post:
  *     summary: Create a new UserGroup entry
  *     tags: [UserGroups]
@@ -57,28 +54,24 @@ const userGroupController = require("../controllers/userGroupController");
  *     responses:
  *       201:
  *         description: UserGroup created successfully
- *       500:
- *         description: Server error
  */
 router.post("/", userGroupController.createUserGroup);
 
 /**
  * @swagger
- * /api/user-groups:
+ * /usergroups:
  *   get:
  *     summary: Get all UserGroup entries
  *     tags: [UserGroups]
  *     responses:
  *       200:
  *         description: List of UserGroups
- *       500:
- *         description: Server error
  */
 router.get("/", userGroupController.getAllUserGroups);
 
 /**
  * @swagger
- * /api/user-groups/{id}:
+ * /usergroups/{id}:
  *   get:
  *     summary: Get a UserGroup by ID
  *     tags: [UserGroups]
@@ -93,14 +86,12 @@ router.get("/", userGroupController.getAllUserGroups);
  *         description: UserGroup found
  *       404:
  *         description: UserGroup not found
- *       500:
- *         description: Server error
  */
 router.get("/:id", userGroupController.getUserGroupById);
 
 /**
  * @swagger
- * /api/user-groups/{id}:
+ * /usergroups/{id}:
  *   put:
  *     summary: Update a UserGroup entry
  *     tags: [UserGroups]
@@ -119,16 +110,12 @@ router.get("/:id", userGroupController.getUserGroupById);
  *     responses:
  *       200:
  *         description: UserGroup updated
- *       404:
- *         description: UserGroup not found
- *       500:
- *         description: Server error
  */
 router.put("/:id", userGroupController.updateUserGroup);
 
 /**
  * @swagger
- * /api/user-groups/{id}:
+ * /usergroups/{id}:
  *   delete:
  *     summary: Delete a UserGroup entry
  *     tags: [UserGroups]
@@ -141,16 +128,12 @@ router.put("/:id", userGroupController.updateUserGroup);
  *     responses:
  *       200:
  *         description: UserGroup deleted
- *       404:
- *         description: UserGroup not found
- *       500:
- *         description: Server error
  */
 router.delete("/:id", userGroupController.deleteUserGroup);
 
 /**
  * @swagger
- * /api/user-groups/user/{userId}:
+ * /usergroups/user/{userId}:
  *   get:
  *     summary: Get all groups for a specific user
  *     tags: [UserGroups]
@@ -163,14 +146,12 @@ router.delete("/:id", userGroupController.deleteUserGroup);
  *     responses:
  *       200:
  *         description: List of groups for the user
- *       500:
- *         description: Server error
  */
 router.get("/user/:userId", userGroupController.getGroupsByUser);
 
 /**
  * @swagger
- * /api/user-groups/group/{groupId}:
+ * /usergroups/group/{groupId}:
  *   get:
  *     summary: Get all users in a specific group
  *     tags: [UserGroups]
@@ -183,8 +164,6 @@ router.get("/user/:userId", userGroupController.getGroupsByUser);
  *     responses:
  *       200:
  *         description: List of users in the group
- *       500:
- *         description: Server error
  */
 router.get("/group/:groupId", userGroupController.getUsersByGroup);
 
