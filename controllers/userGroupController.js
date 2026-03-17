@@ -1,5 +1,5 @@
 // controllers/userGroupController.js
-const { UserGroup, User, Group } = require("../models");
+const { UserGroup, User, Group } = require("../models/UserGroup");
 
 // Create a new UserGroup entry
 exports.createUserGroup = async (req, res) => {
