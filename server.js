@@ -36,7 +36,8 @@ app.use("/userhelp", require("./routes/userHelpRoutes"));
 const userProjectRoutes = require('./routes/UserProjectRoutes');
 app.use('/userprojects', userProjectRoutes);
 const userGroupRoutes = require("./routes/userGroupRoutes");
-app.use("/api/user-groups", userGroupRoutes);
+app.use("/usergroups", userGroupRoutes);
+
 
 
 // Companies & Branches (3)
