@@ -11,12 +11,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "*",
+    origin: ["*", "https://jssg33.github.io"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
-);
 
+);
 // Swagger
 const swaggerUi = require("swagger-ui-express"); 
 const swaggerSpec = require("./swagger"); 
