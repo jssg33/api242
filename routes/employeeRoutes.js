@@ -1,5 +1,5 @@
-import express from "express";
-import Employee from "../models/Employee.js";
+const express = require("express");
+const Employee = require("../models/Employee.js");
 
 const router = express.Router();
 
@@ -41,16 +41,6 @@ const router = express.Router();
  *         status: active
  */
 
-/**
- * @swagger
- * /api/employees:
- *   get:
- *     summary: Get all employees
- *     tags: [Employees]
- *     responses:
- *       200:
- *         description: List of employees
- */
 router.get("/", async (req, res) => {
   try {
     const employees = await Employee.find();
@@ -60,24 +50,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * /api/employees/{id}:
- *   get:
- *     summary: Get employee by ID
- *     tags: [Employees]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Employee data
- *       404:
- *         description: Employee not found
- */
 router.get("/:id", async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
@@ -88,22 +60,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * /api/employees:
- *   post:
- *     summary: Create a new employee
- *     tags: [Employees]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Employee'
- *     responses:
- *       201:
- *         description: Employee created
- */
 router.post("/", async (req, res) => {
   try {
     const employee = await Employee.create(req.body);
@@ -113,30 +69,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * /api/employees/{id}:
- *   put:
- *     summary: Update an employee
- *     tags: [Employees]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Employee'
- *     responses:
- *       200:
- *         description: Employee updated
- *       404:
- *         description: Employee not found
- */
 router.put("/:id", async (req, res) => {
   try {
     const employee = await Employee.findByIdAndUpdate(
@@ -151,24 +83,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * /api/employees/{id}:
- *   delete:
- *     summary: Delete an employee
- *     tags: [Employees]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Employee deleted
- *       404:
- *         description: Employee not found
- */
 router.delete("/:id", async (req, res) => {
   try {
     const employee = await Employee.findByIdAndDelete(req.params.id);
@@ -179,4 +93,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
