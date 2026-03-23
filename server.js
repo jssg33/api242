@@ -29,7 +29,7 @@ app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }
 // ROUTES
 // -------------------------
 
-// Users & Accounts (4)
+// Users & Accounts (6)
 app.use("/users", require("./routes/userRoutes"));
 app.use("/api/notices", require("./routes/userNoticeRoutes"));
 app.use("/usercontacts", require("./routes/userContactRoutes"));
@@ -41,10 +41,15 @@ app.use("/usergroups", userGroupRoutes);
 
 
 
-// Companies & Branches (3)
+// Companies & Branches (5)
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
+import employeeRoutes from "./routes/employeeRoutes.js";
+import managerRoutes from "./routes/managerRoutes.js";
+app.use("/api/employees", employeeRoutes);
+app.use("/api/managers", managerRoutes);
+
 
 // Logging & Security (5)
 app.use("/api/apilogs", require("./routes/apiLogRoutes"));
@@ -90,7 +95,7 @@ app.use("/reservations", require("./routes/reservationRoutes"));
 // Cards (1)
 app.use("/cards", require("./routes/cardsRoutes"));
 
-// Releases, Scopes & Project Tasks - Software Engineering(4) 
+// Releases, Scopes & Project Tasks - Software Engineering(5) 
 app.use("/scopes", require("./routes/scopeRoutes")); 
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
 app.use('/api/releases', require('./routes/releaseRoutes'));
@@ -109,6 +114,7 @@ app.use("/usersessions", userSessionRoutes);
 const authRoutes = require("./routes/authRoutes"); 
 app.use("/auth", authRoutes); 
 
+//OTHER(1)
 //END USER STUFF - MY STUFF(1)
 const songRoutes = require("./routes/songs"); 
 app.use("/api/songs", songRoutes);
