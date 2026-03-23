@@ -5,7 +5,7 @@ const {
   createManager,
   updateManager,
   deleteManager
-} = require("../controllers/Manager.js");
+} = require("../controllers/managerController.js");
 
 const router = express.Router();
 
