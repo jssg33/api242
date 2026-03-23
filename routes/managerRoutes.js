@@ -1,5 +1,5 @@
-import express from "express";
-import Manager from "../models/Manager.js";
+const express = require("express");
+const Manager = require("../models/Manager.js");
 
 const router = express.Router();
 
@@ -123,100 +123,10 @@ const deleteManager = async (req, res) => {
    ROUTES + SWAGGER
 -------------------------- */
 
-/**
- * @swagger
- * /api/managers:
- *   get:
- *     summary: Get all managers
- *     tags: [Managers]
- *     responses:
- *       200:
- *         description: List of managers
- */
 router.get("/", getManagers);
-
-/**
- * @swagger
- * /api/managers/{id}:
- *   get:
- *     summary: Get manager by ID
- *     tags: [Managers]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Manager data
- *       404:
- *         description: Manager not found
- */
 router.get("/:id", getManagerById);
-
-/**
- * @swagger
- * /api/managers:
- *   post:
- *     summary: Create a new manager
- *     tags: [Managers]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Manager'
- *     responses:
- *       201:
- *         description: Manager created
- */
 router.post("/", createManager);
-
-/**
- * @swagger
- * /api/managers/{id}:
- *   put:
- *     summary: Update a manager
- *     tags: [Managers]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Manager'
- *     responses:
- *       200:
- *         description: Manager updated
- *       404:
- *         description: Manager not found
- */
 router.put("/:id", updateManager);
-
-/**
- * @swagger
- * /api/managers/{id}:
- *   delete:
- *     summary: Delete a manager
- *     tags: [Managers]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Manager deleted
- *       404:
- *         description: Manager not found
- */
 router.delete("/:id", deleteManager);
 
-export default router;
+module.exports = router;
