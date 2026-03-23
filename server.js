@@ -45,10 +45,8 @@ app.use("/usergroups", userGroupRoutes);
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
-import employeeRoutes from "./routes/employeeRoutes.js";
-import managerRoutes from "./routes/managerRoutes.js";
-app.use("/api/employees", employeeRoutes);
-app.use("/api/managers", managerRoutes);
+app.use("/employees", require("./routes/employeeRoutes"));
+app.use("/managers", require("./routes/managerRoutes"));
 
 
 // Logging & Security (5)
