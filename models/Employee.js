@@ -1,98 +1,66 @@
-import mongoose from "mongoose";
+const Employee = require("../models/Employee.js");
 
-const employeeSchema = new mongoose.Schema(
-  {
-    id: { type: Number, default: 0 },
-    userid: { type: Number, default: 0 },
-    useridstring: { type: String },
-    uidstring: { type: String },
+// GET all employees
+const getEmployees = async (req, res) => {
+  try {
+    const employees = await Employee.find();
+    res.json(employees);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    firstname: { type: String },
-    lastname: { type: String },
-    fullname: { type: String },
-    displayname: { type: String },
-    username: { type: String },
+// GET employee by ID
+const getEmployeeById = async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.params.id);
+    if (!employee) return res.status(404).json({ message: "Employee not found" });
+    res.json(employee);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    pronoun: { type: String },
-    maritalstatus: { type: String },
+// CREATE employee
+const createEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.create(req.body);
+    res.status(201).json(employee);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-    email: { type: String, required: true },
-    phone: { type: String },
-    cellphone: { type: String },
-    sms: { type: Number, default: 0 },
-    fax: { type: String },
-    btnphone: { type: String },
+// UPDATE employee
+const updateEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!employee) return res.status(404).json({ message: "Employee not found" });
+    res.json(employee);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-    dateOfBirth: { type: String },
+// DELETE employee
+const deleteEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.findByIdAndDelete(req.params.id);
+    if (!employee) return res.status(404).json({ message: "Employee not found" });
+    res.json({ message: "Employee deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    address1: { type: String },
-    address2: { type: String },
-    city: { type: String },
-    state: { type: String },
-    postalzip: { type: String },
-    country: { type: String },
-
-    password: { type: String },
-    plainpassword: { type: String },
-    hashedpassword: { type: String },
-    passwordtype: { type: Number, default: 0 },
-
-    resettoken: { type: String },
-    resettokenexpiration: { type: Date },
-
-    usertwofactorenabled: { type: Boolean, default: false },
-    usertwofactortype: { type: String },
-    usertwofactorkeysmsdestination: { type: String },
-    twofactorkeyemaildestination: { type: String },
-    twofactorprovider: { type: String },
-    twofactorprovidertoken: { type: String },
-    twofactorproviderauthstring: { type: String },
-
-    employee: { type: Boolean, default: true },
-    employeeid: { type: String },
-
-    buid: { type: Number, default: 0 },
-    managerid: { type: Number, default: 0 },
-    regionid: { type: Number, default: 0 },
-
-    microsoftid: { type: String },
-    ncrid: { type: String },
-    oracleid: { type: String },
-    azureid: { type: String },
-
-    companyId: { type: String },
-    companyid: { type: String },
-    branchId: { type: String },
-    branchid: { type: Number, default: 0 },
-
-    role: { type: String, default: "user" },
-    corporateuser: { type: String, default: "False" },
-    status: { type: String, default: "active" },
-
-    university: { type: String },
-    university1: { type: String },
-    university2: { type: String },
-
-    linkedinurl: { type: String },
-    instagramurl: { type: String },
-    vimeourl: { type: String },
-    facebookurl: { type: String },
-    googleurl: { type: String },
-
-    jid: { type: Number, default: 0 },
-    btn: { type: String },
-
-    iscertified: { type: Boolean, default: false },
-
-    activepictureurl: { type: String },
-
-    defaultinstanceid: { type: String },
-    defaultshardid: { type: String },
-
-    cartMasterIndex: { type: Number, default: 0 },
-    userProfileIndex: { type: Number, default: 0 }
-  },
-  { timestamps: true }
-);
-
-export default mongoose.model("Employee", employeeSchema);
+module.exports = {
+  getEmployees,
+  getEmployeeById,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee
+};
