@@ -1,7 +1,7 @@
-import Manager from "../models/Manager.js";
+const Manager = require("../models/Manager.js");
 
 // GET all managers
-export const getManagers = async (req, res) => {
+const getManagers = async (req, res) => {
   try {
     const managers = await Manager.find()
       .populate("manager")
@@ -16,7 +16,7 @@ export const getManagers = async (req, res) => {
 };
 
 // GET manager by ID
-export const getManagerById = async (req, res) => {
+const getManagerById = async (req, res) => {
   try {
     const manager = await Manager.findById(req.params.id)
       .populate("manager")
@@ -35,7 +35,7 @@ export const getManagerById = async (req, res) => {
 };
 
 // CREATE manager
-export const createManager = async (req, res) => {
+const createManager = async (req, res) => {
   try {
     const manager = await Manager.create(req.body);
     res.status(201).json(manager);
@@ -45,7 +45,7 @@ export const createManager = async (req, res) => {
 };
 
 // UPDATE manager
-export const updateManager = async (req, res) => {
+const updateManager = async (req, res) => {
   try {
     const manager = await Manager.findByIdAndUpdate(
       req.params.id,
@@ -64,7 +64,7 @@ export const updateManager = async (req, res) => {
 };
 
 // DELETE manager
-export const deleteManager = async (req, res) => {
+const deleteManager = async (req, res) => {
   try {
     const manager = await Manager.findByIdAndDelete(req.params.id);
 
@@ -76,4 +76,12 @@ export const deleteManager = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+module.exports = {
+  getManagers,
+  getManagerById,
+  createManager,
+  updateManager,
+  deleteManager
 };
