@@ -11,10 +11,14 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: ["*", "https://jssg33.github.io", "https://react242-ho2o.onrender.com"],
+    origin: [
+      "https://jssg33.github.io",
+      "https://react242-ho2o.onrender.com"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
   })
+);
 
 );
 // Swagger
