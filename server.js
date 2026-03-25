@@ -19,9 +19,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
-
-
-);
 // Swagger
 const swaggerUi = require("swagger-ui-express"); 
 const swaggerSpec = require("./swagger"); 
