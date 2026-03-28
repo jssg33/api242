@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
+
 app.use(
   cors({
     origin: [
@@ -27,38 +28,14 @@ app.use(
     credentials: true
   })
 );
-const express = require("express");
-const mongoose = require("mongoose");
-const morgan = require("morgan");
-const cors = require("cors");
 
-
-const app = express();
-
-// Middleware
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(
-  cors({
-    origin: [
-      "https://jssg33.github.io",
-      "https://react242-ho2o.onrender.com",
-	  "https://figmamanagerui.onrender.com/",
-	  "https://licenses.greenvilleassociates.com/",
-	  "figma.site",
-	  "figma.com"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
 // Swagger
 const swaggerUi = require("swagger-ui-express"); 
 const swaggerSpec = require("./swagger"); 
 const basicAuth = require("express-basic-auth"); 
 //PASSWORD PROTECT SWAGGER
 app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }), swaggerUi.serve, swaggerUi.setup(swaggerSpec) );
-
+app.options("*", cors());
 // -------------------------
 // ROUTES
 // -------------------------
