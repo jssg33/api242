@@ -1,9 +1,21 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const cors = require("cors");
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(morgan("dev"));
+
 app.use(
   cors({
     origin: [
       "https://jssg33.github.io",
       "https://react242-ho2o.onrender.com",
       "http://react242-ho2o.onrender.com",
+      "http://figmamanagerui.onrender.com",
       "https://figmamanagerui.onrender.com",
       "https://licenses.greenvilleassociates.com",
       "https://figma.site",
