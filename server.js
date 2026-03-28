@@ -13,7 +13,9 @@ app.use(
   cors({
     origin: [
       "https://jssg33.github.io",
-      "https://react242-ho2o.onrender.com"
+      "https://react242-ho2o.onrender.com",
+	  "https://figmamanagerui.onrender.com/",
+	  "https://licenses.greenvilleassociates.com/"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
