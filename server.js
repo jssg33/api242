@@ -16,7 +16,8 @@ app.use(
       "https://react242-ho2o.onrender.com",
 	  "https://figmamanagerui.onrender.com/",
 	  "https://licenses.greenvilleassociates.com/",
-	  "*.figma.site"
+	  "figma.site",
+	  "figma.com"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
