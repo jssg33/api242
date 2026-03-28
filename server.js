@@ -29,13 +29,25 @@ app.use(
   })
 );
 
+// 🔥 EXPRESS 5 SAFE — UNIVERSAL PREFLIGHT HANDLER
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+
+
 // Swagger
 const swaggerUi = require("swagger-ui-express"); 
 const swaggerSpec = require("./swagger"); 
 const basicAuth = require("express-basic-auth"); 
 //PASSWORD PROTECT SWAGGER
 app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }), swaggerUi.serve, swaggerUi.setup(swaggerSpec) );
-app.options("/**", cors());
 // -------------------------
 // ROUTES
 // -------------------------
