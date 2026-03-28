@@ -1,3 +1,20 @@
+app.use(
+  cors({
+    origin: [
+      "https://jssg33.github.io",
+      "https://react242-ho2o.onrender.com",
+      "http://react242-ho2o.onrender.com",
+      "https://figmamanagerui.onrender.com",
+      "https://licenses.greenvilleassociates.com",
+      "https://figma.site",
+      "https://figma.com",
+      "https://www.figma.com"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+  })
+);
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
