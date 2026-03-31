@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const SouthboundController = require("../controllers/SouthboundController");
+const SouthboundController = require("../controllers/southboundController");
 
 /**
  * @swagger
