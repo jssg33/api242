@@ -93,6 +93,8 @@ app.use("/api/gcparks", require("./routes/gcParksRoutes")); // lowercase alias
 app.use("/api/CGCART", require("./routes/cgCartRoutes"));
 const northboundRoutes = require("./routes/northbound");
 app.use("/", northboundRoutes);
+const southboundRoutes = require("./routes/southbound");
+app.use("/", southboundRoutes);
 
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
