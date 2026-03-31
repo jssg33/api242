@@ -1,6 +1,6 @@
-const Product = require("../models/Product");
+const Product = require("../models/product");
 const Park = require("../models/Park");
-const Review = require("../models/Review"); // park reviews
+const Review = require("../models/review"); // park reviews
 const ProductReview = require("../models/ProductReview"); // product reviews
 
 exports.getNorthbound = async (req, res) => {
