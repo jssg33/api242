@@ -87,10 +87,12 @@ app.use('/api/licensetypes', LicenseTypesRouter);
 // Parks (1)
 app.use("/parks", require("./routes/parkRoutes"));
 
-// DTOs (2)
+// DTOs (4)
 app.use("/api/GCPARKS", require("./routes/gcParksRoutes"));
 app.use("/api/gcparks", require("./routes/gcParksRoutes")); // lowercase alias
 app.use("/api/CGCART", require("./routes/cgCartRoutes"));
+const northboundRoutes = require("./routes/northbound");
+app.use("/", northboundRoutes);
 
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
