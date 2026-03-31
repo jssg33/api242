@@ -95,7 +95,7 @@ app.use("/api/CGCART", require("./routes/cgCartRoutes"));
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
 
-// Commerce / Sales (7)
+// Commerce / Sales (8)
 app.use("/products", require("./routes/productRoutes"));
 app.use("/reviews", require("./routes/reviewRoutes"));
 app.use("/salescatalogue", require("./routes/salesCatalogueRoutes"));
@@ -145,7 +145,7 @@ app.use("/api/songs", songRoutes);
 
 
 // -------------------------
-// TOTAL ROUTES: 37
+// TOTAL ROUTES: 40 (With Northbound and Southbound DTOS)
 // -------------------------
 
 
