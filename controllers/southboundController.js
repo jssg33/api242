@@ -3,16 +3,18 @@ const path = require("path");
 
 const Payment = require("../models/paymentModel");
 const CreditCard = require("../models/cards");
-const SalesOrder = require("../models/invoiceModel");
+const Invoice = require("../models/invoiceModel");
+const InvoiceLineItem = require("../models/invoiceLineItemModel");
 const Reservation = require("../models/reservationModel");
 
 exports.processSouthboundCart = async (req, res) => {
-  const { payments, cards, salesorders, reservations } = req.body;
+  const { payments, cards, invoices, invoiceLineItems, reservations } = req.body;
 
   const result = {
     payments: [],
     cards: [],
-    salesorders: [],
+    invoices: [],
+    invoiceLineItems: [],
     reservations: [],
     errors: []
   };
@@ -55,18 +57,29 @@ exports.processSouthboundCart = async (req, res) => {
   }
 
   //
-  // 4. SAVE SALES ORDERS
+  // 4. SAVE INVOICES (Sales Order Headers)
   //
   try {
-    if (salesorders?.length > 0) {
-      result.salesorders = await SalesOrder.insertMany(salesorders);
+    if (invoices?.length > 0) {
+      result.invoices = await Invoice.insertMany(invoices);
     }
   } catch (err) {
-    result.errors.push({ section: "salesorders", error: err.message });
+    result.errors.push({ section: "invoices", error: err.message });
   }
 
   //
-  // 5. SAVE RESERVATIONS
+  // 5. SAVE INVOICE LINE ITEMS
+  //
+  try {
+    if (invoiceLineItems?.length > 0) {
+      result.invoiceLineItems = await InvoiceLineItem.insertMany(invoiceLineItems);
+    }
+  } catch (err) {
+    result.errors.push({ section: "invoiceLineItems", error: err.message });
+  }
+
+  //
+  // 6. SAVE RESERVATIONS
   //
   try {
     if (reservations?.length > 0) {
@@ -77,7 +90,7 @@ exports.processSouthboundCart = async (req, res) => {
   }
 
   //
-  // 6. RETURN UNIFIED RESPONSE
+  // 7. RETURN UNIFIED RESPONSE
   //
   return res.status(200).json({
     Southbound: result
