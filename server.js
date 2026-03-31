@@ -104,6 +104,8 @@ app.use("/invoicelineitems", require("./routes/invoiceLineItemRoutes"));
 app.use("/payments", require("./routes/paymentRoutes"));
 app.use("/refunds", require("./routes/refundRoutes"));
 app.use('/api/testimonials', require('./routes/testimonialsRoutes'));
+const productReviewRoutes = require("./routes/ProductReviewRoutes");
+app.use("/", productReviewRoutes);
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
