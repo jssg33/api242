@@ -11,6 +11,39 @@ const ProductReviewController = require("../controllers/ProductReviewController"
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     ProductReview:
+ *       type: object
+ *       required:
+ *         - uid
+ *         - productId
+ *         - rating
+ *         - review
+ *       properties:
+ *         uid:
+ *           type: string
+ *         productId:
+ *           type: string
+ *         rating:
+ *           type: number
+ *         title:
+ *           type: string
+ *         review:
+ *           type: string
+ *         verifiedPurchase:
+ *           type: boolean
+ *       example:
+ *         uid: "user123"
+ *         productId: "65f1a9c2e4b8c1a9d3f1b123"
+ *         rating: 5
+ *         title: "Amazing product"
+ *         review: "This was exactly what I needed"
+ *         verifiedPurchase: true
+ */
+
+/**
+ * @swagger
  * /productreviews:
  *   get:
  *     summary: Get all product reviews
@@ -18,6 +51,12 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  *     responses:
  *       200:
  *         description: List of product reviews
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ProductReview'
  */
 router.get("/productreviews", ProductReviewController.getAllProductReviews);
 
@@ -31,9 +70,15 @@ router.get("/productreviews", ProductReviewController.getAllProductReviews);
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Product review found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductReview'
  *       404:
  *         description: Review not found
  */
@@ -47,9 +92,17 @@ router.get("/productreviews/:id", ProductReviewController.getProductReviewById);
  *     tags: [ProductReviews]
  *     requestBody:
  *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductReview'
  *     responses:
  *       201:
  *         description: Review created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductReview'
  */
 router.post("/productreviews", ProductReviewController.createProductReview);
 
@@ -63,6 +116,14 @@ router.post("/productreviews", ProductReviewController.createProductReview);
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductReview'
  *     responses:
  *       200:
  *         description: Review updated
@@ -81,6 +142,8 @@ router.put("/productreviews/:id", ProductReviewController.updateProductReview);
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Review deleted
