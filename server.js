@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 const swaggerUi = require("swagger-ui-express"); 
 const swaggerSpec = require("./swagger"); 
 const basicAuth = require("express-basic-auth"); 
-//PASSWORD PROTECT SWAGGER
+//PASSWORD PROTECT SWAGGER AND SORT IT
 app.use(
   "/swagger",
   basicAuth({ users: { admin: "spirit" }, challenge: true }),
