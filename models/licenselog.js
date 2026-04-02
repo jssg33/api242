@@ -5,6 +5,7 @@ const licenseLogSchema = new mongoose.Schema(
     licenseid: { type: String, required: true, trim: true },
     accessdate: { type: String, required: true },
     userid: { type: String, required: true, trim: true },
+    managerid: { type: String, required: false, trim: true },
     groupid: { type: String, required: false, trim: true },
     companyid: { type: String, required: false, trim: true },
     shard: { type: String, required: true },
