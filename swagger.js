@@ -146,25 +146,6 @@ const options = {
           }
         },
 
-        LicenseLog: {
-          type: "object",
-          required: ["licenseid", "accessdate", "userid", "shard", "instanceid", "licensestatus"],
-          properties: {
-            id: { type: "string" },
-            licenseid: { type: "string" },
-            accessdate: { type: "string" },
-            userid: { type: "string" },
-            shard: { type: "string" },
-            instanceid: { type: "string" },
-            licensestatus: {
-              type: "string",
-              enum: ["active", "inactive", "expired", "revoked"]
-            },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
-        },
-
         DownloadLog: {
           type: "object",
           required: ["downloadsource", "date", "userid", "useremail", "referralsource"],
@@ -322,77 +303,6 @@ const options = {
             { in: "path", name: "id", required: true, schema: { type: "string" } }
           ],
           responses: { 200: { description: "License deleted" } }
-        }
-      },
-
-      "/licenselogs": {
-        get: {
-          tags: ["LicenseLogs"],
-          summary: "Get all license logs",
-          responses: {
-            200: {
-              description: "List of license logs",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "array",
-                    items: { $ref: "#/components/schemas/LicenseLog" }
-                  }
-                }
-              }
-            }
-          }
-        },
-        post: {
-          tags: ["LicenseLogs"],
-          summary: "Create a license log entry",
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": {
-                schema: { $ref: "#/components/schemas/LicenseLog" }
-              }
-            }
-          },
-          responses: { 201: { description: "License log created" } }
-        }
-      },
-
-      "/licenselogs/{id}": {
-        get: {
-          tags: ["LicenseLogs"],
-          summary: "Get a license log by ID",
-          parameters: [
-            { in: "path", name: "id", required: true, schema: { type: "string" } }
-          ],
-          responses: {
-            200: { description: "License log found" },
-            404: { description: "Not found" }
-          }
-        },
-        put: {
-          tags: ["LicenseLogs"],
-          summary: "Update a license log",
-          parameters: [
-            { in: "path", name: "id", required: true, schema: { type: "string" } }
-          ],
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": {
-                schema: { $ref: "#/components/schemas/LicenseLog" }
-              }
-            }
-          },
-          responses: { 200: { description: "License log updated" } }
-        },
-        delete: {
-          tags: ["LicenseLogs"],
-          summary: "Delete a license log",
-          parameters: [
-            { in: "path", name: "id", required: true, schema: { type: "string" } }
-          ],
-          responses: { 200: { description: "License log deleted" } }
         }
       },
 
