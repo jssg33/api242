@@ -68,12 +68,6 @@ const licenseController = require("../controllers/licenseController");
  *     responses:
  *       200:
  *         description: List of licenses
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/License'
  */
 router.get("/", licenseController.getLicenses);
 
@@ -97,6 +91,60 @@ router.post("/", licenseController.createLicense);
 
 /**
  * @swagger
+ * /licenses/user/{userid}:
+ *   get:
+ *     tags: [Licenses]
+ *     summary: Get licenses by user ID
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of licenses for the user
+ */
+router.get("/user/:userid", licenseController.getLicensesByUser);
+
+/**
+ * @swagger
+ * /licenses/customer/{customerid}:
+ *   get:
+ *     tags: [Licenses]
+ *     summary: Get licenses by customer ID
+ *     parameters:
+ *       - in: path
+ *         name: customerid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of licenses for the customer
+ */
+router.get("/customer/:customerid", licenseController.getLicensesByCustomer);
+
+/**
+ * @swagger
+ * /licenses/group/{groupid}:
+ *   get:
+ *     tags: [Licenses]
+ *     summary: Get licenses by group ID
+ *     parameters:
+ *       - in: path
+ *         name: groupid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of licenses for the group
+ */
+router.get("/group/:groupid", licenseController.getLicensesByGroup);
+
+/**
+ * @swagger
  * /licenses/{id}:
  *   get:
  *     tags: [Licenses]
@@ -110,10 +158,6 @@ router.post("/", licenseController.createLicense);
  *     responses:
  *       200:
  *         description: License found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/License'
  *       404:
  *         description: License not found
  */
@@ -166,4 +210,3 @@ router.put("/:id", licenseController.updateLicense);
 router.delete("/:id", licenseController.deleteLicense);
 
 module.exports = router;
-
