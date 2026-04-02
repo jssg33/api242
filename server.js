@@ -140,8 +140,11 @@ app.use("/api/songs", require("./routes/songs"));
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOTAL ROUTES: 47 x 5 = 235 ENPOINTS + LICENSE & LICENSELOGS (ADD GET BY USER, BY GROUP, BY COMPANY) = 241 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
-// PORTED APIS WERE C# FORMED MODELS WHICH WERE TRANSLATED INTO NODEJS MODELS USING MONGOOSE DRIVERS TO MONGO DB.
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// NOTES ON PORT VS NEW || NEW->(SONGS(1), PROJECT TASKS(5), SALES (4 OF 8), DTOS (2 OF 4), LICENSES(2) -> 14/47 TABLES NEW -> 33 TABLES PORTED FROM C#.
+// GEN3 -> PORTED APIS WERE C# FORMED MODELS WHICH WERE TRANSLATED INTO NODEJS MODELS USING MONGOOSE DRIVERS TO MONGO DB.
+// GEN2 -> AN UPDATED C# API WAS BUILT IN CSCE547 FALL OF 25 AT THE UNIVERSITY OF SOUTH CAROLINA - C# CLIENT SIDE DEVELOPMENT FOR THE BIKES CLASS PROJECT WHICH WAS LOOSELY BASED ON GEN1.
+// GEN1 -> THE ORIGINAL MODEL WAS BUILT IN CSCE590 IN THE SPRING OF 25 BY JOHN S. STRITZINGER AT THE UNIVERSITY OF SOUTH CAROLINA - C# CLIENT SIDE DEVELOPMENT FOR THE BIKES CLASS PROJECT.
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 // -------------------------
