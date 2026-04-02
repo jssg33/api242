@@ -1,5 +1,6 @@
 const LicenseLog = require("../models/licenselog");
 
+// Get all logs
 exports.getLicenseLogs = async (req, res) => {
   try {
     const logs = await LicenseLog.find().lean();
@@ -9,6 +10,7 @@ exports.getLicenseLogs = async (req, res) => {
   }
 };
 
+// Create a log
 exports.createLicenseLog = async (req, res) => {
   try {
     const log = await LicenseLog.create(req.body);
@@ -18,6 +20,7 @@ exports.createLicenseLog = async (req, res) => {
   }
 };
 
+// Get log by ID
 exports.getLicenseLogById = async (req, res) => {
   try {
     const log = await LicenseLog.findById(req.params.id).lean();
@@ -28,6 +31,7 @@ exports.getLicenseLogById = async (req, res) => {
   }
 };
 
+// Update log
 exports.updateLicenseLog = async (req, res) => {
   try {
     const log = await LicenseLog.findByIdAndUpdate(req.params.id, req.body, {
@@ -41,6 +45,7 @@ exports.updateLicenseLog = async (req, res) => {
   }
 };
 
+// Delete log
 exports.deleteLicenseLog = async (req, res) => {
   try {
     const log = await LicenseLog.findByIdAndDelete(req.params.id);
@@ -48,5 +53,49 @@ exports.deleteLicenseLog = async (req, res) => {
     res.json({ message: "Log deleted" });
   } catch {
     res.status(400).json({ error: "Invalid ID" });
+  }
+};
+
+// ------------------------------------------------------
+// NEW FILTERED ENDPOINTS
+// ------------------------------------------------------
+
+// Get logs by user ID
+exports.getLogsByUser = async (req, res) => {
+  try {
+    const logs = await LicenseLog.find({ userid: req.params.userid }).lean();
+    res.json(logs);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch logs for user" });
+  }
+};
+
+// Get logs by group ID
+exports.getLogsByGroup = async (req, res) => {
+  try {
+    const logs = await LicenseLog.find({ groupid: req.params.groupid }).lean();
+    res.json(logs);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch logs for group" });
+  }
+};
+
+// Get logs by company ID
+exports.getLogsByCompany = async (req, res) => {
+  try {
+    const logs = await LicenseLog.find({ companyid: req.params.companyid }).lean();
+    res.json(logs);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch logs for company" });
+  }
+};
+
+// Get logs by manager ID
+exports.getLogsByManager = async (req, res) => {
+  try {
+    const logs = await LicenseLog.find({ managerid: req.params.managerid }).lean();
+    res.json(logs);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch logs for manager" });
   }
 };
