@@ -47,7 +47,17 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger"); 
 const basicAuth = require("express-basic-auth"); 
 //PASSWORD PROTECT SWAGGER
-app.use  ( "/swagger", basicAuth({ users: { admin: "spirit" }, challenge: true }), swaggerUi.serve, swaggerUi.setup(swaggerSpec) );
+app.use(
+  "/swagger",
+  basicAuth({ users: { admin: "spirit" }, challenge: true }),
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      operationsSorter: "alpha",
+      tagsSorter: "alpha"
+    }
+  })
+);
 // -------------------------
 // ROUTES
 // -------------------------
