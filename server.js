@@ -67,12 +67,8 @@ app.use("/users", require("./routes/userRoutes"));
 app.use("/api/notices", require("./routes/userNoticeRoutes"));
 app.use("/usercontacts", require("./routes/userContactRoutes"));
 app.use("/userhelp", require("./routes/userHelpRoutes"));
-const userProjectRoutes = require('./routes/UserProjectRoutes');
-app.use('/userprojects', userProjectRoutes);
-const userGroupRoutes = require("./routes/userGroupRoutes");
-app.use("/usergroups", userGroupRoutes);
-
-
+app.use("/userprojects", require("./routes/UserProjectRoutes"));
+app.use("/usergroups", require("./routes/userGroupRoutes"));
 
 // Companies & Branches (5)
 app.use("/companies", require("./routes/companyRoutes"));
@@ -80,7 +76,6 @@ app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 app.use("/employees", require("./routes/employeeRoutes"));
 app.use("/managers", require("./routes/managerRoutes"));
-
 
 // Logging & Security (5)
 app.use("/api/apilogs", require("./routes/apiLogRoutes"));
@@ -91,20 +86,17 @@ app.use("/userlogs", require("./routes/userLogRoutes"));
 
 // Licensing (2)
 app.use("/licenses", require("./routes/licenseRoutes"));
-const LicenseTypesRouter = require('./routes/LicenseTypesRouter'); 
-app.use('/api/licensetypes', LicenseTypesRouter);
+app.use("/api/licensetypes", require("./routes/LicenseTypesRouter"));
 
 // Parks (1)
 app.use("/parks", require("./routes/parkRoutes"));
 
 // DTOs (4)
 app.use("/api/GCPARKS", require("./routes/gcParksRoutes"));
-app.use("/api/gcparks", require("./routes/gcParksRoutes")); // lowercase alias
+app.use("/api/gcparks", require("./routes/gcParksRoutes"));
 app.use("/api/CGCART", require("./routes/cgCartRoutes"));
-const northboundRoutes = require("./routes/northbound");
-app.use("/", northboundRoutes);
-const southboundRoutes = require("./routes/southbound");
-app.use("/", southboundRoutes);
+app.use("/", require("./routes/northbound"));
+app.use("/", require("./routes/southbound"));
 
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
@@ -117,9 +109,8 @@ app.use("/invoices", require("./routes/invoiceRoutes"));
 app.use("/invoicelineitems", require("./routes/invoiceLineItemRoutes"));
 app.use("/payments", require("./routes/paymentRoutes"));
 app.use("/refunds", require("./routes/refundRoutes"));
-app.use('/api/testimonials', require('./routes/testimonialsRoutes'));
-const productReviewRoutes = require("./routes/ProductReviewRoutes");
-app.use("/", productReviewRoutes);
+app.use("/api/testimonials", require("./routes/testimonialsRoutes"));
+app.use("/", require("./routes/ProductReviewRoutes"));
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
@@ -132,35 +123,25 @@ app.use("/reservations", require("./routes/reservationRoutes"));
 // Cards (1)
 app.use("/cards", require("./routes/cardsRoutes"));
 
-// Releases, Scopes & Project Tasks - Software Engineering(5) 
-app.use("/scopes", require("./routes/scopeRoutes")); 
+// Releases, Scopes & Project Tasks (5)
+app.use("/scopes", require("./routes/scopeRoutes"));
 app.use("/projecttasks", require("./routes/projectTaskRoutes"));
-app.use('/api/releases', require('./routes/releaseRoutes'));
-const projectRoutes = require("./routes/projects"); 
-app.use("/api/projects", projectRoutes);
-const projectMilestoneRoutes = require("./routes/projectMilestoneRoutes");
-app.use("/projectmilestones", projectMilestoneRoutes);
+app.use("/api/releases", require("./routes/releaseRoutes"));
+app.use("/api/projects", require("./routes/projects"));
+app.use("/projectmilestones", require("./routes/projectMilestoneRoutes"));
+
+// SSO (2)
+app.use("/usersessions", require("./routes/UserSessionRoutes"));
+app.use("/auth", require("./routes/authRoutes"));
+
+// OTHER (1)
+app.use("/api/songs", require("./routes/songs"));
 
 
-//SSO(2)
-// ------------------------------- // Route modules // ------------------------------- 
-const userSessionRoutes = require("./routes/UserSessionRoutes"); 
-app.use("/usersessions", userSessionRoutes); 
-
-//ADDING AUTH TO THE CONTROLLER
-const authRoutes = require("./routes/authRoutes"); 
-app.use("/auth", authRoutes); 
-
-//OTHER(1)
-//END USER STUFF - MY STUFF(1)
-const songRoutes = require("./routes/songs"); 
-app.use("/api/songs", songRoutes);
-
-
-
-// -------------------------
-// TOTAL ROUTES: 40 (With Northbound and Southbound DTOS)
-// -------------------------
+// --------------------------------------------------------------------------------------------------------------------------------------------------------
+// TOTAL ROUTES: 47 x 5 = 235 ENPOINTS + LICENSE & LICENSELOGS (ADD GET BY USER, BY GROUP, BY COMPANY) = 241 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
+// PORTED APIS WERE C# FORMED MODELS WHICH WERE TRANSLATED INTO NODEJS MODELS USING MONGOOSE DRIVERS TO MONGO DB.
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 // -------------------------
