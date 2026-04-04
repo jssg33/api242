@@ -11,7 +11,17 @@ exports.createQuotationLine = async (req, res) => {
   }
 };
 
-// Get all line items for a quotation
+// Get ALL quotation line items
+exports.getAllQuotationLines = async (req, res) => {
+  try {
+    const lines = await QuotationLine.find();
+    res.json(lines);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get all line items for a specific quotation
 exports.getLinesByQuotationId = async (req, res) => {
   try {
     const lines = await QuotationLine.find({
@@ -23,7 +33,7 @@ exports.getLinesByQuotationId = async (req, res) => {
   }
 };
 
-// 🔥 NEW: Get line items by customer/user ID
+// Get line items by customer/user ID
 exports.getLinesByUserId = async (req, res) => {
   try {
     const lines = await QuotationLine.find({
@@ -35,7 +45,7 @@ exports.getLinesByUserId = async (req, res) => {
   }
 };
 
-// 🔥 NEW: Get line items by salesperson ID
+// Get line items by salesperson ID
 exports.getLinesBySalespersonId = async (req, res) => {
   try {
     const lines = await QuotationLine.find({
@@ -66,6 +76,7 @@ exports.updateQuotationLine = async (req, res) => {
       req.body,
       { new: true }
     );
+    if (!updated) return res.status(404).json({ error: "Line item not found" });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -75,7 +86,8 @@ exports.updateQuotationLine = async (req, res) => {
 // Delete a quotation line item
 exports.deleteQuotationLine = async (req, res) => {
   try {
-    await QuotationLine.findByIdAndDelete(req.params.id);
+    const deleted = await QuotationLine.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Line item not found" });
     res.json({ message: "Line item deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
