@@ -108,7 +108,7 @@ app.use("/", require("./routes/southbound"));
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
 
-// Commerce / Sales (8)
+// Commerce / Sales (10)
 app.use("/products", require("./routes/productRoutes"));
 app.use("/reviews", require("./routes/reviewRoutes"));
 app.use("/salescatalogue", require("./routes/salesCatalogueRoutes"));
@@ -118,6 +118,9 @@ app.use("/payments", require("./routes/paymentRoutes"));
 app.use("/refunds", require("./routes/refundRoutes"));
 app.use("/api/testimonials", require("./routes/testimonialsRoutes"));
 app.use("/", require("./routes/ProductReviewRoutes"));
+app.use("/quotation", require("./routes/quotation.routes.js"));
+app.use("/quotationlines", require("./routes/quotationlines.routes.js"));
+
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
@@ -146,7 +149,7 @@ app.use("/api/songs", require("./routes/songs"));
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
-// TOTAL ROUTES: 47 x 5 = 235 ENPOINTS + LICENSE & LICENSELOGS (ADD GET BY USER, BY GROUP, BY COMPANY) = 241 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
+// TOTAL ROUTES: 49 x 5 +(4)= 249 ENPOINTS + LICENSE & LICENSELOGS (ADD GET BY USER, BY GROUP, BY COMPANY) = 241 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
 // NOTES ON PORT VS NEW || NEW->(SONGS(1), PROJECT TASKS(5), SALES (4 OF 8), DTOS (2 OF 4), LICENSES(2) -> 14/47 TABLES NEW -> 33 TABLES PORTED FROM C#.
 // GEN3 -> PORTED APIS WERE C# FORMED MODELS WHICH WERE TRANSLATED INTO NODEJS MODELS USING MONGOOSE DRIVERS TO MONGO DB.
 // GEN2 -> AN UPDATED C# API WAS BUILT IN CSCE547 FALL OF 25 AT THE UNIVERSITY OF SOUTH CAROLINA - C# CLIENT SIDE DEVELOPMENT FOR THE BIKES CLASS PROJECT WHICH WAS LOOSELY BASED ON GEN1.
