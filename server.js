@@ -78,12 +78,13 @@ app.use("/userhelp", require("./routes/userHelpRoutes"));
 app.use("/userprojects", require("./routes/UserProjectRoutes"));
 app.use("/usergroups", require("./routes/userGroupRoutes"));
 
-// Companies & Branches (5)
+// Companies & Branches (6)
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 app.use("/employees", require("./routes/employeeRoutes"));
 app.use("/managers", require("./routes/managerRoutes"));
+app.use("/analysts", require("./routes/analystRoutes"));
 
 // Logging & Security (5)
 app.use("/api/apilogs", require("./routes/apiLogRoutes"));
@@ -109,7 +110,7 @@ app.use("/", require("./routes/southbound"));
 // Batch Processing (1)
 app.use("/api/batches", require("./routes/batchRoutes"));
 
-// Commerce / Sales (10)
+// Commerce / Sales (11)
 app.use("/products", require("./routes/productRoutes"));
 app.use("/reviews", require("./routes/reviewRoutes"));
 app.use("/salescatalogue", require("./routes/salesCatalogueRoutes"));
@@ -121,7 +122,7 @@ app.use("/api/testimonials", require("./routes/testimonialsRoutes"));
 app.use("/", require("./routes/ProductReviewRoutes"));
 app.use("/quotation", require("./routes/quotation.routes.js"));
 app.use("/quotationlines", require("./routes/quotationlines.routes.js"));
-
+app.use("/specialpricing", require("./routes/specialPricingRoutes"));
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
@@ -150,7 +151,7 @@ app.use("/api/songs", require("./routes/songs"));
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
-// TOTAL ROUTES: 49 x 5 +(4)= 249 ENPOINTS + LICENSE & LICENSELOGS (ADD GET BY USER, BY GROUP, BY COMPANY) = 241 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
+// TOTAL ROUTES:51 x 5 +(User, Region, SalesId)= 255 ENPOINTS + LICENSE & LICENSELOGS & ANALYSTS, QUOTES AND SPECIALPRICING (ADD GET BY USER, BY GROUP, BY COMPANY) = 265 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
 // NOTES ON PORT VS NEW || NEW->(SONGS(1), PROJECT TASKS(5), SALES (4 OF 8), DTOS (2 OF 4), LICENSES(2) -> 14/47 TABLES NEW -> 33 TABLES PORTED FROM C#.
 // GEN3 -> PORTED APIS WERE C# FORMED MODELS WHICH WERE TRANSLATED INTO NODEJS MODELS USING MONGOOSE DRIVERS TO MONGO DB.
 // GEN2 -> AN UPDATED C# API WAS BUILT IN CSCE547 FALL OF 25 AT THE UNIVERSITY OF SOUTH CAROLINA - C# CLIENT SIDE DEVELOPMENT FOR THE BIKES CLASS PROJECT WHICH WAS LOOSELY BASED ON GEN1.
