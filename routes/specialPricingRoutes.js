@@ -1,5 +1,3 @@
-// routes/specialPricingRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const SpecialPricingController = require('../controllers/SpecialPricingController');
@@ -10,24 +8,6 @@ const SpecialPricingController = require('../controllers/SpecialPricingControlle
  *   name: SpecialPricing
  *   description: Special pricing request endpoints
  */
-
-/**
- * @swagger
- * /api/specialpricing:
- *   get:
- *     summary: Get all special pricing requests
- *     tags: [SpecialPricing]
- */
-router.get('/', SpecialPricingController.getAll);
-
-/**
- * @swagger
- * /api/specialpricing/{id}:
- *   get:
- *     summary: Get special pricing request by ID
- *     tags: [SpecialPricing]
- */
-router.get('/:id', SpecialPricingController.getOne);
 
 /**
  * @swagger
@@ -46,6 +26,24 @@ router.get('/user/:userId', SpecialPricingController.getByUser);
  *     tags: [SpecialPricing]
  */
 router.get('/region/:region', SpecialPricingController.getByRegion);
+
+/**
+ * @swagger
+ * /api/specialpricing/{id}:
+ *   get:
+ *     summary: Get special pricing request by ID
+ *     tags: [SpecialPricing]
+ */
+router.get('/:id', SpecialPricingController.getOne);
+
+/**
+ * @swagger
+ * /api/specialpricing:
+ *   get:
+ *     summary: Get all special pricing requests
+ *     tags: [SpecialPricing]
+ */
+router.get('/', SpecialPricingController.getAll);
 
 /**
  * @swagger

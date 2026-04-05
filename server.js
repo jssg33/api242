@@ -84,7 +84,7 @@ app.use("/branches", require("./routes/branchRoutes"));
 app.use("/instances", require("./routes/instanceRoutes"));
 app.use("/employees", require("./routes/employeeRoutes"));
 app.use("/managers", require("./routes/managerRoutes"));
-app.use("/analysts", require("./routes/analystRoutes"));
+app.use("/api/analysts", require("./routes/analystRoutes"));
 
 // Logging & Security (5)
 app.use("/api/apilogs", require("./routes/apiLogRoutes"));
@@ -122,7 +122,7 @@ app.use("/api/testimonials", require("./routes/testimonialsRoutes"));
 app.use("/", require("./routes/ProductReviewRoutes"));
 app.use("/quotation", require("./routes/quotation.routes.js"));
 app.use("/quotationlines", require("./routes/quotationlines.routes.js"));
-app.use("/specialpricing", require("./routes/specialPricingRoutes"));
+app.use("/api/specialpricing", require("./routes/specialPricingRoutes"));
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));

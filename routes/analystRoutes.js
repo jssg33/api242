@@ -1,5 +1,3 @@
-// routes/analystRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const AnalystController = require('../controllers/AnalystController');
@@ -10,24 +8,6 @@ const AnalystController = require('../controllers/AnalystController');
  *   name: Analysts
  *   description: Analyst management endpoints
  */
-
-/**
- * @swagger
- * /api/analysts:
- *   get:
- *     summary: Get all analysts
- *     tags: [Analysts]
- */
-router.get('/', AnalystController.getAll);
-
-/**
- * @swagger
- * /api/analysts/{id}:
- *   get:
- *     summary: Get analyst by ID
- *     tags: [Analysts]
- */
-router.get('/:id', AnalystController.getOne);
 
 /**
  * @swagger
@@ -46,6 +26,24 @@ router.get('/user/:userId', AnalystController.getByUser);
  *     tags: [Analysts]
  */
 router.get('/region/:region', AnalystController.getByRegion);
+
+/**
+ * @swagger
+ * /api/analysts/{id}:
+ *   get:
+ *     summary: Get analyst by ID
+ *     tags: [Analysts]
+ */
+router.get('/:id', AnalystController.getOne);
+
+/**
+ * @swagger
+ * /api/analysts:
+ *   get:
+ *     summary: Get all analysts
+ *     tags: [Analysts]
+ */
+router.get('/', AnalystController.getAll);
 
 /**
  * @swagger
