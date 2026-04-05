@@ -1,6 +1,6 @@
 // controllers/SpecialPricingController.js
 
-const SpecialPricing = require('../models/SpecialPricing.model');
+const SpecialPricing = require('../models/SpecialPricing');
 
 module.exports = {
   // CREATE
