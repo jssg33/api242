@@ -26,7 +26,7 @@ app.use(
       "http://figmamanagerui.onrender.com",
       "https://figmamanagerui.onrender.com",
       "https://licenses.greenvilleassociates.com",
-      "https://ordermanagementsystem-50i2.onrender.com/",
+      "https://ordermanagementsystem-50i2.onrender.com",
       "https://figma.site",
       "https://figma.com",
       "https://www.figma.com"
