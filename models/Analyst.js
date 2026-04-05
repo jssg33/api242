@@ -18,6 +18,18 @@ const AnalystSchema = new Schema(
       trim: true,
     },
 
+    region: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    userId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+
     lastName: {
       type: String,
       required: true,

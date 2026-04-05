@@ -16,6 +16,16 @@ const SpecialPricingSchema = new Schema(
       ref: 'User', // or whatever your analyst model is
       required: false,
     },
+    region: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    userId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
     salesRegionId: {
       type: mongoose.Schema.Types.ObjectId,
