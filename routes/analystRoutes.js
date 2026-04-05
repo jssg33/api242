@@ -1,3 +1,5 @@
+// routes/analystRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const AnalystController = require('../controllers/AnalystController');
@@ -11,27 +13,18 @@ const AnalystController = require('../controllers/AnalystController');
 
 /**
  * @swagger
- * /api/analysts/user/{userId}:
+ * /api/analysts/analystId/{analystId}:
  *   get:
- *     summary: Get analysts by userId
+ *     summary: Get analyst by analystId (business ID)
  *     tags: [Analysts]
  */
-router.get('/user/:userId', AnalystController.getByUser);
-
-/**
- * @swagger
- * /api/analysts/region/{region}:
- *   get:
- *     summary: Get analysts by region
- *     tags: [Analysts]
- */
-router.get('/region/:region', AnalystController.getByRegion);
+router.get('/analystId/:analystId', AnalystController.getByAnalystId);
 
 /**
  * @swagger
  * /api/analysts/{id}:
  *   get:
- *     summary: Get analyst by ID
+ *     summary: Get analyst by MongoDB _id
  *     tags: [Analysts]
  */
 router.get('/:id', AnalystController.getOne);
