@@ -124,6 +124,7 @@ app.use("/quotation", require("./routes/quotation.routes.js"));
 app.use("/quotationlines", require("./routes/quotationlines.routes.js"));
 app.use("/api/specialpricing", require("./routes/specialPricingRoutes"));
 app.use('/api/salespeople', require('./routes/salespersonRoutes'));
+app.use('/api/salesmanagers', require('./routes/salesManagerRoutes'));
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
