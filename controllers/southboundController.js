@@ -46,15 +46,31 @@ exports.processSouthboundCart = async (req, res) => {
   }
 
   //
-  // 3. SAVE CREDIT CARDS
+  // 3. SAVE CREDIT CARDS - CHANGED TO OPTIONAL AS ADDING CARDS HITS ANOTHER ENDPOINT, BUT WE COULD IN THE FUTURE SEND THE ENTIRE CARD IN THE PAYLOAD.
   //
-  try {
-    if (cards?.length > 0) {
-      result.cards = await CreditCard.insertMany(cards);
+try {
+  if (Array.isArray(cards) && cards.length > 0) {
+    // Only insert if the objects actually contain required fields
+    const validCards = cards.filter(c =>
+      c.cardId &&
+      c.uid &&
+      c.cardType &&
+      c.cardVendor &&
+      c.cardLast4 &&
+      c.cardExpDate &&
+      c.billingZip &&
+      c.fullname &&
+      c.fullcardnumber &&
+      c.userid
+    );
+
+    if (validCards.length > 0) {
+      result.cards = await CreditCard.insertMany(validCards);
     }
-  } catch (err) {
-    result.errors.push({ section: "cards", error: err.message });
   }
+} catch (err) {
+  result.errors.push({ section: "cards", error: err.message });
+}
 
   //
   // 4. SAVE INVOICES (Sales Order Headers)
