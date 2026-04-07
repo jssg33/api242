@@ -7,6 +7,93 @@ const Invoice = require("../models/invoiceModel");
 const InvoiceLineItem = require("../models/invoiceLineItemModel");
 const Reservation = require("../models/reservationModel");
 
+//
+// DEFAULT FIELD MAPS
+//
+const REQUIRED = {
+  payments: {
+    paymentId: null,
+    bookingId: null,
+    paymentMethod: "unknown",
+    amountPaid: 0,
+    paymentDate: new Date().toISOString(),
+    transactionId: "none",
+    userid: null
+  },
+
+  cards: {
+    cardId: null,
+    uid: "unknown",
+    cardType: "unknown",
+    cardVendor: "unknown",
+    cardLast4: "0000",
+    cardExpDate: "01/30",
+    billingZip: "00000",
+    fullname: "Unknown",
+    fullcardnumber: "0000000000000000",
+    userid: null
+  },
+
+  invoices: {
+    invoiceId: null,
+    customerId: "unknown",
+    accountId: "unknown",
+    subAccountId: "unknown",
+    subtotal: 0,
+    taxTotal: 0,
+    discountTotal: 0,
+    grandTotal: 0,
+    invoiceDate: new Date().toISOString()
+  },
+
+  invoiceLineItems: {
+    invoiceId: null,
+    productId: "unknown",
+    description: "",
+    quantity: 0,
+    unitCost: 0,
+    listCost: 0,
+    lineTotal: 0
+  },
+
+  reservations: {
+    reservationId: null,
+    parkId: null,
+    userid: null,
+    resStart: new Date().toISOString(),
+    resEnd: new Date().toISOString(),
+    reservationstatus: "unknown",
+    reservationtype: "unknown",
+    cartid: "none",
+    parkName: "unknown",
+    transactionId: "none",
+    totalAmount: 0,
+    customerBillingName: "unknown",
+    quantityChildren: 0,
+    quantityAdults: 0,
+    creditCardExpDate: "01/30",
+    creditCardLast4: "0000",
+    creditCardType: "unknown",
+    billingTelephoneNumber: "0000000000",
+    uid: "unknown",
+    bookingId: null
+  }
+};
+
+//
+// NORMALIZER
+//
+const normalize = (obj, defaults) => {
+  const normalized = { ...defaults };
+  for (const key in defaults) {
+    normalized[key] = obj[key] ?? defaults[key];
+  }
+  return normalized;
+};
+
+//
+// MAIN CONTROLLER
+//
 exports.processSouthboundCart = async (req, res) => {
   const { payments, cards, invoices, invoiceLineItems, reservations } = req.body;
 
@@ -20,7 +107,7 @@ exports.processSouthboundCart = async (req, res) => {
   };
 
   //
-  // 1. WRITE RAW CART TO DISK
+  // 1. WRITE RAW CART TO DISK (RESTORED)
   //
   /*try {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
@@ -35,78 +122,67 @@ exports.processSouthboundCart = async (req, res) => {
   }*/
 
   //
-  // 2. SAVE PAYMENTS
+  // 2. PAYMENTS
   //
   try {
-    if (payments?.length > 0) {
-      result.payments = await Payment.insertMany(payments);
+    if (Array.isArray(payments) && payments.length > 0) {
+      const normalized = payments.map(p => normalize(p, REQUIRED.payments));
+      result.payments = await Payment.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "payments", error: err.message });
   }
 
   //
-  // 3. SAVE CREDIT CARDS - CHANGED TO OPTIONAL AS ADDING CARDS HITS ANOTHER ENDPOINT, BUT WE COULD IN THE FUTURE SEND THE ENTIRE CARD IN THE PAYLOAD.
-  //
-try {
-  if (Array.isArray(cards) && cards.length > 0) {
-    // Only insert if the objects actually contain required fields
-    const validCards = cards.filter(c =>
-      c.cardId &&
-      c.uid &&
-      c.cardType &&
-      c.cardVendor &&
-      c.cardLast4 &&
-      c.cardExpDate &&
-      c.billingZip &&
-      c.fullname &&
-      c.fullcardnumber &&
-      c.userid
-    );
-
-    if (validCards.length > 0) {
-      result.cards = await CreditCard.insertMany(validCards);
-    }
-  }
-} catch (err) {
-  result.errors.push({ section: "cards", error: err.message });
-}
-
-  //
-  // 4. SAVE INVOICES (Sales Order Headers)
+  // 3. CARDS
   //
   try {
-    if (invoices?.length > 0) {
-      result.invoices = await Invoice.insertMany(invoices);
+    if (Array.isArray(cards) && cards.length > 0) {
+      const normalized = cards.map(c => normalize(c, REQUIRED.cards));
+      result.cards = await CreditCard.insertMany(normalized);
+    }
+  } catch (err) {
+    result.errors.push({ section: "cards", error: err.message });
+  }
+
+  //
+  // 4. INVOICES
+  //
+  try {
+    if (Array.isArray(invoices) && invoices.length > 0) {
+      const normalized = invoices.map(i => normalize(i, REQUIRED.invoices));
+      result.invoices = await Invoice.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "invoices", error: err.message });
   }
 
   //
-  // 5. SAVE INVOICE LINE ITEMS
+  // 5. INVOICE LINE ITEMS
   //
   try {
-    if (invoiceLineItems?.length > 0) {
-      result.invoiceLineItems = await InvoiceLineItem.insertMany(invoiceLineItems);
+    if (Array.isArray(invoiceLineItems) && invoiceLineItems.length > 0) {
+      const normalized = invoiceLineItems.map(i => normalize(i, REQUIRED.invoiceLineItems));
+      result.invoiceLineItems = await InvoiceLineItem.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "invoiceLineItems", error: err.message });
   }
 
   //
-  // 6. SAVE RESERVATIONS
+  // 6. RESERVATIONS
   //
   try {
-    if (reservations?.length > 0) {
-      result.reservations = await Reservation.insertMany(reservations);
+    if (Array.isArray(reservations) && reservations.length > 0) {
+      const normalized = reservations.map(r => normalize(r, REQUIRED.reservations));
+      result.reservations = await Reservation.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "reservations", error: err.message });
   }
 
   //
-  // 7. RETURN UNIFIED RESPONSE
+  // 7. RETURN RESPONSE
   //
   return res.status(200).json({
     Southbound: result
