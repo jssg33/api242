@@ -22,7 +22,7 @@ exports.processSouthboundCart = async (req, res) => {
   //
   // 1. WRITE RAW CART TO DISK
   //
-  try {
+  /*try {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filename = `${timestamp}.json`;
     const filePath = path.join(__dirname, "..", "Data", filename);
@@ -32,7 +32,7 @@ exports.processSouthboundCart = async (req, res) => {
   } catch (err) {
     console.error("Failed to write cart to disk:", err);
     result.errors.push({ section: "disk", error: err.message });
-  }
+  }*/
 
   //
   // 2. SAVE PAYMENTS
