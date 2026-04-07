@@ -7,15 +7,15 @@ const Invoice = require("../models/invoiceModel");
 const InvoiceLineItem = require("../models/invoiceLineItemModel");
 const Reservation = require("../models/reservationModel");
 
+// Today's date in ISO format
+const today = () => new Date().toISOString();
+
 // Random generators
 const randInt = (min = 1000, max = 999999) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 const randString = (len = 12) =>
   [...Array(len)].map(() => Math.random().toString(36)[2]).join("");
-
-const randDate = () =>
-  new Date(Date.now() - Math.floor(Math.random() * 1e10)).toISOString();
 
 // Random default maps
 const RANDOM_DEFAULTS = {
@@ -24,7 +24,7 @@ const RANDOM_DEFAULTS = {
     bookingId: () => randInt(),
     paymentMethod: () => "credit",
     amountPaid: () => Math.random() * 100,
-    paymentDate: () => randDate(),
+    paymentDate: () => today(),        // ← TODAY
     transactionId: () => "TXN-" + randString(10),
     userid: () => randInt()
   },
@@ -51,7 +51,7 @@ const RANDOM_DEFAULTS = {
     taxTotal: () => Math.random() * 10,
     discountTotal: () => 0,
     grandTotal: () => Math.random() * 110,
-    invoiceDate: () => randDate()
+    invoiceDate: () => today()         // ← TODAY
   },
 
   invoiceLineItems: {
@@ -68,8 +68,8 @@ const RANDOM_DEFAULTS = {
     reservationId: () => randInt(),
     parkId: () => randInt(),
     userid: () => randInt(),
-    resStart: () => randDate(),
-    resEnd: () => randDate(),
+    resStart: () => today(),           // ← TODAY
+    resEnd: () => today(),             // ← TODAY
     reservationstatus: () => "confirmed",
     reservationtype: () => "camping",
     cartid: () => "CART-" + randInt(),
@@ -109,18 +109,6 @@ exports.processSouthboundCart = async (req, res) => {
     errors: []
   };
 
-  /*
-  try {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = `${timestamp}.json`;
-    const filePath = path.join(__dirname, "..", "Data", filename);
-
-    fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2), "utf8");
-    console.log(`Southbound cart written to ${filePath}`);
-  } catch (err) {
-    result.errors.push({ section: "disk", error: err.message });
-  }*/
-
   try {
     if (payments?.length > 0) {
       const normalized = payments.map(p => normalize(p, RANDOM_DEFAULTS.payments));
@@ -141,7 +129,11 @@ exports.processSouthboundCart = async (req, res) => {
 
   try {
     if (invoices?.length > 0) {
-      const normalized = invoices.map(i => normalize(i, RANDOM_DEFAULTS.invoices));
+      const normalized = invoices.map(i => {
+        const n = normalize(i, RANDOM_DEFAULTS.invoices);
+        n.invoiceDate = today();   // ← FORCE TODAY
+        return n;
+      });
       result.invoices = await Invoice.insertMany(normalized);
     }
   } catch (err) {
@@ -159,7 +151,12 @@ exports.processSouthboundCart = async (req, res) => {
 
   try {
     if (reservations?.length > 0) {
-      const normalized = reservations.map(r => normalize(r, RANDOM_DEFAULTS.reservations));
+      const normalized = reservations.map(r => {
+        const n = normalize(r, RANDOM_DEFAULTS.reservations);
+        n.resStart = today();      // ← FORCE TODAY
+        n.resEnd = today();        // ← FORCE TODAY
+        return n;
+      });
       result.reservations = await Reservation.insertMany(normalized);
     }
   } catch (err) {
