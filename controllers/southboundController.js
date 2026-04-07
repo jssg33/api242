@@ -24,7 +24,7 @@ const RANDOM_DEFAULTS = {
     bookingId: () => randInt(),
     paymentMethod: () => "credit",
     amountPaid: () => Math.random() * 100,
-    paymentDate: () => today(),        // ← TODAY
+    paymentDate: () => today(),        // TODAY
     transactionId: () => "TXN-" + randString(10),
     userid: () => randInt()
   },
@@ -51,7 +51,7 @@ const RANDOM_DEFAULTS = {
     taxTotal: () => Math.random() * 10,
     discountTotal: () => 0,
     grandTotal: () => Math.random() * 110,
-    invoiceDate: () => today()         // ← TODAY
+    invoiceDate: () => today()         // TODAY
   },
 
   invoiceLineItems: {
@@ -68,8 +68,8 @@ const RANDOM_DEFAULTS = {
     reservationId: () => randInt(),
     parkId: () => randInt(),
     userid: () => randInt(),
-    resStart: () => today(),           // ← TODAY
-    resEnd: () => today(),             // ← TODAY
+    resStart: () => today(),           // TODAY
+    resEnd: () => today(),             // TODAY
     reservationstatus: () => "confirmed",
     reservationtype: () => "camping",
     cartid: () => "CART-" + randInt(),
@@ -97,6 +97,15 @@ const normalize = (obj, defaults) => {
   return normalized;
 };
 
+// Build structured error objects
+const buildError = (section, err, payload) => ({
+  section,
+  message: err?.message || "Unknown error",
+  name: err?.name || null,
+  stack: err?.stack || null,
+  payload
+});
+
 exports.processSouthboundCart = async (req, res) => {
   const { payments, cards, invoices, invoiceLineItems, reservations } = req.body;
 
@@ -109,58 +118,63 @@ exports.processSouthboundCart = async (req, res) => {
     errors: []
   };
 
+  // PAYMENTS
   try {
     if (payments?.length > 0) {
       const normalized = payments.map(p => normalize(p, RANDOM_DEFAULTS.payments));
       result.payments = await Payment.insertMany(normalized);
     }
   } catch (err) {
-    result.errors.push({ section: "payments", error: err.message });
+    result.errors.push(buildError("payments", err, payments));
   }
 
+  // CARDS
   try {
     if (cards?.length > 0) {
       const normalized = cards.map(c => normalize(c, RANDOM_DEFAULTS.cards));
       result.cards = await CreditCard.insertMany(normalized);
     }
   } catch (err) {
-    result.errors.push({ section: "cards", error: err.message });
+    result.errors.push(buildError("cards", err, cards));
   }
 
+  // INVOICES
   try {
     if (invoices?.length > 0) {
       const normalized = invoices.map(i => {
         const n = normalize(i, RANDOM_DEFAULTS.invoices);
-        n.invoiceDate = today();   // ← FORCE TODAY
+        n.invoiceDate = today(); // FORCE TODAY
         return n;
       });
       result.invoices = await Invoice.insertMany(normalized);
     }
   } catch (err) {
-    result.errors.push({ section: "invoices", error: err.message });
+    result.errors.push(buildError("invoices", err, invoices));
   }
 
+  // INVOICE LINE ITEMS
   try {
     if (invoiceLineItems?.length > 0) {
       const normalized = invoiceLineItems.map(i => normalize(i, RANDOM_DEFAULTS.invoiceLineItems));
       result.invoiceLineItems = await InvoiceLineItem.insertMany(normalized);
     }
   } catch (err) {
-    result.errors.push({ section: "invoiceLineItems", error: err.message });
+    result.errors.push(buildError("invoiceLineItems", err, invoiceLineItems));
   }
 
+  // RESERVATIONS
   try {
     if (reservations?.length > 0) {
       const normalized = reservations.map(r => {
         const n = normalize(r, RANDOM_DEFAULTS.reservations);
-        n.resStart = today();      // ← FORCE TODAY
-        n.resEnd = today();        // ← FORCE TODAY
+        n.resStart = today();  // FORCE TODAY
+        n.resEnd = today();    // FORCE TODAY
         return n;
       });
       result.reservations = await Reservation.insertMany(normalized);
     }
   } catch (err) {
-    result.errors.push({ section: "reservations", error: err.message });
+    result.errors.push(buildError("reservations", err, reservations));
   }
 
   return res.status(200).json({ Southbound: result });
