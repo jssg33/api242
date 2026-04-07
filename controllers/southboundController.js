@@ -7,93 +7,96 @@ const Invoice = require("../models/invoiceModel");
 const InvoiceLineItem = require("../models/invoiceLineItemModel");
 const Reservation = require("../models/reservationModel");
 
-//
-// DEFAULT FIELD MAPS
-//
-const REQUIRED = {
+// Random generators
+const randInt = (min = 1000, max = 999999) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+const randString = (len = 12) =>
+  [...Array(len)].map(() => Math.random().toString(36)[2]).join("");
+
+const randDate = () =>
+  new Date(Date.now() - Math.floor(Math.random() * 1e10)).toISOString();
+
+// Random default maps
+const RANDOM_DEFAULTS = {
   payments: {
-    paymentId: null,
-    bookingId: null,
-    paymentMethod: "unknown",
-    amountPaid: 0,
-    paymentDate: new Date().toISOString(),
-    transactionId: "none",
-    userid: null
+    paymentId: () => randInt(),
+    bookingId: () => randInt(),
+    paymentMethod: () => "credit",
+    amountPaid: () => Math.random() * 100,
+    paymentDate: () => randDate(),
+    transactionId: () => "TXN-" + randString(10),
+    userid: () => randInt()
   },
 
   cards: {
-    cardId: null,
-    uid: "unknown",
-    cardType: "unknown",
-    cardVendor: "unknown",
-    cardLast4: "0000",
-    cardExpDate: "01/30",
-    billingZip: "00000",
-    fullname: "Unknown",
-    fullcardnumber: "0000000000000000",
-    userid: null
+    cardId: () => randInt(),
+    uid: () => randString(8),
+    cardType: () => "credit",
+    cardVendor: () => "Visa",
+    cardLast4: () => String(randInt(1000, 9999)),
+    cardExpDate: () => "12/30",
+    billingZip: () => String(randInt(10000, 99999)),
+    fullname: () => "Unknown User",
+    fullcardnumber: () => String(randInt(4000000000000000, 4999999999999999)),
+    userid: () => randInt()
   },
 
   invoices: {
-    invoiceId: null,
-    customerId: "unknown",
-    accountId: "unknown",
-    subAccountId: "unknown",
-    subtotal: 0,
-    taxTotal: 0,
-    discountTotal: 0,
-    grandTotal: 0,
-    invoiceDate: new Date().toISOString()
+    invoiceId: () => randInt(),
+    customerId: () => "CUST-" + randInt(),
+    accountId: () => "ACCT-" + randInt(),
+    subAccountId: () => "SUB-" + randInt(),
+    subtotal: () => Math.random() * 100,
+    taxTotal: () => Math.random() * 10,
+    discountTotal: () => 0,
+    grandTotal: () => Math.random() * 110,
+    invoiceDate: () => randDate()
   },
 
   invoiceLineItems: {
-    invoiceId: null,
-    productId: "unknown",
-    description: "",
-    quantity: 0,
-    unitCost: 0,
-    listCost: 0,
-    lineTotal: 0
+    invoiceId: () => randInt(),
+    productId: () => randString(24),
+    description: () => "Item " + randString(5),
+    quantity: () => randInt(1, 5),
+    unitCost: () => randInt(10, 200),
+    listCost: () => randInt(10, 200),
+    lineTotal: () => randInt(10, 200)
   },
 
   reservations: {
-    reservationId: null,
-    parkId: null,
-    userid: null,
-    resStart: new Date().toISOString(),
-    resEnd: new Date().toISOString(),
-    reservationstatus: "unknown",
-    reservationtype: "unknown",
-    cartid: "none",
-    parkName: "unknown",
-    transactionId: "none",
-    totalAmount: 0,
-    customerBillingName: "unknown",
-    quantityChildren: 0,
-    quantityAdults: 0,
-    creditCardExpDate: "01/30",
-    creditCardLast4: "0000",
-    creditCardType: "unknown",
-    billingTelephoneNumber: "0000000000",
-    uid: "unknown",
-    bookingId: null
+    reservationId: () => randInt(),
+    parkId: () => randInt(),
+    userid: () => randInt(),
+    resStart: () => randDate(),
+    resEnd: () => randDate(),
+    reservationstatus: () => "confirmed",
+    reservationtype: () => "camping",
+    cartid: () => "CART-" + randInt(),
+    parkName: () => "Park " + randString(5),
+    transactionId: () => "TXN-" + randString(10),
+    totalAmount: () => randInt(10, 200),
+    customerBillingName: () => "Guest " + randString(5),
+    quantityChildren: () => randInt(0, 3),
+    quantityAdults: () => randInt(1, 5),
+    creditCardExpDate: () => "12/30",
+    creditCardLast4: () => String(randInt(1000, 9999)),
+    creditCardType: () => "Visa",
+    billingTelephoneNumber: () => String(randInt(1000000000, 9999999999)),
+    uid: () => randString(10),
+    bookingId: () => randInt()
   }
 };
 
-//
-// NORMALIZER
-//
+// Normalizer
 const normalize = (obj, defaults) => {
-  const normalized = { ...defaults };
+  const normalized = {};
   for (const key in defaults) {
-    normalized[key] = obj[key] ?? defaults[key];
+    normalized[key] = obj[key] ?? defaults[key]();
   }
   return normalized;
 };
 
-//
-// MAIN CONTROLLER
-//
 exports.processSouthboundCart = async (req, res) => {
   const { payments, cards, invoices, invoiceLineItems, reservations } = req.body;
 
@@ -106,10 +109,8 @@ exports.processSouthboundCart = async (req, res) => {
     errors: []
   };
 
-  //
-  // 1. WRITE RAW CART TO DISK (RESTORED)
-  //
-  /*try {
+  /*
+  try {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filename = `${timestamp}.json`;
     const filePath = path.join(__dirname, "..", "Data", filename);
@@ -117,74 +118,53 @@ exports.processSouthboundCart = async (req, res) => {
     fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2), "utf8");
     console.log(`Southbound cart written to ${filePath}`);
   } catch (err) {
-    console.error("Failed to write cart to disk:", err);
     result.errors.push({ section: "disk", error: err.message });
   }*/
 
-  //
-  // 2. PAYMENTS
-  //
   try {
-    if (Array.isArray(payments) && payments.length > 0) {
-      const normalized = payments.map(p => normalize(p, REQUIRED.payments));
+    if (payments?.length > 0) {
+      const normalized = payments.map(p => normalize(p, RANDOM_DEFAULTS.payments));
       result.payments = await Payment.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "payments", error: err.message });
   }
 
-  //
-  // 3. CARDS
-  //
   try {
-    if (Array.isArray(cards) && cards.length > 0) {
-      const normalized = cards.map(c => normalize(c, REQUIRED.cards));
+    if (cards?.length > 0) {
+      const normalized = cards.map(c => normalize(c, RANDOM_DEFAULTS.cards));
       result.cards = await CreditCard.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "cards", error: err.message });
   }
 
-  //
-  // 4. INVOICES
-  //
   try {
-    if (Array.isArray(invoices) && invoices.length > 0) {
-      const normalized = invoices.map(i => normalize(i, REQUIRED.invoices));
+    if (invoices?.length > 0) {
+      const normalized = invoices.map(i => normalize(i, RANDOM_DEFAULTS.invoices));
       result.invoices = await Invoice.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "invoices", error: err.message });
   }
 
-  //
-  // 5. INVOICE LINE ITEMS
-  //
   try {
-    if (Array.isArray(invoiceLineItems) && invoiceLineItems.length > 0) {
-      const normalized = invoiceLineItems.map(i => normalize(i, REQUIRED.invoiceLineItems));
+    if (invoiceLineItems?.length > 0) {
+      const normalized = invoiceLineItems.map(i => normalize(i, RANDOM_DEFAULTS.invoiceLineItems));
       result.invoiceLineItems = await InvoiceLineItem.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "invoiceLineItems", error: err.message });
   }
 
-  //
-  // 6. RESERVATIONS
-  //
   try {
-    if (Array.isArray(reservations) && reservations.length > 0) {
-      const normalized = reservations.map(r => normalize(r, REQUIRED.reservations));
+    if (reservations?.length > 0) {
+      const normalized = reservations.map(r => normalize(r, RANDOM_DEFAULTS.reservations));
       result.reservations = await Reservation.insertMany(normalized);
     }
   } catch (err) {
     result.errors.push({ section: "reservations", error: err.message });
   }
 
-  //
-  // 7. RETURN RESPONSE
-  //
-  return res.status(200).json({
-    Southbound: result
-  });
+  return res.status(200).json({ Southbound: result });
 };
