@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
-const User = require("../models/user.model");
-const { SignupRequest } = require("../dto/auth.dto");
+const User = require("../models/user");
+const { SignupRequest } = require("../dtos/authDto");
 
 exports.signup = async (req, res) => {
   try {
