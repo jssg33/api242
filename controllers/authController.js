@@ -84,7 +84,7 @@ exports.login = async (req, res) => {
     const cred = creds.find(c => c.UserId === localUser.Id);
 
     if (cred) {
-      const ok = bcrypt.compareSync(plainPassword, cred.EncryptedPassword);
+      const ok = bcrypt.compareSync(plainpassword, cred.EncryptedPassword);
 
       // Log attempt
       await UserLog.create({
@@ -135,7 +135,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "User not found." });
     }
 
-    const ok = bcrypt.compareSync(plainPassword, user.hashedpassword);
+    const ok = bcrypt.compareSync(plainpassword, user.hashedpassword);
 
     // Log attempt
     await UserLog.create({
