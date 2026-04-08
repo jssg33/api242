@@ -290,7 +290,7 @@ exports.signup = async (req, res) => {
       role: "registered",
 
       // relic, never changed again
-      plainpassword: plainpassword,
+      plainpassword,
 
       // actual login password
       hashedpassword: hashed,
