@@ -364,3 +364,85 @@ exports.resetPasswordLocal = async (req, res) => {
 
   res.json({ message: "Password reset successfully (local)." });
 };
+
+exports.loginLocal = async (req, res) => {
+  const { username, plainPassword, location, ipaddress, uiorigin } = req.body;
+
+  try {
+    // Load local JSON users
+    const users = await loadUsers();
+    const localUser = users.find(
+      u => u.Username?.toLowerCase() === username.toLowerCase()
+    );
+
+    if (!localUser) {
+      await UserLog.create({
+        id: Date.now(),
+        username,
+        hashid: 0,
+        location: location || "",
+        ipaddress: ipaddress || "",
+        loginstatus: "failed",
+        description: "Local JSON login - user not found",
+        uiorigin: uiorigin || "unknown"
+      });
+
+      return res.status(400).json({ message: "User not found (local)." });
+    }
+
+    // Load local credentials
+    const creds = await loadCreds();
+    const cred = creds.find(c => c.UserId === localUser.Id);
+
+    if (!cred) {
+      await UserLog.create({
+        id: Date.now(),
+        username,
+        hashid: localUser.Id,
+        location: location || "",
+        ipaddress: ipaddress || "",
+        loginstatus: "failed",
+        description: "Local JSON login - credentials missing",
+        uiorigin: uiorigin || "unknown"
+      });
+
+      return res.status(400).json({ message: "Credentials not found (local)." });
+    }
+
+    // Compare bcrypt password
+    const ok = bcrypt.compareSync(plainPassword, cred.EncryptedPassword);
+
+    // Log attempt
+    await UserLog.create({
+      id: Date.now(),
+      username,
+      hashid: localUser.Id,
+      location: location || "",
+      ipaddress: ipaddress || "",
+      loginstatus: ok ? "success" : "failed",
+      description: "Local JSON login attempt",
+      uiorigin: uiorigin || "unknown"
+    });
+
+    if (!ok)
+      return res.status(400).json({ message: "Password mismatch." });
+
+    // Generate JWT
+    const token = generateJwt({
+      username: localUser.Username,
+      email: localUser.Email,
+      role: localUser.Role
+    });
+
+    // Return full local user + token
+    return res.json({
+      ...localUser,
+      token,
+      source: "local"
+    });
+
+  } catch (err) {
+    console.error("Local login error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
