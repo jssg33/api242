@@ -4,8 +4,9 @@ const UserLogSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   username: { type: String, required: true },
   hashid: { type: Number, required: true },
-  hashedpassword: { type: String, required: true },
+  location: { type: String, required: false },
   loginstatus: { type: String, required: true },
+  ipaddress: { type: String, required: false },
   description: { type: String },
   uiorigin: { type: String }
 }, { timestamps: true });
