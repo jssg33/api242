@@ -18,32 +18,44 @@
  *     LoginRequest:
  *       type: object
  *       required:
- *         - email
- *         - password
+ *         - username
+ *         - plainPassword
  *       properties:
- *         email:
+ *         username:
  *           type: string
- *           example: user@example.com
- *         password:
+ *           example: johndoe
+ *         plainPassword:
  *           type: string
  *           example: MyPassword123
  *
  *     SignupRequest:
  *       type: object
  *       required:
+ *         - firstname
+ *         - lastname
  *         - username
  *         - email
- *         - password
+ *         - plainPassword
+ *         - activepictureurl
  *       properties:
+ *         firstname:
+ *           type: string
+ *           example: John
+ *         lastname:
+ *           type: string
+ *           example: Doe
  *         username:
  *           type: string
  *           example: johndoe
  *         email:
  *           type: string
  *           example: johndoe@example.com
- *         password:
+ *         plainPassword:
  *           type: string
  *           example: StrongPassword123
+ *         activepictureurl:
+ *           type: string
+ *           example: https://example.com/profile.jpg
  *
  *     ForgotPasswordRequest:
  *       type: object
@@ -57,23 +69,23 @@
  *     ResetPasswordRequest:
  *       type: object
  *       required:
- *         - token
- *         - password
+ *         - resetToken
+ *         - newPassword
  *       properties:
- *         token:
+ *         resetToken:
  *           type: string
  *           example: 123456abcdef
- *         password:
+ *         newPassword:
  *           type: string
  *           example: NewStrongPassword123
  *
  *     ResetPasswordRequestProfile:
  *       type: object
  *       required:
- *         - oldPassword
+ *         - currentPassword
  *         - newPassword
  *       properties:
- *         oldPassword:
+ *         currentPassword:
  *           type: string
  *           example: OldPassword123
  *         newPassword:
@@ -108,7 +120,7 @@ function validate(dtoClass) {
  * @swagger
  * /auth/loginLocal:
  *   post:
- *     summary: Login using local credentials
+ *     summary: Login using local JSON credentials
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -130,7 +142,7 @@ router.post("/loginLocal", validate(LoginRequest), controller.loginLocal);
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login (generic login handler)
+ *     summary: Login (local JSON first, then MongoDB fallback)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -152,7 +164,7 @@ router.post("/login", validate(LoginRequest), controller.login);
  * @swagger
  * /auth/signupLocal:
  *   post:
- *     summary: Register a new user (local signup)
+ *     summary: Register a new user (local JSON)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -172,7 +184,7 @@ router.post("/signupLocal", validate(SignupRequest), controller.signupLocal);
  * @swagger
  * /auth/signup:
  *   post:
- *     summary: Register a new user (generic signup)
+ *     summary: Register a new user (MongoDB)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -192,7 +204,7 @@ router.post("/signup", validate(SignupRequest), controller.signup);
  * @swagger
  * /auth/resetPasswordProfile:
  *   post:
- *     summary: Reset password from user profile (requires old password)
+ *     summary: Reset password from user profile (requires current password)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -218,7 +230,7 @@ router.post(
  * @swagger
  * /auth/resetPasswordLocal:
  *   post:
- *     summary: Reset password using local method (token-based)
+ *     summary: Reset password using local JSON token
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -242,7 +254,7 @@ router.post(
  * @swagger
  * /auth/resetPassword:
  *   post:
- *     summary: Reset password (generic handler)
+ *     summary: Reset password (MongoDB)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
