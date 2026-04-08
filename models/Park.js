@@ -111,7 +111,34 @@ const ParkSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-
+  Installation: {
+    type: Number,
+    default: 1
+  },
+  Maintenance: {
+    type: Number,
+    default: 1
+  },
+  Operations: {
+    type: Number,
+    default: 1
+  },
+  Commerce: {
+    type: Number,
+    default: 0
+  },
+  Social: {
+    type: Number,
+    default: 0
+  },
+  Marketing: {
+    type: Number,
+    default: 0
+  },
+  Metadata: {
+    type: Number,
+    default: 0
+  },
   averageRating: {
     type: Number,
     default: 0
