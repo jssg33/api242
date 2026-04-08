@@ -3,8 +3,10 @@ const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const User = require("../models/user");
 const UserSession = require("../models/UserSession");
+const UserLog = require("../models/UserLog");
 
 const USERS_FILE = path.join(__dirname, "../data/users.json");
 const CREDS_FILE = path.join(__dirname, "../data/userCreds.json");
@@ -69,9 +71,9 @@ function randomSix() {
 // LOGIN (LOCAL JSON FIRST → MONGO SECOND)
 // -----------------------------
 exports.login = async (req, res) => {
-  const { username, plainPassword } = req.body;
+  const { username, plainPassword, location, ipaddress, uiorigin } = req.body;
 
-  // 1. LOCAL JSON USERS FIRST (if present)
+  // 1. LOCAL JSON USERS FIRST
   let users = await loadUsers();
   let localUser = users.find(
     u => u.Username?.toLowerCase() === username.toLowerCase()
@@ -83,6 +85,19 @@ exports.login = async (req, res) => {
 
     if (cred) {
       const ok = bcrypt.compareSync(plainPassword, cred.EncryptedPassword);
+
+      // Log attempt
+      await UserLog.create({
+        id: Date.now(),
+        username,
+        hashid: localUser.Id,
+        location: location || "",
+        ipaddress: ipaddress || "",
+        loginstatus: ok ? "success" : "failed",
+        description: "Local JSON login attempt",
+        uiorigin: uiorigin || "unknown"
+      });
+
       if (!ok)
         return res.status(400).json({ message: "Password mismatch." });
 
@@ -92,7 +107,6 @@ exports.login = async (req, res) => {
         role: localUser.Role
       });
 
-      // No UserSession for local JSON mode (unless you want to add it)
       return res.json({
         ...localUser,
         token,
@@ -101,38 +115,52 @@ exports.login = async (req, res) => {
     }
   }
 
-  // 2. FALLBACK TO MONGO DB USERS
+  // 2. MONGO LOGIN
   try {
     const user = await User.findOne({
       username: new RegExp(`^${username}$`, "i")
     });
 
-    if (!user)
+    if (!user) {
+      await UserLog.create({
+        id: Date.now(),
+        username,
+        hashid: 0,
+        location,
+        ipaddress,
+        loginstatus: "failed",
+        description: "Mongo login - user not found",
+        uiorigin
+      });
       return res.status(400).json({ message: "User not found." });
+    }
 
-    // Compare plain password to stored bcrypt hash
     const ok = bcrypt.compareSync(plainPassword, user.hashedpassword);
+
+    // Log attempt
+    await UserLog.create({
+      id: Date.now(),
+      username,
+      hashid: user.userid || user.id || 0,
+      location: location || "",
+      ipaddress: ipaddress || "",
+      loginstatus: ok ? "success" : "failed",
+      description: "Mongo login attempt",
+      uiorigin: uiorigin || "unknown"
+    });
+
     if (!ok)
       return res.status(400).json({ message: "Password mismatch." });
 
     const token = generateJwt(user);
 
-    // Create UserSession record using your schema
+    // Create session
     const session = new UserSession({
-      id: undefined, // optional numeric id if you use one
-      userid: user.userid || user.id || 0,
+      userid: user.userid || user.id || user._id,
       token: token,
-
-      acknowledged: 0,
-      actionpriority: 0,
 
       sessionstart: new Date().toISOString(),
       sessionend: null,
-
-      sessionrecorded: 0,
-      sessionrecordurl: "",
-
-      sessiondescription: "User login session",
 
       sessionusername: user.username,
       sessionemail: user.email,
@@ -140,6 +168,16 @@ exports.login = async (req, res) => {
       sessionlastname: user.lastname,
       sessionfullname: user.fullname,
 
+      sessiondescription: "User login session",
+
+      // NEW FIELDS
+      ipaddress: ipaddress || "",
+      location: location || "",
+
+      acknowledged: 0,
+      actionpriority: 0,
+      sessionrecorded: 0,
+      sessionrecordurl: "",
       sessioncomplete: 0,
 
       twofactorkey: "",
@@ -164,6 +202,54 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.error("MongoDB login error:", err);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// -----------------------------
+// LOGOUT (UPDATES SESSION + CREATES USERLOG)
+// -----------------------------
+exports.logout = async (req, res) => {
+  const auth = req.headers.authorization || "";
+  const token = auth.split(" ")[1];
+  const { location, ipaddress, uiorigin } = req.body;
+
+  if (!token)
+    return res.status(401).json({ message: "Missing token" });
+
+  try {
+    const decoded = jwt.verify(token, JWT_KEY, {
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE
+    });
+
+    const session = await UserSession.findOne({ token });
+
+    if (!session)
+      return res.status(400).json({ message: "Session not found" });
+
+    session.sessionend = new Date().toISOString();
+    session.sessioncomplete = 1;
+    session.acknowledged = 1;
+
+    await session.save();
+
+    // Log logout
+    await UserLog.create({
+      id: Date.now(),
+      username: decoded.sub,
+      hashid: session.userid,
+      location: location || "",
+      ipaddress: ipaddress || "",
+      loginstatus: "logout",
+      description: "User logged out",
+      uiorigin: uiorigin || "unknown"
+    });
+
+    return res.json({ message: "Logout successful" });
+
+  } catch (err) {
+    console.error("Logout error:", err);
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
 
@@ -220,60 +306,6 @@ exports.signup = async (req, res) => {
     console.error("Signup Error:", err);
     res.status(500).json({ message: "Internal server error", error: err.message });
   }
-};
-
-// -----------------------------
-// LOCAL SIGNUP (JSON FILE) – OPTIONAL
-// -----------------------------
-exports.signupLocal = async (req, res) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    email,
-    plainPassword,
-    activepictureurl
-  } = req.body;
-
-  const users = await loadUsers();
-
-  if (users.some(u => u.Email.toLowerCase() === email.toLowerCase()))
-    return res.status(400).json({ message: "Email already registered." });
-
-  if (users.some(u => u.Username.toLowerCase() === username.toLowerCase()))
-    return res.status(400).json({ message: "Username already in use." });
-
-  const newId = users.length ? Math.max(...users.map(u => u.Id)) + 1 : 1;
-  const hashed = bcrypt.hashSync(plainPassword, 10);
-
-  const newUser = {
-    Id: newId,
-    Firstname: firstname,
-    Lastname: lastname,
-    Username: username,
-    Email: email,
-    Fullname: `${firstname} ${lastname}`,
-    Role: "registered",
-    Plainpassword: plainPassword,
-    Hashedpassword: hashed,
-    Activepictureurl: activepictureurl
-  };
-
-  users.push(newUser);
-  await saveUsers(users);
-
-  const creds = await loadCreds();
-  const newCredId = creds.length ? Math.max(...creds.map(c => c.Id)) + 1 : 1;
-
-  creds.push({
-    Id: newCredId,
-    UserId: newId,
-    EncryptedPassword: hashed
-  });
-
-  await saveCreds(creds);
-
-  res.status(201).json({ message: "User registered successfully (local)." });
 };
 
 // -----------------------------
