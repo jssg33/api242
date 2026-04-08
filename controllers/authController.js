@@ -4,6 +4,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const UserSession = require("../models/UserSession");
 
 const USERS_FILE = path.join(__dirname, "../data/users.json");
 const CREDS_FILE = path.join(__dirname, "../data/userCreds.json");
@@ -13,14 +14,13 @@ const JWT_ISSUER = process.env.JWT_ISSUER;
 const JWT_AUDIENCE = process.env.JWT_AUDIENCE;
 
 // -----------------------------
-// FILE HELPERS
+// FILE HELPERS (LOCAL JSON MODE)
 // -----------------------------
 async function loadUsers() {
   try {
     const data = await fs.readFile(USERS_FILE, "utf8");
     return JSON.parse(data) || [];
   } catch {
-    console.warn("users.json missing — skipping local users.");
     return [];
   }
 }
@@ -34,7 +34,6 @@ async function loadCreds() {
     const data = await fs.readFile(CREDS_FILE, "utf8");
     return JSON.parse(data) || [];
   } catch {
-    console.warn("userCreds.json missing — skipping local creds.");
     return [];
   }
 }
@@ -67,14 +66,12 @@ function randomSix() {
 }
 
 // -----------------------------
-// LOGIN (LOCAL FIRST → MONGO SECOND)
+// LOGIN (LOCAL JSON FIRST → MONGO SECOND)
 // -----------------------------
 exports.login = async (req, res) => {
   const { username, plainPassword } = req.body;
 
-  // -----------------------------
-  // 1. LOCAL JSON USERS FIRST
-  // -----------------------------
+  // 1. LOCAL JSON USERS FIRST (if present)
   let users = await loadUsers();
   let localUser = users.find(
     u => u.Username?.toLowerCase() === username.toLowerCase()
@@ -95,6 +92,7 @@ exports.login = async (req, res) => {
         role: localUser.Role
       });
 
+      // No UserSession for local JSON mode (unless you want to add it)
       return res.json({
         ...localUser,
         token,
@@ -103,9 +101,7 @@ exports.login = async (req, res) => {
     }
   }
 
-  // -----------------------------
   // 2. FALLBACK TO MONGO DB USERS
-  // -----------------------------
   try {
     const user = await User.findOne({
       username: new RegExp(`^${username}$`, "i")
@@ -114,16 +110,54 @@ exports.login = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "User not found." });
 
+    // Compare plain password to stored bcrypt hash
     const ok = bcrypt.compareSync(plainPassword, user.hashedpassword);
     if (!ok)
       return res.status(400).json({ message: "Password mismatch." });
 
     const token = generateJwt(user);
 
+    // Create UserSession record using your schema
+    const session = new UserSession({
+      id: undefined, // optional numeric id if you use one
+      userid: user.userid || user.id || 0,
+      token: token,
+
+      acknowledged: 0,
+      actionpriority: 0,
+
+      sessionstart: new Date().toISOString(),
+      sessionend: null,
+
+      sessionrecorded: 0,
+      sessionrecordurl: "",
+
+      sessiondescription: "User login session",
+
+      sessionusername: user.username,
+      sessionemail: user.email,
+      sessionfirstname: user.firstname,
+      sessionlastname: user.lastname,
+      sessionfullname: user.fullname,
+
+      sessioncomplete: 0,
+
+      twofactorkey: "",
+      twofactorkeysmsdestination: "",
+      twofactorkeyemaildestination: "",
+      twofactorprovider: "",
+      twofactorprovidertoken: randomSix().toString(),
+      twofactorproviderauthstring: "",
+
+      useridasstring: String(user.userid || user.id || user._id)
+    });
+
+    await session.save();
+
     return res.json({
       ...user.toObject(),
       token,
-      Twofactorprovidertoken: randomSix(),
+      sessionId: session._id,
       source: "mongo"
     });
 
@@ -134,60 +168,7 @@ exports.login = async (req, res) => {
 };
 
 // -----------------------------
-// LOCAL SIGNUP (JSON FILE)
-// -----------------------------
-exports.signupLocal = async (req, res) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    email,
-    plainPassword,
-    activepictureurl
-  } = req.body;
-
-  const users = await loadUsers();
-
-  if (users.some(u => u.Email.toLowerCase() === email.toLowerCase()))
-    return res.status(400).json({ message: "Email already registered." });
-
-  if (users.some(u => u.Username.toLowerCase() === username.toLowerCase()))
-    return res.status(400).json({ message: "Username already in use." });
-
-  const newId = users.length ? Math.max(...users.map(u => u.Id)) + 1 : 1;
-  const hashed = bcrypt.hashSync(plainPassword, 10);
-
-  const newUser = {
-    Id: newId,
-    Firstname: firstname,
-    Lastname: lastname,
-    Username: username,
-    Email: email,
-    Fullname: `${firstname} ${lastname}`,
-    Role: "registered",
-    Hashedpassword: hashed,
-    Activepictureurl: activepictureurl
-  };
-
-  users.push(newUser);
-  await saveUsers(users);
-
-  const creds = await loadCreds();
-  const newCredId = creds.length ? Math.max(...creds.map(c => c.Id)) + 1 : 1;
-
-  creds.push({
-    Id: newCredId,
-    UserId: newId,
-    EncryptedPassword: hashed
-  });
-
-  await saveCreds(creds);
-
-  res.status(201).json({ message: "User registered successfully (local)." });
-};
-
-// -----------------------------
-// MONGO SIGNUP (MINIMAL REGISTRATION)
+// SIGNUP (MONGO MINIMAL REGISTRATION)
 // -----------------------------
 exports.signup = async (req, res) => {
   try {
@@ -221,7 +202,13 @@ exports.signup = async (req, res) => {
       email,
       fullname: `${firstname} ${lastname}`,
       role: "registered",
+
+      // relic, never changed again
+      plainpassword: plainPassword,
+
+      // actual login password
       hashedpassword: hashed,
+
       activepictureurl
     });
 
@@ -236,37 +223,83 @@ exports.signup = async (req, res) => {
 };
 
 // -----------------------------
-// RESET PASSWORD (PROFILE)
+// LOCAL SIGNUP (JSON FILE) – OPTIONAL
 // -----------------------------
-exports.resetPasswordProfile = async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+exports.signupLocal = async (req, res) => {
+  const {
+    firstname,
+    lastname,
+    username,
+    email,
+    plainPassword,
+    activepictureurl
+  } = req.body;
 
-  const auth = req.headers.authorization || "";
-  const token = auth.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  const users = await loadUsers();
 
-  let decoded;
-  try {
-    decoded = jwt.verify(token, JWT_KEY, {
-      issuer: JWT_ISSUER,
-      audience: JWT_AUDIENCE
-    });
-  } catch {
-    return res.status(401).json({ message: "Invalid token" });
-  }
+  if (users.some(u => u.Email.toLowerCase() === email.toLowerCase()))
+    return res.status(400).json({ message: "Email already registered." });
 
-  const username = decoded.sub;
-  const user = await User.findOne({ username });
-  if (!user) return res.status(400).json({ message: "User not found." });
+  if (users.some(u => u.Username.toLowerCase() === username.toLowerCase()))
+    return res.status(400).json({ message: "Username already in use." });
 
-  const ok = bcrypt.compareSync(currentPassword, user.hashedpassword);
-  if (!ok)
-    return res.status(400).json({ message: "Current password incorrect." });
+  const newId = users.length ? Math.max(...users.map(u => u.Id)) + 1 : 1;
+  const hashed = bcrypt.hashSync(plainPassword, 10);
+
+  const newUser = {
+    Id: newId,
+    Firstname: firstname,
+    Lastname: lastname,
+    Username: username,
+    Email: email,
+    Fullname: `${firstname} ${lastname}`,
+    Role: "registered",
+    Plainpassword: plainPassword,
+    Hashedpassword: hashed,
+    Activepictureurl: activepictureurl
+  };
+
+  users.push(newUser);
+  await saveUsers(users);
+
+  const creds = await loadCreds();
+  const newCredId = creds.length ? Math.max(...creds.map(c => c.Id)) + 1 : 1;
+
+  creds.push({
+    Id: newCredId,
+    UserId: newId,
+    EncryptedPassword: hashed
+  });
+
+  await saveCreds(creds);
+
+  res.status(201).json({ message: "User registered successfully (local)." });
+};
+
+// -----------------------------
+// RESET PASSWORD (MONGO)
+// -----------------------------
+exports.resetPassword = async (req, res) => {
+  const { resetToken, newPassword } = req.body;
+
+  if (!resetToken)
+    return res.status(400).json({ message: "Token is null." });
+
+  const user = await User.findOne({
+    resettoken: resetToken,
+    resettokenexpiration: { $gt: new Date() }
+  });
+
+  if (!user)
+    return res.status(400).json({ message: "Invalid or expired token." });
 
   user.hashedpassword = bcrypt.hashSync(newPassword, 10);
+  user.resettoken = null;
+  user.resettokenexpiration = null;
+
   await user.save();
 
-  res.json({ message: "Password updated successfully." });
+  res.json({ message: "Password reset successfully." });
 };
 
 // -----------------------------
@@ -298,30 +331,4 @@ exports.resetPasswordLocal = async (req, res) => {
   await saveUsers(users);
 
   res.json({ message: "Password reset successfully (local)." });
-};
-
-// -----------------------------
-// RESET PASSWORD (MONGO)
-// -----------------------------
-exports.resetPassword = async (req, res) => {
-  const { resetToken, newPassword } = req.body;
-
-  if (!resetToken)
-    return res.status(400).json({ message: "Token is null." });
-
-  const user = await User.findOne({
-    resettoken: resetToken,
-    resettokenexpiration: { $gt: new Date() }
-  });
-
-  if (!user)
-    return res.status(400).json({ message: "Invalid or expired token." });
-
-  user.hashedpassword = bcrypt.hashSync(newPassword, 10);
-  user.resettoken = null;
-  user.resettokenexpiration = null;
-
-  await user.save();
-
-  res.json({ message: "Password reset successfully." });
 };
