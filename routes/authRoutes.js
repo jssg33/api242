@@ -19,14 +19,14 @@
  *       type: object
  *       required:
  *         - username
- *         - plainPassword
+ *         - plainpassword
  *       properties:
  *         username:
  *           type: string
  *           example: johndoe
  *         plainPassword:
  *           type: string
- *           example: MyPassword123
+ *           example: StrongPassword123
  *
  *     SignupRequest:
  *       type: object
