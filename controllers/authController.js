@@ -1,4 +1,4 @@
-// controllers/auth.controller.js
+// controllers/authController.js
 const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcryptjs");
@@ -12,11 +12,15 @@ const JWT_KEY = process.env.JWT_KEY;
 const JWT_ISSUER = process.env.JWT_ISSUER;
 const JWT_AUDIENCE = process.env.JWT_AUDIENCE;
 
+// -----------------------------
+// FILE HELPERS
+// -----------------------------
 async function loadUsers() {
   try {
     const data = await fs.readFile(USERS_FILE, "utf8");
     return JSON.parse(data) || [];
   } catch {
+    console.warn("users.json missing — skipping local users.");
     return [];
   }
 }
@@ -30,6 +34,7 @@ async function loadCreds() {
     const data = await fs.readFile(CREDS_FILE, "utf8");
     return JSON.parse(data) || [];
   } catch {
+    console.warn("userCreds.json missing — skipping local creds.");
     return [];
   }
 }
@@ -38,6 +43,9 @@ async function saveCreds(list) {
   await fs.writeFile(CREDS_FILE, JSON.stringify(list, null, 2));
 }
 
+// -----------------------------
+// HELPERS
+// -----------------------------
 function generateJwt(user) {
   return jwt.sign(
     {
@@ -58,76 +66,76 @@ function randomSix() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-exports.loginLocal = async (req, res) => {
-  const { username, plainPassword } = req.body;
-
-  const users = await loadUsers();
-  const user = users.find(
-    u => u.Username.toLowerCase() === username.toLowerCase()
-  );
-  if (!user) return res.status(400).json({ message: "User not found." });
-
-  const creds = await loadCreds();
-  const cred = creds.find(c => c.UserId === user.Id);
-  if (!cred)
-    return res.status(400).json({ message: "User credentials not found." });
-
-  const ok = bcrypt.compareSync(plainPassword, cred.EncryptedPassword);
-  if (!ok) return res.status(400).json({ message: "Password mismatch." });
-
-  const token = generateJwt({
-    username: user.Username,
-    email: user.Email,
-    role: user.Role
-  });
-
-  res.json({
-    userId: user.Id,
-    userEmail: user.Email,
-    userFullName: user.Fullname,
-    userUsername: user.Username,
-    userRole: user.Role,
-    token
-  });
-};
-
+// -----------------------------
+// LOGIN (LOCAL FIRST → MONGO SECOND)
+// -----------------------------
 exports.login = async (req, res) => {
   const { username, plainPassword } = req.body;
 
-  const user = await User.findOne({
-    username: new RegExp(`^${username}$`, "i")
-  });
-  if (!user) return res.status(400).json({ message: "User not found." });
+  // -----------------------------
+  // 1. LOCAL JSON USERS FIRST
+  // -----------------------------
+  let users = await loadUsers();
+  let localUser = users.find(
+    u => u.Username?.toLowerCase() === username.toLowerCase()
+  );
 
-  const ok = bcrypt.compareSync(plainPassword, user.hashedpassword);
-  if (!ok) return res.status(400).json({ message: "Password mismatch." });
+  if (localUser) {
+    const creds = await loadCreds();
+    const cred = creds.find(c => c.UserId === localUser.Id);
 
-  const token = generateJwt(user);
+    if (cred) {
+      const ok = bcrypt.compareSync(plainPassword, cred.EncryptedPassword);
+      if (!ok)
+        return res.status(400).json({ message: "Password mismatch." });
 
-  res.json({
-    userId: user.id,
-    userFirstname: user.firstname,
-    userLastname: user.lastname,
-    userUsername: user.username,
-    userEmail: user.email,
-    IsEmployee: user.employee,
-    EmployeeId: user.employeeid,
-    userMicrosoftId: user.microsoftid,
-    userNcrId: user.ncrid,
-    userOracleId: user.oracleid,
-    userAzureId: user.azureid,
-    userJid: user.jid,
-    userRole: user.role,
-    userFullName: user.fullname,
-    userCompany: user.companyid,
-    userBtn: user.btn,
-    userIsCertified: user.iscertified,
-    Date: new Date().toISOString().split("T")[0],
-    token,
-    Twofactorprovidertoken: randomSix()
-  });
+      const token = generateJwt({
+        username: localUser.Username,
+        email: localUser.Email,
+        role: localUser.Role
+      });
+
+      return res.json({
+        ...localUser,
+        token,
+        source: "local"
+      });
+    }
+  }
+
+  // -----------------------------
+  // 2. FALLBACK TO MONGO DB USERS
+  // -----------------------------
+  try {
+    const user = await User.findOne({
+      username: new RegExp(`^${username}$`, "i")
+    });
+
+    if (!user)
+      return res.status(400).json({ message: "User not found." });
+
+    const ok = bcrypt.compareSync(plainPassword, user.hashedpassword);
+    if (!ok)
+      return res.status(400).json({ message: "Password mismatch." });
+
+    const token = generateJwt(user);
+
+    return res.json({
+      ...user.toObject(),
+      token,
+      Twofactorprovidertoken: randomSix(),
+      source: "mongo"
+    });
+
+  } catch (err) {
+    console.error("MongoDB login error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
 
+// -----------------------------
+// LOCAL SIGNUP (JSON FILE)
+// -----------------------------
 exports.signupLocal = async (req, res) => {
   const {
     firstname,
@@ -141,12 +149,12 @@ exports.signupLocal = async (req, res) => {
   const users = await loadUsers();
 
   if (users.some(u => u.Email.toLowerCase() === email.toLowerCase()))
-    return res.status(400).json({ message: "Email is already registered." });
+    return res.status(400).json({ message: "Email already registered." });
 
   if (users.some(u => u.Username.toLowerCase() === username.toLowerCase()))
-    return res.status(400).json({ message: "Username is already in use." });
+    return res.status(400).json({ message: "Username already in use." });
 
-  const newId = users.length ? Math.max(...users.map(u => u.Id)) + 1 : 0;
+  const newId = users.length ? Math.max(...users.map(u => u.Id)) + 1 : 1;
   const hashed = bcrypt.hashSync(plainPassword, 10);
 
   const newUser = {
@@ -158,18 +166,6 @@ exports.signupLocal = async (req, res) => {
     Fullname: `${firstname} ${lastname}`,
     Role: "registered",
     Hashedpassword: hashed,
-    Passwordtype: 1,
-    Employee: 0,
-    Employeeid: "",
-    Microsoftid: "",
-    Ncrid: "",
-    Oracleid: "",
-    Azureid: "",
-    Plainpassword: "",
-    Jid: null,
-    Companyid: null,
-    Resettoken: null,
-    Resettokenexpiration: null,
     Activepictureurl: activepictureurl
   };
 
@@ -187,61 +183,61 @@ exports.signupLocal = async (req, res) => {
 
   await saveCreds(creds);
 
-  res.status(201).json({ message: "User registered successfully." });
+  res.status(201).json({ message: "User registered successfully (local)." });
 };
 
+// -----------------------------
+// MONGO SIGNUP (MINIMAL REGISTRATION)
+// -----------------------------
 exports.signup = async (req, res) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    email,
-    plainPassword,
-    activepictureurl
-  } = req.body;
+  try {
+    const {
+      firstname,
+      lastname,
+      username,
+      email,
+      plainPassword,
+      activepictureurl
+    } = req.body;
 
-  const existsEmail = await User.findOne({
-    email: new RegExp(`^${email}$`, "i")
-  });
-  if (existsEmail)
-    return res.status(400).json({ message: "Email is already registered." });
+    const existsEmail = await User.findOne({
+      email: new RegExp(`^${email}$`, "i")
+    });
+    if (existsEmail)
+      return res.status(400).json({ message: "Email already registered." });
 
-  const existsUser = await User.findOne({
-    username: new RegExp(`^${username}$`, "i")
-  });
-  if (existsUser)
-    return res.status(400).json({ message: "Username is already in use." });
+    const existsUser = await User.findOne({
+      username: new RegExp(`^${username}$`, "i")
+    });
+    if (existsUser)
+      return res.status(400).json({ message: "Username already in use." });
 
-  const hashed = bcrypt.hashSync(plainPassword, 10);
+    const hashed = bcrypt.hashSync(plainPassword, 10);
 
-  const newUser = new User({
-    firstname,
-    lastname,
-    username,
-    email,
-    fullname: `${firstname} ${lastname}`,
-    role: "registered",
-    hashedpassword: hashed,
-    passwordtype: 1,
-    employee: 0,
-    employeeid: "",
-    microsoftid: "",
-    ncrid: "",
-    oracleid: "",
-    azureid: "",
-    plainpassword: "",
-    jid: null,
-    companyid: null,
-    resettoken: null,
-    resettokenexpiration: null,
-    activepictureurl
-  });
+    const newUser = new User({
+      firstname,
+      lastname,
+      username,
+      email,
+      fullname: `${firstname} ${lastname}`,
+      role: "registered",
+      hashedpassword: hashed,
+      activepictureurl
+    });
 
-  await newUser.save();
+    await newUser.save();
 
-  res.status(201).json({ message: "User registered successfully." });
+    res.status(201).json({ message: "User registered successfully." });
+
+  } catch (err) {
+    console.error("Signup Error:", err);
+    res.status(500).json({ message: "Internal server error", error: err.message });
+  }
 };
 
+// -----------------------------
+// RESET PASSWORD (PROFILE)
+// -----------------------------
 exports.resetPasswordProfile = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
@@ -265,14 +261,17 @@ exports.resetPasswordProfile = async (req, res) => {
 
   const ok = bcrypt.compareSync(currentPassword, user.hashedpassword);
   if (!ok)
-    return res.status(400).json({ message: "Current password is incorrect." });
+    return res.status(400).json({ message: "Current password incorrect." });
 
   user.hashedpassword = bcrypt.hashSync(newPassword, 10);
   await user.save();
 
-  res.json({ message: "Password successfully updated." });
+  res.json({ message: "Password updated successfully." });
 };
 
+// -----------------------------
+// RESET PASSWORD (LOCAL JSON)
+// -----------------------------
 exports.resetPasswordLocal = async (req, res) => {
   const { resetToken, newPassword } = req.body;
 
@@ -298,9 +297,12 @@ exports.resetPasswordLocal = async (req, res) => {
 
   await saveUsers(users);
 
-  res.json({ message: "Password successfully reset (JSON)." });
+  res.json({ message: "Password reset successfully (local)." });
 };
 
+// -----------------------------
+// RESET PASSWORD (MONGO)
+// -----------------------------
 exports.resetPassword = async (req, res) => {
   const { resetToken, newPassword } = req.body;
 
@@ -321,5 +323,5 @@ exports.resetPassword = async (req, res) => {
 
   await user.save();
 
-  res.json({ message: "Password successfully reset (DB)." });
+  res.json({ message: "Password reset successfully." });
 };
