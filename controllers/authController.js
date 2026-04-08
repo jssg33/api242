@@ -364,7 +364,7 @@ exports.resetPasswordLocal = async (req, res) => {
 
   res.json({ message: "Password reset successfully (local)." });
 };
-
+//MISSING FUNCTION1
 exports.loginLocal = async (req, res) => {
   const { username, plainPassword, location, ipaddress, uiorigin } = req.body;
 
@@ -443,6 +443,45 @@ exports.loginLocal = async (req, res) => {
 
   } catch (err) {
     console.error("Local login error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+//MISSING FUNCTION2
+exports.resetPasswordProfile = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const auth = req.headers.authorization || "";
+    const token = auth.split(" ")[1];
+
+    if (!token)
+      return res.status(401).json({ message: "Missing token" });
+
+    const decoded = jwt.verify(token, JWT_KEY, {
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE
+    });
+
+    const user = await User.findOne({
+      username: new RegExp(`^${decoded.sub}$`, "i")
+    });
+
+    if (!user)
+      return res.status(400).json({ message: "User not found." });
+
+    // Compare current password
+    const ok = bcrypt.compareSync(currentPassword, user.hashedpassword);
+    if (!ok)
+      return res.status(400).json({ message: "Current password incorrect." });
+
+    // Update bcrypt hash
+    user.hashedpassword = bcrypt.hashSync(newPassword, 10);
+    await user.save();
+
+    return res.json({ message: "Password updated successfully." });
+
+  } catch (err) {
+    console.error("resetPasswordProfile error:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
