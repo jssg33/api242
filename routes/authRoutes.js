@@ -35,7 +35,7 @@
  *         - lastname
  *         - username
  *         - email
- *         - plainPassword
+ *         - plainpassword
  *         - activepictureurl
  *       properties:
  *         firstname:
@@ -50,7 +50,7 @@
  *         email:
  *           type: string
  *           example: johndoe@example.com
- *         plainPassword:
+ *         plainpassword:
  *           type: string
  *           example: StrongPassword123
  *         activepictureurl:
