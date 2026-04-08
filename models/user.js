@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema(
     // Authentication
     // -------------------------------------------------
     password: { type: String, required: false, minlength: 4, maxlength: 200 },
-    plainpassword: { type: String, trim: true, required: true },
+    plainpassword: { type: String, trim: true, required: false },
     hashedpassword: { type: String, trim: true },
     passwordtype: { type: Number, default: 0 },
 
