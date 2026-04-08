@@ -154,7 +154,14 @@ exports.login = async (req, res) => {
     if (!ok)
       return res.status(400).json({ message: "Password mismatch." });
 
-    const token = generateJwt(user);
+    //const token = generateJwt(user);
+    const token = generateJwt({
+  id: user._id,
+  username: user.username,
+  email: user.email,
+  role: user.role
+});
+
   /*
     // Create session
     const session = new UserSession({
@@ -197,7 +204,8 @@ exports.login = async (req, res) => {
     return res.json({
       ...user.toObject(),
       token,
-      sessionId: session._id,
+      sessionId: 33,
+      //sessionId: session._id,
       source: "mongo"
     });
 
