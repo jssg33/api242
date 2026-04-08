@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 const UserSession = require("../models/UserSession");
-const UserLog = require("../models/UserLog");
+const UserLog = require("../models/userlog");
 
 const USERS_FILE = path.join(__dirname, "../data/users.json");
 const CREDS_FILE = path.join(__dirname, "../data/userCreds.json");
