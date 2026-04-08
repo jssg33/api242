@@ -75,7 +75,8 @@ exports.login = async (req, res) => {
 
   // 1. LOCAL JSON USERS FIRST
   let users = await loadUsers();
-  let localUser = users.find(
+
+   let localUser = users.find(
     u => u.Username?.toLowerCase() === username.toLowerCase()
   );
 
@@ -119,8 +120,9 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({
       username: new RegExp(`^${username}$`, "i")
-    });
-
+    }).lean();
+    console.log("user", user);
+    
     if (!user) {
       await UserLog.create({
         id: Date.now(),
