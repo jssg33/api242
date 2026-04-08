@@ -32,8 +32,8 @@ const userSessionSchema = new mongoose.Schema(
     twofactorprovidertoken: { type: String },
     twofactorproviderauthstring: { type: String },
      // NEW
-    ipaddress: ipaddress || "",
-    location: location || "",
+    ipaddress: { type: String },
+    location: { type: String },
     useridasstring: { type: String }
   },
   { timestamps: true }
