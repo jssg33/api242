@@ -161,7 +161,7 @@ exports.login = async (req, res) => {
   email: user.email,
   role: user.role
 });
-
+console.log("token",token);
   /*
     // Create session
     const session = new UserSession({
@@ -201,13 +201,22 @@ exports.login = async (req, res) => {
 
     await session.save();*/
 
-    return res.json({
+    /*return res.json({
       ...user.toObject(),
       token,
       sessionId: 33,
       //sessionId: session._id,
       source: "mongo"
-    });
+    });*/
+  
+  return res.json({
+  message: "Login successful",
+  username: user.username,
+  email: user.email,
+  fullname: user.fullname,
+  token: token,
+  source: "mongo"
+});
 
   } catch (err) {
     console.error("MongoDB login error:", err);
