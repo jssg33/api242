@@ -485,3 +485,48 @@ exports.resetPasswordProfile = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+//MISSING FUNCTION 3
+exports.signupLocal = async (req, res) => {
+  const { firstname, lastname, username, email, plainPassword, activepictureurl } = req.body;
+
+  try {
+    const users = await loadUsers();
+    const creds = await loadCreds();
+
+    // Check if username exists
+    if (users.some(u => u.Username.toLowerCase() === username.toLowerCase())) {
+      return res.status(400).json({ message: "Username already exists (local)." });
+    }
+
+    // Create new user
+    const newUser = {
+      Id: Date.now(),
+      Username: username,
+      Firstname: firstname,
+      Lastname: lastname,
+      Email: email,
+      Fullname: `${firstname} ${lastname}`,
+      Role: "registered",
+      Activepictureurl: activepictureurl
+    };
+
+    users.push(newUser);
+    await saveUsers(users);
+
+    // Save credentials
+    const hashed = bcrypt.hashSync(plainPassword, 10);
+    creds.push({
+      UserId: newUser.Id,
+      EncryptedPassword: hashed
+    });
+
+    await saveCreds(creds);
+
+    return res.status(201).json({ message: "User created successfully (local)." });
+
+  } catch (err) {
+    console.error("signupLocal error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
