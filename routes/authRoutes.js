@@ -24,7 +24,7 @@
  *         username:
  *           type: string
  *           example: johndoe
- *         plainPassword:
+ *         plainpassword:
  *           type: string
  *           example: StrongPassword123
  *
