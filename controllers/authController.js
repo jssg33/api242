@@ -266,8 +266,8 @@ exports.signup = async (req, res) => {
       plainpassword,
       activepictureurl
     } = req.body;
-
-    const existsEmail = await User.findOne({
+    
+     const existsEmail = await User.findOne({
       email: new RegExp(`^${email}$`, "i")
     });
     if (existsEmail)
@@ -279,7 +279,7 @@ exports.signup = async (req, res) => {
     if (existsUser)
       return res.status(400).json({ message: "Username already in use." });
 
-    const hashed = bcrypt.hashSync(plainPassword, 10);
+    const hashed = bcrypt.hashSync(plainpassword, 10);
 
     const newUser = new User({
       firstname,
