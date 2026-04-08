@@ -71,7 +71,7 @@ function randomSix() {
 // LOGIN (LOCAL JSON FIRST → MONGO SECOND)
 // -----------------------------
 exports.login = async (req, res) => {
-  const { username, plainPassword, location, ipaddress, uiorigin } = req.body;
+  const { username, plainpassword, location, ipaddress, uiorigin } = req.body;
 
   // 1. LOCAL JSON USERS FIRST
   let users = await loadUsers();
@@ -263,7 +263,7 @@ exports.signup = async (req, res) => {
       lastname,
       username,
       email,
-      plainPassword,
+      plainpassword,
       activepictureurl
     } = req.body;
 
@@ -290,7 +290,7 @@ exports.signup = async (req, res) => {
       role: "registered",
 
       // relic, never changed again
-      plainpassword: plainPassword,
+      plainpassword: plainpassword,
 
       // actual login password
       hashedpassword: hashed,
