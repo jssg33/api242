@@ -6,6 +6,11 @@ const ProjectSchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    groupid: {
+        type: String,
+        required: true,
+        index: true
+    },
     instanceid: {
         type: String,
         required: true,
