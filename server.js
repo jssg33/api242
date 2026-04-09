@@ -27,6 +27,7 @@ app.use(
       "https://figmamanagerui.onrender.com",
       "https://licenses.greenvilleassociates.com",
       "https://ordermanagementsystem-50i2.onrender.com",
+      "https://spline-dew-76774247.figma.site",
       "https://figma.site",
       "https://figma.com",
       "https://www.figma.com"
