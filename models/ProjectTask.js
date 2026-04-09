@@ -6,7 +6,9 @@ const ProjectTaskSchema = new mongoose.Schema(
     description: { type: String },
     url: { type: String },
     projectId: { type: String },
-    customerId: { type: String }
+    customerId: { type: String },
+    groupId: {type: String },
+    userId: {type: String }
   },
   { timestamps: true }
 );
