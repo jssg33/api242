@@ -12,7 +12,6 @@ const controller = require('../controllers/userLogController');
  *         - id
  *         - username
  *         - hashid
- *         - hashedpassword
  *         - loginstatus
  *       properties:
  *         id:
@@ -24,9 +23,12 @@ const controller = require('../controllers/userLogController');
  *         hashid:
  *           type: integer
  *           example: 12345
- *         hashedpassword:
+ *         location:
  *           type: string
- *           example: "$2b$10$abcdefg1234567890"
+ *           example: "New York, USA"
+ *         ipaddress:
+ *           type: string
+ *           example: "192.168.1.10"
  *         loginstatus:
  *           type: string
  *           example: "SUCCESS"
@@ -36,6 +38,12 @@ const controller = require('../controllers/userLogController');
  *         uiorigin:
  *           type: string
  *           example: "web"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
  */
 
 /**
