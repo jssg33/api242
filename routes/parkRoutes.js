@@ -86,6 +86,20 @@ const parkController = require("../controllers/parkController");
  *           type: number
  *         skiing:
  *           type: number
+ *         Installation:
+ *           type: number
+ *         Maintenance:
+ *           type: number
+ *         Operations:
+ *           type: number
+ *         Commerce:
+ *           type: number
+ *         Social:
+ *           type: number
+ *         Marketing:
+ *           type: number
+ *         Metadata:
+ *           type: number
  *         averageRating:
  *           type: number
  *         id:
@@ -114,6 +128,13 @@ const parkController = require("../controllers/parkController");
  *         updatedAt:
  *           type: string
  *           format: date-time
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Parks
+ *   description: Parks API
  */
 
 /**
@@ -237,3 +258,4 @@ router.delete("/:id", parkController.deletePark);
 router.get("/state/:state", parkController.getParksByState);
 
 module.exports = router;
+
