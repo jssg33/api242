@@ -17,30 +17,37 @@ const productController = require("../controllers/productController");
  *           type: string
  *           description: Auto-generated MongoDB ObjectId
 
-         # --- Core Product Fields ---
          SKEWID:
            type: string
            description: Unique product identifier
+
          qtyonhand:
            type: number
+
          listprice:
            type: number
+
          vpdiscount:
            type: number
+
          dirdiscount:
            type: number
+
          managerdiscount:
            type: number
+
          description:
            type: string
 
-         # --- Park / Map / Picture Wall Fields ---
          latitude:
            type: number
+
          longitude:
            type: number
+
          trailmapurl:
            type: string
+
          parklogourl:
            type: string
 
@@ -63,9 +70,9 @@ const productController = require("../controllers/productController");
          pic9url:
            type: string
 
-         # --- Vendor Fields ---
          vendorid:
            type: string
+
          vendorname:
            type: string
 
@@ -76,6 +83,7 @@ const productController = require("../controllers/productController");
          createdAt:
            type: string
            format: date-time
+
          updatedAt:
            type: string
            format: date-time
@@ -221,3 +229,4 @@ router.put("/:id", productController.updateProduct);
 router.delete("/:id", productController.deleteProduct);
 
 module.exports = router;
+
