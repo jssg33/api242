@@ -41,6 +41,32 @@ const productSchema = new mongoose.Schema(
       trim: true
     },
 
+    //Normalize Parks and Products with a picturewall, maptostore, and parklogo/product logo
+
+ longitude: {
+    type: Number
+  },
+  latitude: {
+    type: Number
+  },
+  trailmapurl: {
+    type: String
+  },
+  parklogourl: {
+    type: String
+  },
+  pic1url: String,
+  pic2url: String,
+  pic3url: String,
+  pic4url: String,
+  pic5url: String,
+  pic6url: String,
+  pic7url: String,
+  pic8url: String,
+  pic9url: String,
+
+
+    
     // Vendor information
     vendorid: {
       type: String,
