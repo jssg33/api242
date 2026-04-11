@@ -173,12 +173,65 @@ router.get("/:id", productController.getProductById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             required:
+ *               - SKEWID
+ *               - qtyonhand
+ *               - listprice
+ *             properties:
+ *               SKEWID:
+ *                 type: string
+ *               qtyonhand:
+ *                 type: number
+ *               listprice:
+ *                 type: number
+ *               vpdiscount:
+ *                 type: number
+ *               dirdiscount:
+ *                 type: number
+ *               managerdiscount:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               latitude:
+ *                 type: number
+ *               longitude:
+ *                 type: number
+ *               trailmapurl:
+ *                 type: string
+ *               parklogourl:
+ *                 type: string
+ *               pic1url:
+ *                 type: string
+ *               pic2url:
+ *                 type: string
+ *               pic3url:
+ *                 type: string
+ *               pic4url:
+ *                 type: string
+ *               pic5url:
+ *                 type: string
+ *               pic6url:
+ *                 type: string
+ *               pic7url:
+ *                 type: string
+ *               pic8url:
+ *                 type: string
+ *               pic9url:
+ *                 type: string
+ *               vendorid:
+ *                 type: string
+ *               vendorname:
+ *                 type: string
+ *               warehouseid:
+ *                 type: string
+ *                 default: "001"
  *     responses:
  *       201:
  *         description: Product created
  */
 router.post("/", productController.createProduct);
+
 
 /**
  * @openapi
