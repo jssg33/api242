@@ -17,16 +17,25 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  *       type: object
  *       required:
  *         - uid
- *         - productId
  *         - rating
  *         - review
  *       properties:
  *         uid:
  *           type: string
+ *           description: "User identifier (guest ID, GUID, or MongoDB ObjectId as string)"
+ *         uidGUID:
+ *           type: string
+ *           description: "Optional GUID for cross-system identity"
  *         productId:
  *           type: string
+ *           description: "MongoDB ObjectId of the product"
+ *         productSKU:
+ *           type: string
+ *           description: "SKU string used when MongoDB productId is not available"
  *         rating:
  *           type: number
+ *           minimum: 1
+ *           maximum: 5
  *         title:
  *           type: string
  *         review:
@@ -34,10 +43,11 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  *         verifiedPurchase:
  *           type: boolean
  *       example:
- *         uid: "user123"
- *         productId: "65f1a9c2e4b8c1a9d3f1b123"
+ *         uid: "guest-33"
+ *         productId: "69da6964c8294f8fb7ed38d4"
+ *         productSKU: "SAP-CRYSTAL-001"
  *         rating: 5
- *         title: "Amazing product"
+ *         title: "We Love Crystal"
  *         review: "This was exactly what I needed"
  *         verifiedPurchase: true
  */
@@ -46,8 +56,19 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  * @swagger
  * /productreviews:
  *   get:
- *     summary: Get all product reviews
+ *     summary: Get all product reviews (optionally filter by productId or productSKU)
  *     tags: [ProductReviews]
+ *     parameters:
+ *       - in: query
+ *         name: productId
+ *         schema:
+ *           type: string
+ *         description: "MongoDB ObjectId of the product"
+ *       - in: query
+ *         name: productSKU
+ *         schema:
+ *           type: string
+ *         description: "SKU string of the product"
  *     responses:
  *       200:
  *         description: List of product reviews
