@@ -6,7 +6,7 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  * @swagger
  * tags:
  *   name: ProductReviews
- *   description: CRUD operations for product reviews
+ *   description: CRUD operations for product and park reviews
  */
 
 /**
@@ -25,27 +25,52 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  *           description: "User identifier (guest ID, GUID, or MongoDB ObjectId as string)"
  *         uidGUID:
  *           type: string
+ *           nullable: true
  *           description: "Optional GUID for cross-system identity"
+ *
  *         productId:
  *           type: string
+ *           nullable: true
  *           description: "MongoDB ObjectId of the product"
  *         productSKU:
  *           type: string
+ *           nullable: true
  *           description: "SKU string used when MongoDB productId is not available"
+ *
+ *         parkId:
+ *           type: string
+ *           nullable: true
+ *           description: 'MongoDB ObjectId of the park'
+ *         parkGUID:
+ *           type: string
+ *           nullable: true
+ *           description: 'GUID of the park'
+ *         parkLEGACY:
+ *           type: string
+ *           nullable: true
+ *           description: 'Legacy park identifier'
+ *
  *         rating:
  *           type: number
  *           minimum: 1
  *           maximum: 5
  *         title:
  *           type: string
+ *           nullable: true
  *         review:
  *           type: string
  *         verifiedPurchase:
  *           type: boolean
+ *           nullable: true
+ *
  *       example:
- *         uid: "guest-33"
+ *         uid: "guest-123"
+ *         uidGUID: null
  *         productId: "69da6964c8294f8fb7ed38d4"
  *         productSKU: "SAP-CRYSTAL-001"
+ *         parkId: null
+ *         parkGUID: null
+ *         parkLEGACY: null
  *         rating: 5
  *         title: "We Love Crystal"
  *         review: "This was exactly what I needed"
@@ -56,7 +81,7 @@ const ProductReviewController = require("../controllers/ProductReviewController"
  * @swagger
  * /productreviews:
  *   get:
- *     summary: Get all product reviews (optionally filter by productId or productSKU)
+ *     summary: Get all product reviews (filter by productId or productSKU)
  *     tags: [ProductReviews]
  *     parameters:
  *       - in: query
@@ -124,6 +149,8 @@ router.get("/productreviews/:id", ProductReviewController.getProductReviewById);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ProductReview'
+ *       400:
+ *         description: Invalid input
  */
 router.post("/productreviews", ProductReviewController.createProductReview);
 
