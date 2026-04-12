@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const productReviewSchema = new mongoose.Schema(
   {
-        // Unified author field (used for CGPARKS + product reviews) MongoDB ID
+    // Unified author field (used for CGPARKS + product reviews) MongoDB ID
     uid: {
-      type: String,
-      required: true
+      type: mongoose.Schema.Types.ObjectId,
+      required: false
     },
- 
+    
     // Unified author field (used for CGPARKS + product reviews)
     uidGUID: {
       type: String,
@@ -21,7 +21,7 @@ const productReviewSchema = new mongoose.Schema(
       required: false
     },
     // Optional: product review linkage for Parks GUIDS or Other Product String
-    productSKU: {
+    productGUID: {
       type: String,
       ref: "ProductGUID",
       required: false
@@ -46,6 +46,7 @@ const productReviewSchema = new mongoose.Schema(
       required: false
     },
 
+    // Rating 1–5
     rating: {
       type: Number,
       required: true,
@@ -53,24 +54,43 @@ const productReviewSchema = new mongoose.Schema(
       max: 5
     },
 
+    // Optional title (product reviews)
     title: {
       type: String,
       trim: true
     },
 
+    // Review text
     review: {
       type: String,
       required: true,
       trim: true
     },
 
+    // Optional: product purchase verification
     verifiedPurchase: {
       type: Boolean,
-      default: false,
-      required: false
-    }
+      default: false
+    },
+
+    // CGPARKS fields
+    dateWritten: {
+      type: String
+    },
+
+    dateVisited: {
+      type: String
+    },
+    userId: {
+      type: String
+    },
   },
   { timestamps: true }
 );
+
+module.exports = mongoose.model("Review", reviewSchema);
+
+
+
 
 module.exports = mongoose.model("ProductReview", productReviewSchema);
