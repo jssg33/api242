@@ -16,105 +16,83 @@ const productController = require("../controllers/productController");
  *         id:
  *           type: string
  *           description: Auto-generated MongoDB ObjectId
-
-         SKEWID:
-           type: string
-           description: Unique product identifier
-
-         qtyonhand:
-           type: number
-
-         listprice:
-           type: number
-
-         vpdiscount:
-           type: number
-
-         dirdiscount:
-           type: number
-
-         managerdiscount:
-           type: number
-
-         description:
-           type: string
-
-         latitude:
-           type: number
-
-         longitude:
-           type: number
-
-         trailmapurl:
-           type: string
-
-         parklogourl:
-           type: string
-
-         pic1url:
-           type: string
-         pic2url:
-           type: string
-         pic3url:
-           type: string
-         pic4url:
-           type: string
-         pic5url:
-           type: string
-         pic6url:
-           type: string
-         pic7url:
-           type: string
-         pic8url:
-           type: string
-         pic9url:
-           type: string
-
-         vendorid:
-           type: string
-
-         vendorname:
-           type: string
-
-         warehouseid:
-           type: string
-           default: "001"
-
-         createdAt:
-           type: string
-           format: date-time
-
-         updatedAt:
-           type: string
-           format: date-time
-
-       example:
-         SKEWID: "ABC123"
-         qtyonhand: 50
-         listprice: 199.99
-         vpdiscount: 10
-         dirdiscount: 5
-         managerdiscount: 15
-         description: "High-quality widget"
-
-         latitude: 34.12345
-         longitude: -81.23456
-         trailmapurl: "https://example.com/trailmap.jpg"
-         parklogourl: "https://example.com/logo.jpg"
-
-         pic1url: "https://example.com/pic1.jpg"
-         pic2url: "https://example.com/pic2.jpg"
-         pic3url: "https://example.com/pic3.jpg"
-         pic4url: "https://example.com/pic4.jpg"
-         pic5url: "https://example.com/pic5.jpg"
-         pic6url: "https://example.com/pic6.jpg"
-         pic7url: "https://example.com/pic7.jpg"
-         pic8url: "https://example.com/pic8.jpg"
-         pic9url: "https://example.com/pic9.jpg"
-
-         vendorid: "VEND001"
-         vendorname: "WidgetCo"
-         warehouseid: "001"
+ *         SKEWID:
+ *           type: string
+ *           description: Unique product identifier
+ *         qtyonhand:
+ *           type: number
+ *         listprice:
+ *           type: number
+ *         vpdiscount:
+ *           type: number
+ *         dirdiscount:
+ *           type: number
+ *         managerdiscount:
+ *           type: number
+ *         description:
+ *           type: string
+ *         latitude:
+ *           type: number
+ *         longitude:
+ *           type: number
+ *         trailmapurl:
+ *           type: string
+ *         parklogourl:
+ *           type: string
+ *         pic1url:
+ *           type: string
+ *         pic2url:
+ *           type: string
+ *         pic3url:
+ *           type: string
+ *         pic4url:
+ *           type: string
+ *         pic5url:
+ *           type: string
+ *         pic6url:
+ *           type: string
+ *         pic7url:
+ *           type: string
+ *         pic8url:
+ *           type: string
+ *         pic9url:
+ *           type: string
+ *         vendorid:
+ *           type: string
+ *         vendorname:
+ *           type: string
+ *         warehouseid:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *       example:
+ *         SKEWID: "ABC123"
+ *         qtyonhand: 50
+ *         listprice: 199.99
+ *         vpdiscount: 10
+ *         dirdiscount: 5
+ *         managerdiscount: 15
+ *         description: "High-quality widget"
+ *         latitude: 34.12345
+ *         longitude: -81.23456
+ *         trailmapurl: "https://example.com/trailmap.jpg"
+ *         parklogourl: "https://example.com/logo.jpg"
+ *         pic1url: "https://example.com/pic1.jpg"
+ *         pic2url: "https://example.com/pic2.jpg"
+ *         pic3url: "https://example.com/pic3.jpg"
+ *         pic4url: "https://example.com/pic4.jpg"
+ *         pic5url: "https://example.com/pic5.jpg"
+ *         pic6url: "https://example.com/pic6.jpg"
+ *         pic7url: "https://example.com/pic7.jpg"
+ *         pic8url: "https://example.com/pic8.jpg"
+ *         pic9url: "https://example.com/pic9.jpg"
+ *         vendorid: "VEND001"
+ *         vendorname: "WidgetCo"
+ *         warehouseid: "001"
  */
 
 /**
@@ -173,65 +151,12 @@ router.get("/:id", productController.getProductById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - SKEWID
- *               - qtyonhand
- *               - listprice
- *             properties:
- *               SKEWID:
- *                 type: string
- *               qtyonhand:
- *                 type: number
- *               listprice:
- *                 type: number
- *               vpdiscount:
- *                 type: number
- *               dirdiscount:
- *                 type: number
- *               managerdiscount:
- *                 type: number
- *               description:
- *                 type: string
- *               latitude:
- *                 type: number
- *               longitude:
- *                 type: number
- *               trailmapurl:
- *                 type: string
- *               parklogourl:
- *                 type: string
- *               pic1url:
- *                 type: string
- *               pic2url:
- *                 type: string
- *               pic3url:
- *                 type: string
- *               pic4url:
- *                 type: string
- *               pic5url:
- *                 type: string
- *               pic6url:
- *                 type: string
- *               pic7url:
- *                 type: string
- *               pic8url:
- *                 type: string
- *               pic9url:
- *                 type: string
- *               vendorid:
- *                 type: string
- *               vendorname:
- *                 type: string
- *               warehouseid:
- *                 type: string
- *                 default: "001"
+ *             $ref: '#/components/schemas/Product'
  *     responses:
  *       201:
  *         description: Product created
  */
 router.post("/", productController.createProduct);
-
 
 /**
  * @openapi
@@ -282,4 +207,3 @@ router.put("/:id", productController.updateProduct);
 router.delete("/:id", productController.deleteProduct);
 
 module.exports = router;
-
