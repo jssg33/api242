@@ -4,8 +4,8 @@ const productReviewSchema = new mongoose.Schema(
   {
         // Unified author field (used for CGPARKS + product reviews) MongoDB ID
     uid: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false
+      type: String,
+      required: true
     },
  
     // Unified author field (used for CGPARKS + product reviews)
@@ -21,7 +21,7 @@ const productReviewSchema = new mongoose.Schema(
       required: false
     },
     // Optional: product review linkage for Parks GUIDS or Other Product String
-    productGUID: {
+    productSKU: {
       type: String,
       ref: "ProductGUID",
       required: false
