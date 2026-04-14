@@ -82,6 +82,7 @@ exports.deleteCard = async (req, res) => {
 
 /**
  * GET /cards/user/:userid
+ * (original route — queries by userid)
  */
 exports.getCardsByUser = async (req, res) => {
   try {
@@ -89,5 +90,18 @@ exports.getCardsByUser = async (req, res) => {
     res.status(200).json(cards);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user cards", error });
+  }
+};
+
+/**
+ * GET /cards/user/uid/:uid
+ * (new route — queries by uid)
+ */
+exports.getCardsByUid = async (req, res) => {
+  try {
+    const cards = await Card.find({ uid: req.params.uid });
+    res.status(200).json(cards);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching cards by uid", error });
   }
 };
