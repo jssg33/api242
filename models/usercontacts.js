@@ -10,7 +10,8 @@ const userContactsSchema = new mongoose.Schema(
     state: { type: String, required: true, trim: true },
     zip: { type: String, required: true, trim: true },
     country: { type: String, required: true, trim: true },
-    fax: { type: String, trim: true }
+    fax: { type: String, trim: true },
+    description: { type: String, required: true, trim: true }
   },
   { timestamps: true }
 );
