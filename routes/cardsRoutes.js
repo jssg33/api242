@@ -159,7 +159,7 @@ router.delete("/:id", cardController.deleteCard);
  * /cards/user/{userid}:
  *   get:
  *     tags: [Cards]
- *     summary: Get all cards for a specific user
+ *     summary: Get all cards for a specific user (by userid)
  *     parameters:
  *       - in: path
  *         name: userid
@@ -171,5 +171,23 @@ router.delete("/:id", cardController.deleteCard);
  *         description: Cards for the user
  */
 router.get("/user/:userid", cardController.getCardsByUser);
+
+/**
+ * @swagger
+ * /cards/user/uid/{uid}:
+ *   get:
+ *     tags: [Cards]
+ *     summary: Get all cards for a specific user (by uid)
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Cards for the user by uid
+ */
+router.get("/user/uid/:uid", cardController.getCardsByUid);
 
 module.exports = router;
