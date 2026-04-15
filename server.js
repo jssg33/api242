@@ -92,7 +92,8 @@ app.use("/api/apilogs", require("./routes/apiLogRoutes"));
 app.use("/api/adminlogs", require("./routes/adminLogRoutes"));
 app.use("/downloadlogs", require("./routes/downloadLogRoutes"));
 app.use("/licenselogs", require("./routes/licenseLogRoutes"));
-app.use("/userlogs", require("./routes/userLogRoutes"));
+const userlogRoutes = require("./routes/userlogRoutes");
+app.use("/api/userlog", userlogRoutes);
 
 // Licensing (2)
 app.use("/licenses", require("./routes/licenseRoutes"));
