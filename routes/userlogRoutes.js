@@ -42,10 +42,6 @@ const controller = require("../controllers/userLogController");
  *           type: string
  *         region:
  *           type: string
- *         createdAt:
- *           type: string
- *         updatedAt:
- *           type: string
  */
 
 /**
