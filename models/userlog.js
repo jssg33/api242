@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserLogSchema = new mongoose.Schema({
-  id: { type: Number, required: true },
+  uid: { type: Number, required: true },
   username: { type: String, required: true },
   hashid: { type: Number, required: false },
   mongoid: { type: String, required: false },
