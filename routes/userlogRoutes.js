@@ -20,9 +20,6 @@ const controller = require("../controllers/userLogController");
  *         - username
  *         - description
  *       properties:
- *         _id:
- *           type: string
- *           description: MongoDB ObjectId
  *         uid:
  *           type: number
  *         username:
