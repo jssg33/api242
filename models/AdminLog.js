@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 const AdminLogSchema = new mongoose.Schema({
-  id: { type: Number, required: true },
-  userid: { type: String, required: true },
-  date: { type: Date, required: true },
-  description: { type: String },
+  id: { type: Number, required: false },
+  userid: { type: String, required: false },
+  date: { type: Date, required: false },
+  description: { type: String, required: true },
+  mongoid: { type: String, required: true },
   acknowledged: { type: String },
   techid: { type: Number },
   managerescid: { type: Number },
