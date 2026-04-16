@@ -21,6 +21,10 @@ const UserNoticeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+   mongoid: {
+    type: String,
+    required: true
+  },
   userid: {
     type: Number,
     required: true
