@@ -9,14 +9,9 @@ const controller = require('../controllers/userNoticeController');
  *     UserNotice:
  *       type: object
  *       required:
- *         - id
  *         - description
- *         - noticeDatetime
  *         - noticetype
- *         - emailgwtype
- *         - userid
- *         - useridstring
- *         - emailaddress
+ *         - mongoid
  *       properties:
  *         id:
  *           type: integer
@@ -34,6 +29,9 @@ const controller = require('../controllers/userNoticeController');
  *         emailgwtype:
  *           type: string
  *           example: "SMTP"
+ *         mongoid:
+ *           type: string
+ *           example: "65f1c2b9e4a1a3c9d1234567"
  *         userid:
  *           type: integer
  *           example: 42
@@ -61,12 +59,6 @@ const controller = require('../controllers/userNoticeController');
  *     responses:
  *       200:
  *         description: List of notices
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/UserNotice'
  */
 router.get('/', controller.getAllNotices);
 
@@ -74,23 +66,8 @@ router.get('/', controller.getAllNotices);
  * @swagger
  * /api/notices/{id}:
  *   get:
- *     summary: Get a notice by ID
+ *     summary: Get a notice by numeric ID
  *     tags: [UserNotices]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: A single notice
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UserNotice'
- *       404:
- *         description: Notice not found
  */
 router.get('/:id', controller.getNoticeById);
 
@@ -100,15 +77,6 @@ router.get('/:id', controller.getNoticeById);
  *   post:
  *     summary: Create a new notice
  *     tags: [UserNotices]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserNotice'
- *     responses:
- *       201:
- *         description: Notice created
  */
 router.post('/', controller.createNotice);
 
@@ -116,25 +84,8 @@ router.post('/', controller.createNotice);
  * @swagger
  * /api/notices/{id}:
  *   put:
- *     summary: Update a notice
+ *     summary: Update a notice by numeric ID
  *     tags: [UserNotices]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserNotice'
- *     responses:
- *       200:
- *         description: Notice updated
- *       404:
- *         description: Notice not found
  */
 router.put('/:id', controller.updateNotice);
 
@@ -142,21 +93,63 @@ router.put('/:id', controller.updateNotice);
  * @swagger
  * /api/notices/{id}:
  *   delete:
- *     summary: Delete a notice
+ *     summary: Delete a notice by numeric ID
  *     tags: [UserNotices]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Notice deleted
- *       404:
- *         description: Notice not found
  */
 router.delete('/:id', controller.deleteNotice);
 
+
+
+// -----------------------------------------------------
+// NEW MONGOID-BASED ROUTES
+// -----------------------------------------------------
+
+/**
+ * @swagger
+ * /api/notices/mongo/{mongoid}:
+ *   get:
+ *     summary: Get all notices by mongoid
+ *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Notices for the given mongoid
+ */
+router.get('/mongo/:mongoid', controller.getNoticesByMongoId);
+
+/**
+ * @swagger
+ * /api/notices/mongo/one/{mongoid}:
+ *   get:
+ *     summary: Get a single notice by mongoid
+ *     tags: [UserNotices]
+ */
+router.get('/mongo/one/:mongoid', controller.getNoticeByMongoId);
+
+/**
+ * @swagger
+ * /api/notices/mongo/{mongoid}:
+ *   put:
+ *     summary: Update a notice by mongoid
+ *     tags: [UserNotices]
+ */
+router.put('/mongo/:mongoid', controller.updateNoticeByMongoId);
+
+/**
+ * @swagger
+ * /api/notices/mongo/{mongoid}:
+ *   delete:
+ *     summary: Delete a notice by mongoid
+ *     tags: [UserNotices]
+ */
+router.delete('/mongo/:mongoid', controller.deleteNoticeByMongoId);
+
+
 module.exports = router;
+
 
