@@ -1,5 +1,9 @@
 const License = require("../models/license");
 
+// -----------------------------------------------------
+// ORIGINAL ENDPOINTS (UNCHANGED)
+// -----------------------------------------------------
+
 // Get all licenses
 exports.getLicenses = async (req, res) => {
   try {
@@ -59,9 +63,77 @@ exports.deleteLicense = async (req, res) => {
   }
 };
 
-// -------------------------------
-// NEW FILTERED ENDPOINTS
-// -------------------------------
+// -----------------------------------------------------
+// NEW MONGOID-BASED ENDPOINTS
+// -----------------------------------------------------
+
+// Get ALL licenses by mongoid
+exports.getLicensesByMongoId = async (req, res) => {
+  try {
+    const licenses = await License.find({ mongoid: req.params.mongoid }).lean();
+
+    if (!licenses || licenses.length === 0) {
+      return res.status(404).json({ error: "No licenses found for this mongoid" });
+    }
+
+    res.json(licenses);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch licenses by mongoid" });
+  }
+};
+
+// Get ONE license by mongoid
+exports.getLicenseByMongoId = async (req, res) => {
+  try {
+    const license = await License.findOne({ mongoid: req.params.mongoid }).lean();
+
+    if (!license) {
+      return res.status(404).json({ error: "License not found" });
+    }
+
+    res.json(license);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch license by mongoid" });
+  }
+};
+
+// Update license by mongoid
+exports.updateLicenseByMongoId = async (req, res) => {
+  try {
+    const updated = await License.findOneAndUpdate(
+      { mongoid: req.params.mongoid },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: "License not found" });
+    }
+
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Delete license by mongoid
+exports.deleteLicenseByMongoId = async (req, res) => {
+  try {
+    const deleted = await License.findOneAndDelete({ mongoid: req.params.mongoid });
+
+    if (!deleted) {
+      return res.status(404).json({ error: "License not found" });
+    }
+
+    res.json({ message: "License deleted" });
+  } catch {
+    res.status(500).json({ error: "Failed to delete license by mongoid" });
+  }
+};
+
+// -----------------------------------------------------
+// EXISTING FILTERED ENDPOINTS (UNCHANGED)
+// -----------------------------------------------------
 
 // Get licenses by user ID
 exports.getLicensesByUser = async (req, res) => {
@@ -92,3 +164,4 @@ exports.getLicensesByGroup = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch licenses for group" });
   }
 };
+
