@@ -9,6 +9,7 @@ const licenseSchema = new mongoose.Schema(
     customerid: { type: String, required: true, trim: true },
     userid: { type: String, required: false },
     groupid: { type: String, required: false },
+    mongoid: { type: String, required: false},
     // New fields
     productid: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
