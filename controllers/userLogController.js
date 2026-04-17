@@ -100,3 +100,14 @@ exports.updateByMongoId = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+// -----------------------------
+// GET ALL USER LOGS
+// -----------------------------
+exports.getAll = async (req, res) => {
+  try {
+    const logs = await UserLog.find();
+    res.json(logs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  
