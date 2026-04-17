@@ -45,15 +45,6 @@ router.post("/", controller.createLicenseLog);
  *   get:
  *     tags: [LicenseLogs]
  *     summary: Get logs by user ID
- *     parameters:
- *       - in: path
- *         name: userid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Logs for the user
  */
 router.get("/user/:userid", controller.getLogsByUser);
 
@@ -63,15 +54,6 @@ router.get("/user/:userid", controller.getLogsByUser);
  *   get:
  *     tags: [LicenseLogs]
  *     summary: Get logs by group ID
- *     parameters:
- *       - in: path
- *         name: groupid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Logs for the group
  */
 router.get("/group/:groupid", controller.getLogsByGroup);
 
@@ -81,15 +63,6 @@ router.get("/group/:groupid", controller.getLogsByGroup);
  *   get:
  *     tags: [LicenseLogs]
  *     summary: Get logs by company ID
- *     parameters:
- *       - in: path
- *         name: companyid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Logs for the company
  */
 router.get("/company/:companyid", controller.getLogsByCompany);
 
@@ -99,15 +72,6 @@ router.get("/company/:companyid", controller.getLogsByCompany);
  *   get:
  *     tags: [LicenseLogs]
  *     summary: Get logs by manager ID
- *     parameters:
- *       - in: path
- *         name: managerid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Logs for the manager
  */
 router.get("/manager/:managerid", controller.getLogsByManager);
 
@@ -116,18 +80,7 @@ router.get("/manager/:managerid", controller.getLogsByManager);
  * /licenselogs/{id}:
  *   get:
  *     tags: [LicenseLogs]
- *     summary: Get a log by ID
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Log found
- *       404:
- *         description: Log not found
+ *     summary: Get a log by MongoDB _id
  */
 router.get("/:id", controller.getLicenseLogById);
 
@@ -136,24 +89,7 @@ router.get("/:id", controller.getLicenseLogById);
  * /licenselogs/{id}:
  *   put:
  *     tags: [LicenseLogs]
- *     summary: Update a license log
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *     responses:
- *       200:
- *         description: Log updated
- *       404:
- *         description: Log not found
+ *     summary: Update a license log by MongoDB _id
  */
 router.put("/:id", controller.updateLicenseLog);
 
@@ -162,20 +98,62 @@ router.put("/:id", controller.updateLicenseLog);
  * /licenselogs/{id}:
  *   delete:
  *     tags: [LicenseLogs]
- *     summary: Delete a license log
+ *     summary: Delete a license log by MongoDB _id
+ */
+router.delete("/:id", controller.deleteLicenseLog);
+
+
+// ------------------------------------------------------
+// NEW MONGOID CRUD ROUTES
+// ------------------------------------------------------
+
+/**
+ * @swagger
+ * /licenselogs/mongo/{mongoid}:
+ *   get:
+ *     tags: [LicenseLogs]
+ *     summary: Get all logs by mongoid
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: mongoid
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Log deleted
+ *         description: Logs found
  *       404:
- *         description: Log not found
+ *         description: No logs found
  */
-router.delete("/:id", controller.deleteLicenseLog);
+router.get("/mongo/:mongoid", controller.getLicenseLogsByMongoId);
+
+/**
+ * @swagger
+ * /licenselogs/mongo/one/{mongoid}:
+ *   get:
+ *     tags: [LicenseLogs]
+ *     summary: Get a single log by mongoid
+ */
+router.get("/mongo/one/:mongoid", controller.getLicenseLogByMongoId);
+
+/**
+ * @swagger
+ * /licenselogs/mongo/{mongoid}:
+ *   put:
+ *     tags: [LicenseLogs]
+ *     summary: Update a log by mongoid
+ */
+router.put("/mongo/:mongoid", controller.updateLicenseLogByMongoId);
+
+/**
+ * @swagger
+ * /licenselogs/mongo/{mongoid}:
+ *   delete:
+ *     tags: [LicenseLogs]
+ *     summary: Delete a log by mongoid
+ */
+router.delete("/mongo/:mongoid", controller.deleteLicenseLogByMongoId);
+
 
 module.exports = router;
 
