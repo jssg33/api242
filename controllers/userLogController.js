@@ -110,4 +110,5 @@ exports.getAll = async (req, res) => {
     res.json(logs);
   } catch (err) {
     res.status(500).json({ error: err.message });
-  
+  }
+};
