@@ -22,28 +22,26 @@ const licenseController = require("../controllers/licenseController");
  *           type: string
  *         licenseid:
  *           type: string
- *           example: "LIC-001"
  *         version:
  *           type: string
- *           example: "1.0.0"
  *         installdate:
  *           type: string
- *           example: "2024-01-01"
  *         enddate:
  *           type: string
- *           example: "2025-01-01"
  *         customerid:
  *           type: string
- *           example: "CUST-123"
+ *         userid:
+ *           type: string
+ *         groupid:
+ *           type: string
+ *         mongoid:
+ *           type: string
  *         productid:
  *           type: string
- *           example: "PROD-456"
  *         description:
  *           type: string
- *           example: "Enterprise license for Product X"
  *         releaseyear:
  *           type: string
- *           example: "2024"
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -95,15 +93,6 @@ router.post("/", licenseController.createLicense);
  *   get:
  *     tags: [Licenses]
  *     summary: Get licenses by user ID
- *     parameters:
- *       - in: path
- *         name: userid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: List of licenses for the user
  */
 router.get("/user/:userid", licenseController.getLicensesByUser);
 
@@ -113,15 +102,6 @@ router.get("/user/:userid", licenseController.getLicensesByUser);
  *   get:
  *     tags: [Licenses]
  *     summary: Get licenses by customer ID
- *     parameters:
- *       - in: path
- *         name: customerid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: List of licenses for the customer
  */
 router.get("/customer/:customerid", licenseController.getLicensesByCustomer);
 
@@ -131,15 +111,6 @@ router.get("/customer/:customerid", licenseController.getLicensesByCustomer);
  *   get:
  *     tags: [Licenses]
  *     summary: Get licenses by group ID
- *     parameters:
- *       - in: path
- *         name: groupid
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: List of licenses for the group
  */
 router.get("/group/:groupid", licenseController.getLicensesByGroup);
 
@@ -148,18 +119,7 @@ router.get("/group/:groupid", licenseController.getLicensesByGroup);
  * /licenses/{id}:
  *   get:
  *     tags: [Licenses]
- *     summary: Get a license by ID
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: License found
- *       404:
- *         description: License not found
+ *     summary: Get a license by MongoDB _id
  */
 router.get("/:id", licenseController.getLicenseById);
 
@@ -168,24 +128,7 @@ router.get("/:id", licenseController.getLicenseById);
  * /licenses/{id}:
  *   put:
  *     tags: [Licenses]
- *     summary: Update a license
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/License'
- *     responses:
- *       200:
- *         description: License updated
- *       404:
- *         description: License not found
+ *     summary: Update a license by MongoDB _id
  */
 router.put("/:id", licenseController.updateLicense);
 
@@ -194,19 +137,61 @@ router.put("/:id", licenseController.updateLicense);
  * /licenses/{id}:
  *   delete:
  *     tags: [Licenses]
- *     summary: Delete a license
+ *     summary: Delete a license by MongoDB _id
+ */
+router.delete("/:id", licenseController.deleteLicense);
+
+
+// -----------------------------------------------------
+// NEW MONGOID-BASED ROUTES
+// -----------------------------------------------------
+
+/**
+ * @swagger
+ * /licenses/mongo/{mongoid}:
+ *   get:
+ *     tags: [Licenses]
+ *     summary: Get all licenses by mongoid
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: mongoid
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: License deleted
+ *         description: Licenses found
  *       404:
- *         description: License not found
+ *         description: No licenses found
  */
-router.delete("/:id", licenseController.deleteLicense);
+router.get("/mongo/:mongoid", licenseController.getLicensesByMongoId);
+
+/**
+ * @swagger
+ * /licenses/mongo/one/{mongoid}:
+ *   get:
+ *     tags: [Licenses]
+ *     summary: Get a single license by mongoid
+ */
+router.get("/mongo/one/:mongoid", licenseController.getLicenseByMongoId);
+
+/**
+ * @swagger
+ * /licenses/mongo/{mongoid}:
+ *   put:
+ *     tags: [Licenses]
+ *     summary: Update a license by mongoid
+ */
+router.put("/mongo/:mongoid", licenseController.updateLicenseByMongoId);
+
+/**
+ * @swagger
+ * /licenses/mongo/{mongoid}:
+ *   delete:
+ *     tags: [Licenses]
+ *     summary: Delete a license by mongoid
+ */
+router.delete("/mongo/:mongoid", licenseController.deleteLicenseByMongoId);
+
 
 module.exports = router;
