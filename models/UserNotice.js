@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const UserNoticeSchema = new mongoose.Schema({
   id: {
     type: Number,
-    required: true
+    required: false
   },
   description: {
     type: String,
@@ -11,7 +11,7 @@ const UserNoticeSchema = new mongoose.Schema({
   },
   noticeDatetime: {
     type: Date,
-    required: true
+    required: false
   },
   noticetype: {
     type: String,
@@ -19,7 +19,7 @@ const UserNoticeSchema = new mongoose.Schema({
   },
   emailgwtype: {
     type: String,
-    required: true
+    required: false
   },
    mongoid: {
     type: String,
@@ -27,15 +27,15 @@ const UserNoticeSchema = new mongoose.Schema({
   },
   userid: {
     type: Number,
-    required: true
+    required: false
   },
   useridstring: {
     type: String,
-    required: true
+    required: false
   },
   emailaddress: {
     type: String,
-    required: true
+    required: false
   }
 }, { timestamps: true });
 
