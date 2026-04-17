@@ -9,9 +9,8 @@ const controller = require('../controllers/adminLogController');
  *     AdminLog:
  *       type: object
  *       required:
- *         - id
- *         - userid
- *         - date
+ *         - description
+ *         - mongoid
  *       properties:
  *         id:
  *           type: integer
@@ -22,6 +21,8 @@ const controller = require('../controllers/adminLogController');
  *           format: date-time
  *         description:
  *           type: string
+ *         mongoid:
+ *           type: string
  *         acknowledged:
  *           type: string
  *         techid:
@@ -30,15 +31,6 @@ const controller = require('../controllers/adminLogController');
  *           type: integer
  *         threatlevel:
  *           type: string
- *       example:
- *         id: 1
- *         userid: "admin123"
- *         date: "2026-02-05T00:23:40.130Z"
- *         description: "Unauthorized login attempt"
- *         acknowledged: "yes"
- *         techid: 42
- *         managerescid: 7
- *         threatlevel: "high"
  */
 
 /**
@@ -50,12 +42,6 @@ const controller = require('../controllers/adminLogController');
  *     responses:
  *       200:
  *         description: List of admin logs
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/AdminLog'
  */
 router.get('/', controller.getAllAdminLogs);
 
@@ -63,7 +49,7 @@ router.get('/', controller.getAllAdminLogs);
  * @swagger
  * /api/adminlogs/{id}:
  *   get:
- *     summary: Get an admin log by ID
+ *     summary: Get an admin log by numeric ID
  *     tags: [AdminLog]
  *     parameters:
  *       - in: path
@@ -71,14 +57,9 @@ router.get('/', controller.getAllAdminLogs);
  *         schema:
  *           type: integer
  *         required: true
- *         description: Numeric ID of the admin log
  *     responses:
  *       200:
  *         description: Admin log found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/AdminLog'
  *       404:
  *         description: Admin log not found
  */
@@ -99,11 +80,53 @@ router.get('/:id', controller.getAdminLogById);
  *     responses:
  *       201:
  *         description: Admin log created
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/AdminLog'
  */
 router.post('/', controller.createAdminLog);
+
+/**
+ * @swagger
+ * /api/adminlogs/mongoid/{mongoid}:
+ *   get:
+ *     summary: Get an admin log by mongoid
+ *     tags: [AdminLog]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Admin log found
+ *       404:
+ *         description: Admin log not found
+ */
+router.get('/mongoid/:mongoid', controller.getAdminLogByMongoId);
+
+/**
+ * @swagger
+ * /api/adminlogs/mongoid/{mongoid}:
+ *   put:
+ *     summary: Update an admin log by mongoid
+ *     tags: [AdminLog]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AdminLog'
+ *     responses:
+ *       200:
+ *         description: Admin log updated
+ *       404:
+ *         description: Admin log not found
+ */
+router.put('/mongoid/:mongoid', controller.updateAdminLogByMongoId);
 
 module.exports = router;
