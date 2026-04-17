@@ -35,6 +35,13 @@ const controller = require('../controllers/adminLogController');
 
 /**
  * @swagger
+ * tags:
+ *   name: AdminLog
+ *   description: API for managing admin logs
+ */
+
+/**
+ * @swagger
  * /api/adminlogs:
  *   get:
  *     summary: Get all admin logs
@@ -83,11 +90,36 @@ router.get('/:id', controller.getAdminLogById);
  */
 router.post('/', controller.createAdminLog);
 
+
+// -----------------------------------------------------
+// NEW MONGOID-BASED ROUTES
+// -----------------------------------------------------
+
 /**
  * @swagger
- * /api/adminlogs/mongoid/{mongoid}:
+ * /api/adminlogs/mongo/{mongoid}:
  *   get:
- *     summary: Get an admin log by mongoid
+ *     summary: Get all admin logs by mongoid
+ *     tags: [AdminLog]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Admin logs found
+ *       404:
+ *         description: No logs found for this mongoid
+ */
+router.get('/mongo/:mongoid', controller.getAdminLogsByMongoId);
+
+/**
+ * @swagger
+ * /api/adminlogs/mongo/one/{mongoid}:
+ *   get:
+ *     summary: Get a single admin log by mongoid
  *     tags: [AdminLog]
  *     parameters:
  *       - in: path
@@ -101,11 +133,11 @@ router.post('/', controller.createAdminLog);
  *       404:
  *         description: Admin log not found
  */
-router.get('/mongoid/:mongoid', controller.getAdminLogByMongoId);
+router.get('/mongo/one/:mongoid', controller.getAdminLogByMongoId);
 
 /**
  * @swagger
- * /api/adminlogs/mongoid/{mongoid}:
+ * /api/adminlogs/mongo/{mongoid}:
  *   put:
  *     summary: Update an admin log by mongoid
  *     tags: [AdminLog]
@@ -127,6 +159,27 @@ router.get('/mongoid/:mongoid', controller.getAdminLogByMongoId);
  *       404:
  *         description: Admin log not found
  */
-router.put('/mongoid/:mongoid', controller.updateAdminLogByMongoId);
+router.put('/mongo/:mongoid', controller.updateAdminLogByMongoId);
+
+/**
+ * @swagger
+ * /api/adminlogs/mongo/{mongoid}:
+ *   delete:
+ *     summary: Delete an admin log by mongoid
+ *     tags: [AdminLog]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Admin log deleted
+ *       404:
+ *         description: Admin log not found
+ */
+router.delete('/mongo/:mongoid', controller.deleteAdminLogByMongoId);
+
 
 module.exports = router;
