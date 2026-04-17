@@ -44,7 +44,7 @@ const controller = require("../controllers/userContactsController");
  *         fax:
  *           type: string
  *           example: "555-987-6543"
-           description:
+ *         description:
  *           type: string
  *           example: "I need a quotation on an Enterprise Site License."
  *         createdAt:
