@@ -47,6 +47,18 @@ const controller = require("../controllers/userLogController");
 /**
  * @swagger
  * /api/userlog:
+ *   get:
+ *     summary: Get all user logs
+ *     tags: [UserLog]
+ *     responses:
+ *       200:
+ *         description: List of all user logs
+ */
+router.get("/", controller.getAll);
+
+/**
+ * @swagger
+ * /api/userlog:
  *   post:
  *     summary: Create a new user log entry
  *     tags: [UserLog]
@@ -189,4 +201,3 @@ router.put("/uid/:uid", controller.updateByUid);
 router.put("/mongoid/:mongoid", controller.updateByMongoId);
 
 module.exports = router;
-
