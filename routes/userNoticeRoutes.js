@@ -22,7 +22,7 @@ const controller = require('../controllers/userNoticeController');
  *         noticeDatetime:
  *           type: string
  *           format: date-time
- *           example: "2026-02-04"
+ *           example: "2026-04-18T02:48:18.448Z"
  *         noticetype:
  *           type: string
  *           example: "Error"
