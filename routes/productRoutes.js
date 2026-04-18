@@ -31,6 +31,13 @@ const productController = require("../controllers/productController");
  *           type: number
  *         description:
  *           type: string
+ *         isUpgrade:
+ *           type: boolean
+ *           description: Indicates if this product is an upgrade
+ *         upgradefromProductId:
+ *           type: string
+ *           nullable: true
+ *           description: Product ID this upgrade applies to
  *         latitude:
  *           type: number
  *         longitude:
@@ -77,19 +84,13 @@ const productController = require("../controllers/productController");
  *         dirdiscount: 5
  *         managerdiscount: 15
  *         description: "High-quality widget"
+ *         isUpgrade: true
+ *         upgradefromProductId: "67a1234bcf90123456789abc"
  *         latitude: 34.12345
  *         longitude: -81.23456
  *         trailmapurl: "https://example.com/trailmap.jpg"
  *         parklogourl: "https://example.com/logo.jpg"
  *         pic1url: "https://example.com/pic1.jpg"
- *         pic2url: "https://example.com/pic2.jpg"
- *         pic3url: "https://example.com/pic3.jpg"
- *         pic4url: "https://example.com/pic4.jpg"
- *         pic5url: "https://example.com/pic5.jpg"
- *         pic6url: "https://example.com/pic6.jpg"
- *         pic7url: "https://example.com/pic7.jpg"
- *         pic8url: "https://example.com/pic8.jpg"
- *         pic9url: "https://example.com/pic9.jpg"
  *         vendorid: "VEND001"
  *         vendorname: "WidgetCo"
  *         warehouseid: "001"
@@ -113,6 +114,27 @@ const productController = require("../controllers/productController");
  *                 $ref: '#/components/schemas/Product'
  */
 router.get("/", productController.getAllProducts);
+
+/**
+ * @openapi
+ * /products/upgrades:
+ *   get:
+ *     summary: Get all upgrade products
+ *     tags:
+ *       - Products
+ *     responses:
+ *       200:
+ *         description: List of upgrade products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: No upgrade products found
+ */
+router.get("/upgrades", productController.getUpgradeProducts);
 
 /**
  * @openapi
