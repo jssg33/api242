@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 
+// Get all products
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -9,6 +10,7 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
+// Get product by ID
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -19,6 +21,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+// Create product
 exports.createProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
@@ -29,6 +32,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+// Update product
 exports.updateProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -42,11 +46,28 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
+// Delete product
 exports.deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) return res.status(404).json({ message: "Product not found" });
     res.json({ message: "Product deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get all upgrade products
+exports.getUpgradeProducts = async (req, res) => {
+  try {
+    const upgrades = await Product.find({ isUpgrade: true })
+      .populate("upgradefromProductId"); // optional if using ObjectId ref
+
+    if (upgrades.length === 0) {
+      return res.status(404).json({ message: "No upgrade products found" });
+    }
+
+    res.json(upgrades);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
