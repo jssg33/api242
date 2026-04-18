@@ -15,13 +15,17 @@ const UserNoticeSchema = new mongoose.Schema({
   },
   noticetype: {
     type: String,
-    required: true
+    required: false
   },
   emailgwtype: {
     type: String,
     required: false
   },
    mongoid: {
+    type: String,
+    required: true
+  },
+  username: {
     type: String,
     required: true
   },
