@@ -59,6 +59,12 @@ const controller = require('../controllers/userNoticeController');
  *     responses:
  *       200:
  *         description: List of notices
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/UserNotice'
  */
 router.get('/', controller.getAllNotices);
 
@@ -68,6 +74,21 @@ router.get('/', controller.getAllNotices);
  *   get:
  *     summary: Get a notice by numeric ID
  *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: A single notice
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserNotice'
+ *       404:
+ *         description: Notice not found
  */
 router.get('/:id', controller.getNoticeById);
 
@@ -77,6 +98,21 @@ router.get('/:id', controller.getNoticeById);
  *   post:
  *     summary: Create a new notice
  *     tags: [UserNotices]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserNotice'
+ *     responses:
+ *       201:
+ *         description: Notice created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserNotice'
+ *       400:
+ *         description: Invalid input
  */
 router.post('/', controller.createNotice);
 
@@ -86,6 +122,23 @@ router.post('/', controller.createNotice);
  *   put:
  *     summary: Update a notice by numeric ID
  *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserNotice'
+ *     responses:
+ *       200:
+ *         description: Notice updated
+ *       404:
+ *         description: Notice not found
  */
 router.put('/:id', controller.updateNotice);
 
@@ -95,13 +148,23 @@ router.put('/:id', controller.updateNotice);
  *   delete:
  *     summary: Delete a notice by numeric ID
  *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Notice deleted
+ *       404:
+ *         description: Notice not found
  */
 router.delete('/:id', controller.deleteNotice);
 
 
-
 // -----------------------------------------------------
-// NEW MONGOID-BASED ROUTES
+// MONGOID-BASED ROUTES
 // -----------------------------------------------------
 
 /**
@@ -119,6 +182,14 @@ router.delete('/:id', controller.deleteNotice);
  *     responses:
  *       200:
  *         description: Notices for the given mongoid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/UserNotice'
+ *       404:
+ *         description: No notices found
  */
 router.get('/mongo/:mongoid', controller.getNoticesByMongoId);
 
@@ -128,6 +199,21 @@ router.get('/mongo/:mongoid', controller.getNoticesByMongoId);
  *   get:
  *     summary: Get a single notice by mongoid
  *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A single notice
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserNotice'
+ *       404:
+ *         description: Notice not found
  */
 router.get('/mongo/one/:mongoid', controller.getNoticeByMongoId);
 
@@ -137,6 +223,23 @@ router.get('/mongo/one/:mongoid', controller.getNoticeByMongoId);
  *   put:
  *     summary: Update a notice by mongoid
  *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserNotice'
+ *     responses:
+ *       200:
+ *         description: Notice updated
+ *       404:
+ *         description: Notice not found
  */
 router.put('/mongo/:mongoid', controller.updateNoticeByMongoId);
 
@@ -146,10 +249,18 @@ router.put('/mongo/:mongoid', controller.updateNoticeByMongoId);
  *   delete:
  *     summary: Delete a notice by mongoid
  *     tags: [UserNotices]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Notice deleted
+ *       404:
+ *         description: Notice not found
  */
 router.delete('/mongo/:mongoid', controller.deleteNoticeByMongoId);
 
-
 module.exports = router;
-
-
