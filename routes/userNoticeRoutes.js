@@ -21,7 +21,7 @@ const controller = require('../controllers/userNoticeController');
  *           example: "Email gateway failure"
  *         noticeDatetime:
  *           type: string
- *           format: date
+ *           format: date-time
  *           example: "2026-02-04"
  *         noticetype:
  *           type: string
