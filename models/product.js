@@ -41,43 +41,35 @@ const productSchema = new mongoose.Schema(
       trim: true
     },
 
- // isUpgrade
+    // Upgrade flag
     isUpgrade: {
-      type: Number,
-      default: 0
+      type: Boolean,
+      required: true,
+      default: false
     },
-// if Product is an Upgrade Type... it should be related to a specific product it allows to be upgraded to...
-    upgradefromProductId
-    type: String,
-      trim: true
+
+    // If product is an upgrade, what product does it upgrade from?
+    upgradefromProductId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: false
     },
-  
-    //Normalize Parks and Products with a picturewall, maptostore, and parklogo/product logo
 
- longitude: {
-    type: Number
-  },
-  latitude: {
-    type: Number
-  },
-  trailmapurl: {
-    type: String
-  },
-  parklogourl: {
-    type: String
-  },
-  pic1url: String,
-  pic2url: String,
-  pic3url: String,
-  pic4url: String,
-  pic5url: String,
-  pic6url: String,
-  pic7url: String,
-  pic8url: String,
-  pic9url: String,
+    // Location / media
+    longitude: Number,
+    latitude: Number,
+    trailmapurl: String,
+    parklogourl: String,
+    pic1url: String,
+    pic2url: String,
+    pic3url: String,
+    pic4url: String,
+    pic5url: String,
+    pic6url: String,
+    pic7url: String,
+    pic8url: String,
+    pic9url: String,
 
-
-    
     // Vendor information
     vendorid: {
       type: String,
