@@ -38,7 +38,7 @@ const controller = require('../controllers/userNoticeController');
  *         useridstring:
  *           type: string
  *           example: "user42"
- *        username:
+ *         username:
  *           type: string
  *           example: "user42@glocation.info"
  *         emailaddress:
