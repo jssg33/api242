@@ -41,6 +41,17 @@ const productSchema = new mongoose.Schema(
       trim: true
     },
 
+ // isUpgrade
+    isUpgrade: {
+      type: Number,
+      default: 0
+    },
+// if Product is an Upgrade Type... it should be related to a specific product it allows to be upgraded to...
+    upgradefromProductId
+    type: String,
+      trim: true
+    },
+  
     //Normalize Parks and Products with a picturewall, maptostore, and parklogo/product logo
 
  longitude: {
