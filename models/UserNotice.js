@@ -25,6 +25,11 @@ const UserNoticeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+    isDeleted: {
+    type: Boolean,
+    required: false,
+      default: false
+  },
   username: {
     type: String,
     required: true
