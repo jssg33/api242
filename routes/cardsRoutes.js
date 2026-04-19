@@ -11,6 +11,7 @@ const cardController = require("../controllers/cardController");
  *       required:
  *         - cardId
  *         - uid
+ *         - mongoid
  *         - cardType
  *         - cardVendor
  *         - cardLast4
@@ -23,6 +24,8 @@ const cardController = require("../controllers/cardController");
  *         cardId:
  *           type: number
  *         uid:
+ *           type: string
+ *         mongoid:
  *           type: string
  *         cardType:
  *           type: string
@@ -61,12 +64,6 @@ const cardController = require("../controllers/cardController");
  *     responses:
  *       200:
  *         description: List of cards
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Card"
  */
 router.get("/", cardController.getCards);
 
@@ -93,7 +90,7 @@ router.post("/", cardController.createCard);
  * /cards/{id}:
  *   get:
  *     tags: [Cards]
- *     summary: Get a card by Mongo ID
+ *     summary: Get a card by Mongo _id
  *     parameters:
  *       - in: path
  *         name: id
@@ -113,7 +110,7 @@ router.get("/:id", cardController.getCardById);
  * /cards/{id}:
  *   put:
  *     tags: [Cards]
- *     summary: Update a saved card
+ *     summary: Update a saved card by Mongo _id
  *     parameters:
  *       - in: path
  *         name: id
@@ -139,7 +136,7 @@ router.put("/:id", cardController.updateCard);
  * /cards/{id}:
  *   delete:
  *     tags: [Cards]
- *     summary: Delete a saved card
+ *     summary: Delete a saved card by Mongo _id
  *     parameters:
  *       - in: path
  *         name: id
@@ -153,6 +150,80 @@ router.put("/:id", cardController.updateCard);
  *         description: Card not found
  */
 router.delete("/:id", cardController.deleteCard);
+
+/* ---------------------------------------------------------
+   NEW CRUD ROUTES BY mongoid
+--------------------------------------------------------- */
+
+/**
+ * @swagger
+ * /cards/mongoid/{mongoid}:
+ *   get:
+ *     tags: [Cards]
+ *     summary: Get a card by mongoid
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Card found
+ *       404:
+ *         description: Card not found
+ */
+router.get("/mongoid/:mongoid", cardController.getCardByMongoId);
+
+/**
+ * @swagger
+ * /cards/mongoid/{mongoid}:
+ *   put:
+ *     tags: [Cards]
+ *     summary: Update a card by mongoid
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Card"
+ *     responses:
+ *       200:
+ *         description: Card updated
+ *       404:
+ *         description: Card not found
+ */
+router.put("/mongoid/:mongoid", cardController.updateCardByMongoId);
+
+/**
+ * @swagger
+ * /cards/mongoid/{mongoid}:
+ *   delete:
+ *     tags: [Cards]
+ *     summary: Delete a card by mongoid
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Card deleted
+ *       404:
+ *         description: Card not found
+ */
+router.delete("/mongoid/:mongoid", cardController.deleteCardByMongoId);
+
+/* ---------------------------------------------------------
+   USER FILTER ROUTES
+--------------------------------------------------------- */
 
 /**
  * @swagger
@@ -189,5 +260,8 @@ router.get("/user/:userid", cardController.getCardsByUser);
  *         description: Cards for the user by uid
  */
 router.get("/user/uid/:uid", cardController.getCardsByUid);
+
+module.exports = router;
+
 
 module.exports = router;
