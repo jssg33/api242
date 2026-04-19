@@ -87,17 +87,18 @@ exports.deleteCard = async (req, res) => {
 /**
  * GET /cards/mongoid/:mongoid
  */
-exports.getCardByMongoId = async (req, res) => {
-  try {
-    const card = await Card.findOne({ mongoid: req.params.mongoid });
 
-    if (!card) {
-      return res.status(404).json({ message: "Card not found" });
+exports.getCardsByMongoId = async (req, res) => {
+  try {
+    const cards = await Card.find({ mongoid: req.params.mongoid });
+
+    if (!cards || cards.length === 0) {
+      return res.status(404).json({ message: "No cards found for this mongoid" });
     }
 
-    res.status(200).json(card);
+    res.status(200).json(cards);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching card by mongoid", error });
+    res.status(500).json({ message: "Error fetching cards by mongoid", error });
   }
 };
 
