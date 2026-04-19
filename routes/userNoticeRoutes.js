@@ -10,41 +10,41 @@ const controller = require('../controllers/userNoticeController');
  *       type: object
  *       required:
  *         - description
- *         - noticetype
  *         - mongoid
+ *         - username
  *       properties:
  *         id:
- *           type: integer
- *           example: 1
+ *           type: number
  *         description:
  *           type: string
- *           example: "Email gateway failure"
  *         noticeDatetime:
  *           type: string
  *           format: date-time
- *           example: "2026-04-18T02:48:18.448Z"
  *         noticetype:
  *           type: string
- *           example: "Error"
  *         emailgwtype:
  *           type: string
- *           example: "SMTP"
  *         mongoid:
  *           type: string
- *           example: "65f1c2b9e4a1a3c9d1234567"
- *         userid:
- *           type: integer
- *           example: 42
- *         useridstring:
- *           type: string
- *           example: "user42"
+ *         isDeleted:
+ *           type: boolean
+ *           default: false
  *         username:
  *           type: string
- *           example: "user42@glocation.info"
+ *         userid:
+ *           type: number
+ *         useridstring:
+ *           type: string
  *         emailaddress:
  *           type: string
- *           example: "user42@example.com"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
  */
+
 
 /**
  * @swagger
