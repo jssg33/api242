@@ -9,6 +9,10 @@ const CardSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  mongoid: {
+    type: String,
+    required: true
+  },
   cardType: {
     type: String,
     required: true
@@ -31,7 +35,7 @@ const CardSchema = new mongoose.Schema({
   },
   isActive: {
     type: Number,
-    default: 0
+    default: 1
   },
   cardbtn: {
     type: String
