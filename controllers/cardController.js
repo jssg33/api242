@@ -26,7 +26,7 @@ exports.createCard = async (req, res) => {
 };
 
 /**
- * GET /cards/:id
+ * GET /cards/:id  (Mongo _id)
  */
 exports.getCardById = async (req, res) => {
   try {
@@ -43,7 +43,7 @@ exports.getCardById = async (req, res) => {
 };
 
 /**
- * PUT /cards/:id
+ * PUT /cards/:id  (Mongo _id)
  */
 exports.updateCard = async (req, res) => {
   try {
@@ -64,7 +64,7 @@ exports.updateCard = async (req, res) => {
 };
 
 /**
- * DELETE /cards/:id
+ * DELETE /cards/:id  (Mongo _id)
  */
 exports.deleteCard = async (req, res) => {
   try {
@@ -80,9 +80,71 @@ exports.deleteCard = async (req, res) => {
   }
 };
 
+/* ---------------------------------------------------------
+   CRUD BY mongoid (NEW)
+--------------------------------------------------------- */
+
+/**
+ * GET /cards/mongoid/:mongoid
+ */
+exports.getCardByMongoId = async (req, res) => {
+  try {
+    const card = await Card.findOne({ mongoid: req.params.mongoid });
+
+    if (!card) {
+      return res.status(404).json({ message: "Card not found" });
+    }
+
+    res.status(200).json(card);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching card by mongoid", error });
+  }
+};
+
+/**
+ * PUT /cards/mongoid/:mongoid
+ */
+exports.updateCardByMongoId = async (req, res) => {
+  try {
+    const updated = await Card.findOneAndUpdate(
+      { mongoid: req.params.mongoid },
+      req.body,
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Card not found" });
+    }
+
+    res.status(200).json(updated);
+  } catch (error) {
+    res.status(400).json({ message: "Error updating card by mongoid", error });
+  }
+};
+
+/**
+ * DELETE /cards/mongoid/:mongoid
+ */
+exports.deleteCardByMongoId = async (req, res) => {
+  try {
+    const deleted = await Card.findOneAndDelete({ mongoid: req.params.mongoid });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Card not found" });
+    }
+
+    res.status(200).json({ message: "Card deleted" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting card by mongoid", error });
+  }
+};
+
+/* ---------------------------------------------------------
+   EXISTING USER FILTERS
+--------------------------------------------------------- */
+
 /**
  * GET /cards/user/:userid
- * (original route — queries by userid)
  */
 exports.getCardsByUser = async (req, res) => {
   try {
@@ -95,7 +157,6 @@ exports.getCardsByUser = async (req, res) => {
 
 /**
  * GET /cards/user/uid/:uid
- * (new route — queries by uid)
  */
 exports.getCardsByUid = async (req, res) => {
   try {
@@ -105,3 +166,4 @@ exports.getCardsByUid = async (req, res) => {
     res.status(500).json({ message: "Error fetching cards by uid", error });
   }
 };
+
