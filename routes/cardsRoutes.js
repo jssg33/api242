@@ -173,7 +173,8 @@ router.delete("/:id", cardController.deleteCard);
  *       404:
  *         description: Card not found
  */
-router.get("/mongoid/:mongoid", cardController.getCardByMongoId);
+router.get("/mongoid/:mongoid", cardController.getCardsByMongoId);
+
 
 /**
  * @swagger
