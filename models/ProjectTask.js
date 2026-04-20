@@ -8,7 +8,8 @@ const ProjectTaskSchema = new mongoose.Schema(
     projectId: { type: String },
     customerId: { type: String },
     groupId: {type: String },
-    userId: {type: String }
+    userId: {type: String },
+    mongoid: {type: String }
   },
   { timestamps: true }
 );
