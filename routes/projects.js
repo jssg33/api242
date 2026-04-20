@@ -1,4 +1,3 @@
-// routes/projects.js
 const express = require("express");
 const router = express.Router();
 const ProjectController = require("../controllers/ProjectController");
@@ -34,6 +33,8 @@ const ProjectController = require("../controllers/ProjectController");
  *         subaccount:
  *           type: string
  *         companyid:
+ *           type: string
+ *         mongoid:
  *           type: string
  *         logoUrl:
  *           type: string
@@ -109,7 +110,7 @@ router.get("/instance/:instanceid", ProjectController.getProjectsByInstance);
  * @swagger
  * /api/projects/{id}:
  *   get:
- *     summary: Get a project by ID
+ *     summary: Get a project by MongoDB _id
  *     tags: [Projects]
  *     parameters:
  *       - in: path
@@ -127,7 +128,7 @@ router.get("/:id", ProjectController.getProjectById);
  * @swagger
  * /api/projects/{id}:
  *   put:
- *     summary: Update a project
+ *     summary: Update a project by MongoDB _id
  *     tags: [Projects]
  *     parameters:
  *       - in: path
@@ -151,7 +152,7 @@ router.put("/:id", ProjectController.updateProject);
  * @swagger
  * /api/projects/{id}:
  *   delete:
- *     summary: Delete a project
+ *     summary: Delete a project by MongoDB _id
  *     tags: [Projects]
  *     parameters:
  *       - in: path
@@ -165,4 +166,79 @@ router.put("/:id", ProjectController.updateProject);
  */
 router.delete("/:id", ProjectController.deleteProject);
 
+
+
+
+
+/* ---------------------------------------------------------
+   NEW: CRUD ROUTES USING CUSTOM mongoid FIELD
+--------------------------------------------------------- */
+
+/**
+ * @swagger
+ * /api/projects/mongo/{mongoid}:
+ *   get:
+ *     summary: Get a project by custom mongoid field
+ *     tags: [Projects]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Project data
+ *       404:
+ *         description: Project not found
+ */
+router.get("/mongo/:mongoid", ProjectController.getProjectByMongoId);
+
+/**
+ * @swagger
+ * /api/projects/mongo/{mongoid}:
+ *   put:
+ *     summary: Update a project by custom mongoid field
+ *     tags: [Projects]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Project'
+ *     responses:
+ *       200:
+ *         description: Updated project
+ *       404:
+ *         description: Project not found
+ */
+router.put("/mongo/:mongoid", ProjectController.updateProjectByMongoId);
+
+/**
+ * @swagger
+ * /api/projects/mongo/{mongoid}:
+ *   delete:
+ *     summary: Delete a project by custom mongoid field
+ *     tags: [Projects]
+ *     parameters:
+ *       - in: path
+ *         name: mongoid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Project deleted
+ *       404:
+ *         description: Project not found
+ */
+router.delete("/mongo/:mongoid", ProjectController.deleteProjectByMongoId);
+
 module.exports = router;
+
