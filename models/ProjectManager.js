@@ -65,6 +65,12 @@ const ProjectSchema = new mongoose.Schema({
         index: true,
         trim: true
     },
+      mongoid: {
+        type: String,
+        required: false,
+        index: true,
+        trim: true
+    },
 
         logoUrl: {
         type: String,
