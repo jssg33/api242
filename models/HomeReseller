@@ -21,6 +21,8 @@ const AddressSchema = new mongoose.Schema({
 });
 
 const HomeResellerSchema = new mongoose.Schema({
+  userid: { type: String, required: true },
+  username: { type: String, required: false },
   resellerName: { type: String, required: true },
   contactEmail: { type: String, required: true },
   contactPhone: { type: String },
