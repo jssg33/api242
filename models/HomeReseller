@@ -1,0 +1,44 @@
+const mongoose = require('mongoose');
+
+const FloorPlanSchema = new mongoose.Schema({
+  bedrooms: { type: Number, required: true },
+  bathrooms: { type: Number, required: true },
+  squareFeet: { type: Number, required: true },
+  layoutDescription: { type: String },
+  images: [{ type: String }] // URLs to floor plan images
+});
+
+const AddressSchema = new mongoose.Schema({
+  street: { type: String, required: true },
+  unit: { type: String },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  zipCode: { type: String, required: true },
+  coordinates: {
+    lat: { type: Number },
+    lng: { type: Number }
+  }
+});
+
+const HomeResellerSchema = new mongoose.Schema({
+  resellerName: { type: String, required: true },
+  contactEmail: { type: String, required: true },
+  contactPhone: { type: String },
+
+  address: { type: AddressSchema, required: true },
+  floorPlan: { type: FloorPlanSchema, required: true },
+
+  yearBuilt: { type: Number },
+  lotSizeSqFt: { type: Number },
+  propertyType: { type: String, enum: ['single-family', 'townhome', 'condo', 'multi-family'] },
+
+  price: { type: Number, required: true },
+  status: { type: String, enum: ['available', 'pending', 'sold'], default: 'available' },
+
+  description: { type: String },
+  images: [{ type: String }], // URLs to property photos
+
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('HomeReseller', HomeResellerSchema);
