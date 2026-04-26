@@ -9,6 +9,7 @@ const FloorPlanSchema = new mongoose.Schema({
 });
 
 const AddressSchema = new mongoose.Schema({
+  Id: { type: Number, required: true },
   street: { type: String, required: true },
   unit: { type: String },
   city: { type: String, required: true },
