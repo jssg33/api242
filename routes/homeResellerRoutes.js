@@ -16,6 +16,8 @@ const controller = require('../controllers/homeResellerController');
  *     Address:
  *       type: object
  *       properties:
+ *         Id:
+ *           type: number
  *         street:
  *           type: string
  *         unit:
@@ -103,17 +105,6 @@ const controller = require('../controllers/homeResellerController');
  *   post:
  *     summary: Create a new home reseller property
  *     tags: [HomeReseller]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/HomeReseller'
- *     responses:
- *       201:
- *         description: Property created successfully
- *       400:
- *         description: Validation error
  */
 router.post('/', controller.createProperty);
 
@@ -140,6 +131,10 @@ router.post('/', controller.createProperty);
  *         name: resellerName
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: addressId
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: List of properties
@@ -150,19 +145,8 @@ router.get('/', controller.getProperties);
  * @swagger
  * /api/homes/{id}:
  *   get:
- *     summary: Get a single property by ID
+ *     summary: Get a single property by MongoDB ID
  *     tags: [HomeReseller]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Property found
- *       404:
- *         description: Property not found
  */
 router.get('/:id', controller.getPropertyById);
 
@@ -170,25 +154,8 @@ router.get('/:id', controller.getPropertyById);
  * @swagger
  * /api/homes/{id}:
  *   put:
- *     summary: Update a property by ID
+ *     summary: Update a property by MongoDB ID
  *     tags: [HomeReseller]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/HomeReseller'
- *     responses:
- *       200:
- *         description: Property updated
- *       404:
- *         description: Property not found
  */
 router.put('/:id', controller.updateProperty);
 
@@ -196,20 +163,44 @@ router.put('/:id', controller.updateProperty);
  * @swagger
  * /api/homes/{id}:
  *   delete:
- *     summary: Delete a property by ID
+ *     summary: Delete a property by MongoDB ID
  *     tags: [HomeReseller]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Property deleted
- *       404:
- *         description: Property not found
  */
+router.delete('/:id', controller.deleteProperty);
+
+/* ------------------------------------------------------------------
+   ⭐ NEW: FULL CRUD SUPPORT FOR CUSTOM ADDRESS.Id
+-------------------------------------------------------------------*/
+
+/**
+ * @swagger
+ * /api/homes/address/{addressId}:
+ *   get:
+ *     summary: Get a property by Address.Id
+ *     tags: [HomeReseller]
+ */
+router.get('/address/:addressId', controller.getPropertyByAddressId);
+
+/**
+ * @swagger
+ * /api/homes/address/{addressId}:
+ *   put:
+ *     summary: Update a property by Address.Id
+ *     tags: [HomeReseller]
+ */
+router.put('/address/:addressId', controller.updatePropertyByAddressId);
+
+/**
+ * @swagger
+ * /api/homes/address/{addressId}:
+ *   delete:
+ *     summary: Delete a property by Address.Id
+ *     tags: [HomeReseller]
+ */
+router.delete('/address/:addressId', controller.deletePropertyByAddressId);
+
+module.exports = router;
+
 router.delete('/:id', controller.deleteProperty);
 
 module.exports = router;
