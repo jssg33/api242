@@ -30,7 +30,8 @@ app.use(
       "https://spline-dew-76774247.figma.site",
       "https://figma.site",
       "https://figma.com",
-      "https://www.figma.com"
+      "https://www.figma.com",
+      "https://gliops.glocation.info"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
