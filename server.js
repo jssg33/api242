@@ -156,6 +156,12 @@ const fieldTechManagerRoutes = require('./routes/fieldTechManagerRoutes');
 app.use('/api/fieldtechs', fieldTechRoutes);
 app.use('/api/fieldtechmanagers', fieldTechManagerRoutes);
 
+//BUSINESS ANALYST ROUTE ADDS 5.20.2026
+const businessAnalystRoutes = require('./routes/businessAnalystRoutes');
+const businessDirectorRoutes = require('./routes/businessDirectorRoutes');
+app.use('/api/businessanalysts', businessAnalystRoutes);
+app.use('/api/businessdirectors', businessDirectorRoutes);
+
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
 app.use("/cartmaster", require("./routes/cartMasterRoutes"));
