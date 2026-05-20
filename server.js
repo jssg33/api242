@@ -137,9 +137,15 @@ app.use('/api/provisioningmanagers', provisioningManagerRoutes);
 //QUALITY ASSURANCE ROUTE ADDS 5.20.2026
 const qualityAnalystRoutes = require('./routes/qualityAnalystRoutes');
 const qualityManagerRoutes = require('./routes/qualityManagerRoutes');
-
 app.use('/api/qualityanalysts', qualityAnalystRoutes);
 app.use('/api/qualitymanagers', qualityManagerRoutes);
+// CARE ANALYST ROUTE ADDS 5.20.2026
+const careAnalystRoutes = require('./routes/careAnalystRoutes');
+const careManagerRoutes = require('./routes/careManagerRoutes');
+app.use('/api/careanalysts', careAnalystRoutes);
+app.use('/api/caremanagers', careManagerRoutes);
+
+
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
