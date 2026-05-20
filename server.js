@@ -168,6 +168,11 @@ const managingDirectorRoutes = require('./routes/managingDirectorRoutes');
 app.use('/api/directors', directorRoutes);
 app.use('/api/managingdirectors', managingDirectorRoutes);
 
+//BUSINESS EXECUTIVE ROUTE ADDS 5.20.2026
+const buExecutiveRoutes = require('./routes/buExecutiveRoutes');
+app.use('/api/buexecutives', buExecutiveRoutes);
+
+
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
