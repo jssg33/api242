@@ -34,13 +34,17 @@ exports.createCompany = async (req, res) => {
   }
 };
 
-// UPDATE company
+// UPDATE company (including OUs and BUs)
 exports.updateCompany = async (req, res) => {
   try {
-    const company = await Company.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
+    const company = await Company.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    ).lean();
 
     if (!company) return res.status(404).json({ error: "Company not found" });
 
@@ -61,4 +65,5 @@ exports.deleteCompany = async (req, res) => {
     res.status(400).json({ error: "Invalid ID" });
   }
 };
+
 
