@@ -6,6 +6,32 @@ const companyController = require("../controllers/companyController");
  * @openapi
  * components:
  *   schemas:
+ *     BusinessUnit:
+ *       type: object
+ *       required:
+ *         - buid
+ *         - buname
+ *       properties:
+ *         buid:
+ *           type: string
+ *         buname:
+ *           type: string
+ *
+ *     OrganizationUnit:
+ *       type: object
+ *       required:
+ *         - ouid
+ *         - ouname
+ *       properties:
+ *         ouid:
+ *           type: string
+ *         ouname:
+ *           type: string
+ *         businessunits:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/BusinessUnit'
+ *
  *     Company:
  *       type: object
  *       required:
@@ -19,10 +45,8 @@ const companyController = require("../controllers/companyController");
  *       properties:
  *         id:
  *           type: string
- *           description: Auto-generated MongoDB ObjectId
  *         companyId:
  *           type: string
- *           description: Unique company identifier
  *         name:
  *           type: string
  *         address1:
@@ -43,6 +67,10 @@ const companyController = require("../controllers/companyController");
  *           type: string
  *         email:
  *           type: string
+ *         organizationunits:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/OrganizationUnit'
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -59,6 +87,14 @@ const companyController = require("../controllers/companyController");
  *         phone: "555-123-4567"
  *         fax: "555-987-6543"
  *         email: "info@wavecrest.com"
+ *         organizationunits:
+ *           - ouid: "OU-001"
+ *             ouname: "North America Division"
+ *             businessunits:
+ *               - buid: "BU-100"
+ *                 buname: "Fiber Services"
+ *               - buid: "BU-200"
+ *                 buname: "Wireless Services"
  *         createdAt: "2025-01-30T12:34:56.000Z"
  */
 
@@ -67,8 +103,7 @@ const companyController = require("../controllers/companyController");
  * /companies:
  *   get:
  *     summary: Get all companies
- *     tags:
- *       - Companies
+ *     tags: [Companies]
  *     responses:
  *       200:
  *         description: List of companies
@@ -86,15 +121,13 @@ router.get("/", companyController.getAllCompanies);
  * /companies/{id}:
  *   get:
  *     summary: Get a company by ID
- *     tags:
- *       - Companies
+ *     tags: [Companies]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Company MongoDB ID
  *     responses:
  *       200:
  *         description: Company found
@@ -112,8 +145,7 @@ router.get("/:id", companyController.getCompanyById);
  * /companies:
  *   post:
  *     summary: Create a new company
- *     tags:
- *       - Companies
+ *     tags: [Companies]
  *     requestBody:
  *       required: true
  *       content:
@@ -123,10 +155,6 @@ router.get("/:id", companyController.getCompanyById);
  *     responses:
  *       201:
  *         description: Company created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Company'
  *       400:
  *         description: Invalid input
  *       409:
@@ -138,16 +166,14 @@ router.post("/", companyController.createCompany);
  * @openapi
  * /companies/{id}:
  *   put:
- *     summary: Update a company
- *     tags:
- *       - Companies
+ *     summary: Update a company (including OUs and BUs)
+ *     tags: [Companies]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Company MongoDB ID
  *     requestBody:
  *       required: true
  *       content:
@@ -167,15 +193,13 @@ router.put("/:id", companyController.updateCompany);
  * /companies/{id}:
  *   delete:
  *     summary: Delete a company
- *     tags:
- *       - Companies
+ *     tags: [Companies]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Company MongoDB ID
  *     responses:
  *       200:
  *         description: Company deleted
@@ -185,4 +209,3 @@ router.put("/:id", companyController.updateCompany);
 router.delete("/:id", companyController.deleteCompany);
 
 module.exports = router;
-
