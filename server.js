@@ -144,7 +144,11 @@ const careAnalystRoutes = require('./routes/careAnalystRoutes');
 const careManagerRoutes = require('./routes/careManagerRoutes');
 app.use('/api/careanalysts', careAnalystRoutes);
 app.use('/api/caremanagers', careManagerRoutes);
-
+// NOC TECH ROUTE ADDS 5.20.2026
+const nocTechRoutes = require('./routes/nocTechRoutes');
+const nocManagerRoutes = require('./routes/nocManagerRoutes');
+app.use('/api/noctechs', nocTechRoutes);
+app.use('/api/nocmanagers', nocManagerRoutes);
 
 
 // Cart System (3)
