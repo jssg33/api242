@@ -162,6 +162,13 @@ const businessDirectorRoutes = require('./routes/businessDirectorRoutes');
 app.use('/api/businessanalysts', businessAnalystRoutes);
 app.use('/api/businessdirectors', businessDirectorRoutes);
 
+//BUSINESS DIRECTOR ROUTE ADDS 5.20.2026
+const directorRoutes = require('./routes/directorRoutes');
+const managingDirectorRoutes = require('./routes/managingDirectorRoutes');
+app.use('/api/directors', directorRoutes);
+app.use('/api/managingdirectors', managingDirectorRoutes);
+
+
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
 app.use("/cartmaster", require("./routes/cartMasterRoutes"));
