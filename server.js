@@ -150,6 +150,11 @@ const nocManagerRoutes = require('./routes/nocManagerRoutes');
 app.use('/api/noctechs', nocTechRoutes);
 app.use('/api/nocmanagers', nocManagerRoutes);
 
+//FIELD TECH ROUTE ADDS 5.20.2026
+const fieldTechRoutes = require('./routes/fieldTechRoutes');
+const fieldTechManagerRoutes = require('./routes/fieldTechManagerRoutes');
+app.use('/api/fieldtechs', fieldTechRoutes);
+app.use('/api/fieldtechmanagers', fieldTechManagerRoutes);
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
