@@ -172,7 +172,11 @@ app.use('/api/managingdirectors', managingDirectorRoutes);
 const buExecutiveRoutes = require('./routes/buExecutiveRoutes');
 app.use('/api/buexecutives', buExecutiveRoutes);
 
-
+//ORGANIZATIONAL CHANGES
+const organizationUnitRoutes = require("./routes/organizationUnitRoutes");
+const businessUnitRoutes = require("./routes/businessUnitRoutes");
+app.use("/api/organizationunits", organizationUnitRoutes);
+app.use("/api/businessunits", businessUnitRoutes);
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
