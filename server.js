@@ -134,6 +134,12 @@ const provisionerRoutes = require('./routes/provisionerRoutes');
 const provisioningManagerRoutes = require('./routes/provisioningManagerRoutes');
 app.use('/api/provisioners', provisionerRoutes);
 app.use('/api/provisioningmanagers', provisioningManagerRoutes);
+//QUALITY ASSURANCE ROUTE ADDS 5.20.2026
+const qualityAnalystRoutes = require('./routes/qualityAnalystRoutes');
+const qualityManagerRoutes = require('./routes/qualityManagerRoutes');
+
+app.use('/api/qualityanalysts', qualityAnalystRoutes);
+app.use('/api/qualitymanagers', qualityManagerRoutes);
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
