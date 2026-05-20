@@ -1,83 +1,73 @@
-// controllers/installerManagerController.js
 const InstallerManager = require("../models/InstallerManager");
 
 // GET all installer managers
 exports.getAllInstallerManagers = async (req, res) => {
   try {
-    const managers = await InstallerManager.find()
+    const list = await InstallerManager.find()
       .populate("assignedtruck")
-      .populate("buid")
-      .populate("ouid")
-      .populate("installerlist");
+      .populate("installerlist")
+      .lean();
 
-    res.status(200).json(managers);
+    res.json(list);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
 
-// GET single installer manager by ID
+// GET installer manager by ID
 exports.getInstallerManagerById = async (req, res) => {
   try {
     const manager = await InstallerManager.findById(req.params.id)
       .populate("assignedtruck")
-      .populate("buid")
-      .populate("ouid")
-      .populate("installerlist");
+      .populate("installerlist")
+      .lean();
 
-    if (!manager) {
-      return res.status(404).json({ message: "Installer Manager not found" });
-    }
+    if (!manager)
+      return res.status(404).json({ error: "Installer Manager not found" });
 
-    res.status(200).json(manager);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json(manager);
+  } catch {
+    res.status(400).json({ error: "Invalid ID" });
   }
 };
 
-// CREATE new installer manager
+// CREATE installer manager
 exports.createInstallerManager = async (req, res) => {
   try {
-    const manager = new InstallerManager(req.body);
-    const savedManager = await manager.save();
-    res.status(201).json(savedManager);
+    const manager = await InstallerManager.create(req.body);
+    res.status(201).json(manager);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ error: err.message });
   }
 };
 
 // UPDATE installer manager
 exports.updateInstallerManager = async (req, res) => {
   try {
-    const updatedManager = await InstallerManager.findByIdAndUpdate(
+    const manager = await InstallerManager.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true, runValidators: true }
     );
 
-    if (!updatedManager) {
-      return res.status(404).json({ message: "Installer Manager not found" });
-    }
+    if (!manager)
+      return res.status(404).json({ error: "Installer Manager not found" });
 
-    res.status(200).json(updatedManager);
+    res.json(manager);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ error: err.message });
   }
 };
 
 // DELETE installer manager
 exports.deleteInstallerManager = async (req, res) => {
   try {
-    const deletedManager = await InstallerManager.findByIdAndDelete(
-      req.params.id
-    );
+    const manager = await InstallerManager.findByIdAndDelete(req.params.id);
 
-    if (!deletedManager) {
-      return res.status(404).json({ message: "Installer Manager not found" });
-    }
+    if (!manager)
+      return res.status(404).json({ error: "Installer Manager not found" });
 
-    res.status(200).json({ message: "Installer Manager deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json({ message: "Installer Manager deleted" });
+  } catch {
+    res.status(400).json({ error: "Invalid ID" });
   }
-};
