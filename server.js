@@ -178,6 +178,15 @@ const businessUnitRoutes = require("./routes/businessUnitRoutes");
 app.use("/api/organizationunits", organizationUnitRoutes);
 app.use("/api/businessunits", businessUnitRoutes);
 
+//INSTALLERS AND VEHICLES
+const truckRoutes = require("./routes/truckRoutes");
+const installerRoutes = require("./routes/installerRoutes");
+const installerManagerRoutes = require("./routes/installerManagerRoutes");
+app.use("/api/trucks", truckRoutes);
+app.use("/api/installers", installerRoutes);
+app.use("/api/installermanagers", installerManagerRoutes);
+
+
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
 app.use("/cartmaster", require("./routes/cartMasterRoutes"));
