@@ -129,6 +129,11 @@ app.use("/api/specialpricing", require("./routes/specialPricingRoutes"));
 app.use('/api/salespeople', require('./routes/salespersonRoutes'));
 app.use('/api/salesmanagers', require('./routes/salesManagerRoutes'));
 app.use('/api/homes', require('./routes/homeResellerRoutes'));
+// PROVISIONING ROUTE ADDS 5.20.2026
+const provisionerRoutes = require('./routes/provisionerRoutes');
+const provisioningManagerRoutes = require('./routes/provisioningManagerRoutes');
+app.use('/api/provisioners', provisionerRoutes);
+app.use('/api/provisioningmanagers', provisioningManagerRoutes);
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
