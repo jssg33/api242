@@ -1,5 +1,43 @@
 const mongoose = require("mongoose");
 
+// Business Unit Schema
+const businessUnitSchema = new mongoose.Schema(
+  {
+    buid: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    buname: {
+      type: String,
+      required: true,
+      trim: true
+    }
+  },
+  { _id: false }
+);
+
+// Organization Unit Schema
+const organizationUnitSchema = new mongoose.Schema(
+  {
+    ouid: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    ouname: {
+      type: String,
+      required: true,
+      trim: true
+    },
+
+    // Nested Business Units
+    businessunits: [businessUnitSchema]
+  },
+  { _id: false }
+);
+
+// Company Schema
 const companySchema = new mongoose.Schema(
   {
     companyId: {
@@ -56,6 +94,10 @@ const companySchema = new mongoose.Schema(
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"]
     },
+
+    // ⭐ NEW: Multiple OUs, each with nested BUs
+    organizationunits: [organizationUnitSchema],
+
     createdAt: {
       type: Date,
       default: Date.now
@@ -65,3 +107,4 @@ const companySchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Company", companySchema);
+
