@@ -16,8 +16,11 @@ const BusinessDirectorSchema = new mongoose.Schema({
   phone: String,
   cell: String,
 
+  // Business Unit fields
+  buid: { type: String, required: true },
+  buname: { type: String, required: true },
+
   region: String,
-  bu: String,
   specialitytype: String,
 
   hiredate: Date,
@@ -27,10 +30,11 @@ const BusinessDirectorSchema = new mongoose.Schema({
     default: 'active'
   },
 
-  defaultbranch: String,
-  defaultbranchid: { type: mongoose.Schema.Types.ObjectId, ref: 'Branch' },
+  // Analysts they manage
+  analystlist: [BusinessAnalystSchema],
 
-  analystlist: [BusinessAnalystSchema]
+  // Reports to a Managing Director
+  managerid: { type: mongoose.Schema.Types.ObjectId, ref: 'ManagingDirector' }
 
 }, { timestamps: true });
 
