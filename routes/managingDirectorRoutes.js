@@ -100,3 +100,11 @@ router.put('/:id', controller.updateManagingDirector);
 
 /**
  * @swagger
+ * /api/managingdirectors/{id}:
+ *   delete:
+ *     summary: Delete a managing director
+ *     tags: [ManagingDirectors]
+ */
+router.delete('/:id', controller.deleteManagingDirector);
+
+module.exports = router;
