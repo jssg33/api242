@@ -1,6 +1,6 @@
 //(organizationUnitController.js)
 
-const OrganizationUnit = require("../models/OrganizationUnit");
+const OrganizationUnit = require("../models/OrganizationalUnit");
 
 // GET all OUs
 exports.getAllOrganizationUnits = async (req, res) => {
