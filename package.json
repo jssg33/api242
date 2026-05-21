@@ -6,8 +6,11 @@
   "license": "greenvillegreen",
   "scripts": {
     "start": "node server.js",
-    "buildapi": "yarn add express mongoose morgan dotenv swagger-ui-express swagger-jsdoc cors express-basic-auth bcryptjs jsonwebtoken"
+    "buildapi": "yarn add express mongoose morgan dotenv swagger-ui-express swagger-jsdoc cors express-basic-auth bcryptjs jsonwebtoken openapi-types@latest"
   },
+  "engines": {
+  "node": ">=25"
+},
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
