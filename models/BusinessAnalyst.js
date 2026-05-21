@@ -30,4 +30,4 @@ const BusinessAnalystSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('BusinessAnalyst', BusinessAnalystSchema
+module.exports = mongoose.model('BusinessAnalyst', BusinessAnalystSchema);
