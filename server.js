@@ -129,63 +129,39 @@ app.use("/api/specialpricing", require("./routes/specialPricingRoutes"));
 app.use('/api/salespeople', require('./routes/salespersonRoutes'));
 app.use('/api/salesmanagers', require('./routes/salesManagerRoutes'));
 app.use('/api/homes', require('./routes/homeResellerRoutes'));
-// PROVISIONING ROUTE ADDS 5.20.2026
-const provisionerRoutes = require('./routes/provisionerRoutes');
-const provisioningManagerRoutes = require('./routes/provisioningManagerRoutes');
-app.use('/api/provisioners', provisionerRoutes);
-app.use('/api/provisioningmanagers', provisioningManagerRoutes);
-//QUALITY ASSURANCE ROUTE ADDS 5.20.2026
-const qualityAnalystRoutes = require('./routes/qualityAnalystRoutes');
-const qualityManagerRoutes = require('./routes/qualityManagerRoutes');
-app.use('/api/qualityanalysts', qualityAnalystRoutes);
-app.use('/api/qualitymanagers', qualityManagerRoutes);
-// CARE ANALYST ROUTE ADDS 5.20.2026
-const careAnalystRoutes = require('./routes/careAnalystRoutes');
-const careManagerRoutes = require('./routes/careManagerRoutes');
-app.use('/api/careanalysts', careAnalystRoutes);
-app.use('/api/caremanagers', careManagerRoutes);
-// NOC TECH ROUTE ADDS 5.20.2026
-const nocTechRoutes = require('./routes/nocTechRoutes');
-const nocManagerRoutes = require('./routes/nocManagerRoutes');
-app.use('/api/noctechs', nocTechRoutes);
-app.use('/api/nocmanagers', nocManagerRoutes);
 
-//FIELD TECH ROUTE ADDS 5.20.2026
-const fieldTechRoutes = require('./routes/fieldTechRoutes');
-const fieldTechManagerRoutes = require('./routes/fieldTechManagerRoutes');
-app.use('/api/fieldtechs', fieldTechRoutes);
-app.use('/api/fieldtechmanagers', fieldTechManagerRoutes);
-
-//BUSINESS ANALYST ROUTE ADDS 5.20.2026
-const businessAnalystRoutes = require('./routes/businessAnalystRoutes');
-const businessDirectorRoutes = require('./routes/businessDirectorRoutes');
-app.use('/api/businessanalysts', businessAnalystRoutes);
-app.use('/api/businessdirectors', businessDirectorRoutes);
-
-//BUSINESS DIRECTOR ROUTE ADDS 5.20.2026
-const directorRoutes = require('./routes/directorRoutes');
-const managingDirectorRoutes = require('./routes/managingDirectorRoutes');
-app.use('/api/directors', directorRoutes);
-app.use('/api/managingdirectors', managingDirectorRoutes);
-
-//BUSINESS EXECUTIVE ROUTE ADDS 5.20.2026
-const buExecutiveRoutes = require('./routes/buExecutiveRoutes');
-app.use('/api/buexecutives', buExecutiveRoutes);
-
-//ORGANIZATIONAL CHANGES
-const organizationUnitRoutes = require("./routes/organizationUnitRoutes");
-const businessUnitRoutes = require("./routes/businessUnitRoutes");
-app.use("/api/organizationunits", organizationUnitRoutes);
-app.use("/api/businessunits", businessUnitRoutes);
-
-//INSTALLERS AND VEHICLES
-const truckRoutes = require("./routes/truckRoutes");
-const installerRoutes = require("./routes/installerRoutes");
-const installerManagerRoutes = require("./routes/installerManagerRoutes");
-app.use("/api/trucks", truckRoutes);
-app.use("/api/installers", installerRoutes);
-app.use("/api/installermanagers", installerManagerRoutes);
-
+// 5.20.2026 OPS ADDS SIGNIFICANT BUILD
+//01 Provisioning
+app.use("/api/provisioners", require("./routes/provisionerRoutes"));
+app.use("/api/provisioningmanagers", require("./routes/provisioningManagerRoutes"));
+//02 Quality Assurance
+app.use("/api/qualityanalysts", require("./routes/qualityAnalystRoutes"));
+app.use("/api/qualitymanagers", require("./routes/qualityManagerRoutes"));
+//03 Care Analysts
+app.use("/api/careanalysts", require("./routes/careAnalystRoutes"));
+app.use("/api/caremanagers", require("./routes/careManagerRoutes"));
+//04 NOC Tech
+app.use("/api/noctechs", require("./routes/nocTechRoutes"));
+app.use("/api/nocmanagers", require("./routes/nocManagerRoutes"));
+//05 Field Tech
+app.use("/api/fieldtechs", require("./routes/fieldTechRoutes"));
+app.use("/api/fieldtechmanagers", require("./routes/fieldTechManagerRoutes"));
+//06GOOD TO HERE
+// Business Analysts / Directors
+app.use("/api/businessanalysts", require("./routes/businessAnalystRoutes"));
+app.use("/api/businessdirectors", require("./routes/businessDirectorRoutes"));
+// Directors / Managing Directors
+app.use("/api/directors", require("./routes/directorRoutes"));
+app.use("/api/managingdirectors", require("./routes/managingDirectorRoutes"));
+// Business Executives
+app.use("/api/buexecutives", require("./routes/buExecutiveRoutes"));
+// Organizational Structure
+app.use("/api/organizationunits", require("./routes/organizationUnitRoutes"));
+app.use("/api/businessunits", require("./routes/businessUnitRoutes"));
+// Installers & Vehicles
+app.use("/api/trucks", require("./routes/truckRoutes"));
+app.use("/api/installers", require("./routes/installerRoutes"));
+app.use("/api/installermanagers", require("./routes/installerManagerRoutes"));
 
 // Cart System (3)
 app.use("/cart", require("./routes/cartRoutes"));
