@@ -1,4 +1,4 @@
-// models/OrganizationUnit.js
+// OrganizationUnit.js
 const mongoose = require("mongoose");
 
 const OrganizationUnitSchema = new mongoose.Schema(
