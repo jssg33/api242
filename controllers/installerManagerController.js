@@ -71,3 +71,4 @@ exports.deleteInstallerManager = async (req, res) => {
   } catch {
     res.status(400).json({ error: "Invalid ID" });
   }
+};
