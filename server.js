@@ -188,6 +188,12 @@ app.use("/auth", require("./routes/authRoutes"));
 // OTHER (1)
 app.use("/api/songs", require("./routes/songs"));
 
+// Route imports
+const twitterRoutes = require('./routes/twitterRoutes');
+app.use('/api', twitterRoutes);
+
+
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOTAL ROUTES:51 x 5 +(User, Region, SalesId)= 255 ENPOINTS + LICENSE & LICENSELOGS & ANALYSTS, QUOTES AND SPECIALPRICING (ADD GET BY USER, BY GROUP, BY COMPANY) = 265 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
