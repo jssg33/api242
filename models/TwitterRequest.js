@@ -8,11 +8,12 @@ const TwitterRequestSchema = new mongoose.Schema({
     twitterpassword: { type: String, required: true },
     requesttype: { type: Number, enum: [1, 2, 3, 4], required: true },
 
-    // New fields
     processed: { type: Boolean, default: false },
-    processedAt: { type: Date, default: null },
 
-}, { timestamps: { createdAt: true, updatedAt: false } });
+    // Optional, but defaults to now if missing
+    processedAt: { type: Date, default: Date.now },
+
+}, { timestamps: true }); // createdAt + updatedAt auto-managed
 // createdAt = auto timestamp
 // updatedAt disabled unless you want it
 
