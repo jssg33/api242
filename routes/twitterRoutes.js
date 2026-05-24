@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const validateRequest = require('../middleware/validateRequest');
-const { twitterRequestSchema } = require('../models/twitterRequestModel');
+const { twitterRequestSchema } = require('../models/TwitterRequest');
 const { createTwitterRequest } = require('../controllers/twitterRequestController');
 
 /**
