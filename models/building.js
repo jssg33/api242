@@ -9,29 +9,29 @@ const BuildingSchema = new mongoose.Schema({
 
   geofenceid: { type: String, unique: true },
 
-  geolat1: { type: Number, required: true },
-  geolong1: { type: Number, required: true },
+  geolat1: { type: Number, required: false },
+  geolong1: { type: Number, required: false },
 
-  geolat2: { type: Number, required: true },
-  geolong2: { type: Number, required: true },
+  geolat2: { type: Number, required: false },
+  geolong2: { type: Number, required: false },
 
-  geolat3: { type: Number, required: true },
-  geolong3: { type: Number, required: true },
+  geolat3: { type: Number, required: false },
+  geolong3: { type: Number, required: false },
 
-  geolat4: { type: Number, required: true },
-  geolong4: { type: Number, required: true },
+  geolat4: { type: Number, required: false },
+  geolong4: { type: Number, required: false },
 
-  geolat5: { type: Number, required: true },
-  geolong5: { type: Number, required: true },
+  geolat5: { type: Number, required: false },
+  geolong5: { type: Number, required: false },
 
-  campusname: { type: String, required: true },
-  campusid: { type: String, required: true },
+  campusname: { type: String, required: true, default: 'University of South Carolina - Main Campus' },
+  campusid: { type: String, required: true, default: "USC0001" },
 
-  address1: { type: String, required: true },
-  address2: { type: String },
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  zip: { type: String, required: true }
+  address1: { type: String, required: false },
+  address2: { type: String, required: false },
+  city: { type: String, required: false },
+  state: { type: String, required: false },
+  zip: { type: String, required: false }
 });
 
 // Auto-generate geofenceid using ObjectId
