@@ -31,7 +31,6 @@ const controller = require("../controllers/buildingController");
  *       properties:
  *         _id:
  *           type: string
- *           description: MongoDB ObjectId
  *         buildingid:
  *           type: string
  *         primaryLatitude:
