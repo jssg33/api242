@@ -7,7 +7,7 @@ const BuildingSchema = new mongoose.Schema({
   primaryLatitude: { type: Number, required: true },
   primaryLongitude: { type: Number, required: true },
 
-  geofenceid: { type: String, unique: true },
+  geofenceid: { type: String, unique: true, required: true },
 
   geolat1: { type: Number, required: false },
   geolong1: { type: Number, required: false },
@@ -32,19 +32,6 @@ const BuildingSchema = new mongoose.Schema({
   city: { type: String, required: false },
   state: { type: String, required: false },
   zip: { type: String, required: false }
-});
-
-// Auto-generate geofenceid using ObjectId
-BuildingSchema.pre("save", function (next) {
-  if (this.isNew) {
-    const now = new Date();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    const yy = String(now.getFullYear()).slice(-2);
-
-    this.geofenceid = `${this.state}${mm}${dd}${yy}_${this._id}`;
-  }
-  next();
 });
 
 module.exports = mongoose.model("Building", BuildingSchema);
