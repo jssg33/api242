@@ -21,7 +21,7 @@ const BuildingSchema = new mongoose.Schema({
   geolat4: { type: Number, required: true },
   geolong4: { type: Number, required: true },
 
-  gealat5: { type: Number, required: true },
+  geolat5: { type: Number, required: true },
   geolong5: { type: Number, required: true },
 
   campusname: { type: String, required: true },
