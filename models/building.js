@@ -32,6 +32,15 @@ const BuildingSchema = new mongoose.Schema({
   city: { type: String, required: false },
   state: { type: String, required: false },
   zip: { type: String, required: false }
+  // ⭐ NEW: Main building photo stored as binary blob
+  buildingPhoto: { type: Buffer, required: false },
+
+  // ⭐ NEW: Additional picture URLs
+  pic1: { type: String, required: false },
+  pic2: { type: String, required: false },
+  pic3: { type: String, required: false },
+  pic4: { type: String, required: false },
+  pic5: { type: String, required: false },
 });
 
 module.exports = mongoose.model("Building", BuildingSchema);
