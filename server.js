@@ -188,6 +188,11 @@ app.use("/auth", require("./routes/authRoutes"));
 // OTHER (1)
 app.use("/api/songs", require("./routes/songs"));
 
+// Add Building API routes - Building GEOFENCING
+const buildingRoutes = require("./routes/buildingRoutes");
+app.use("/api/buildings", buildingRoutes);
+
+
 // Route imports
 const twitterRoutes = require('./routes/twitterRoutes');
 app.use('/api', twitterRoutes);
