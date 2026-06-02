@@ -12,57 +12,75 @@ const controller = require("../controllers/buildingController");
  *         - buildingid
  *         - primaryLatitude
  *         - primaryLongitude
- *         - geolat1
- *         - geolong1
- *         - geolat2
- *         - geolong2
- *         - geolat3
- *         - geolong3
- *         - geolat4
- *         - geolong4
- *         - geolat5
- *         - geolong5
  *         - campusname
  *         - campusid
- *         - address1
- *         - city
- *         - state
- *         - zip
  *       properties:
  *         _id:
  *           type: string
+ *           description: MongoDB ObjectId
+ *
  *         buildingid:
  *           type: string
+ *
  *         primaryLatitude:
  *           type: number
  *         primaryLongitude:
  *           type: number
+ *
  *         geofenceid:
  *           type: string
+ *
  *         geolat1:
  *           type: number
  *         geolong1:
  *           type: number
+ *
  *         geolat2:
  *           type: number
  *         geolong2:
  *           type: number
+ *
  *         geolat3:
  *           type: number
  *         geolong3:
  *           type: number
+ *
  *         geolat4:
  *           type: number
  *         geolong4:
  *           type: number
+ *
  *         geolat5:
  *           type: number
  *         geolong5:
  *           type: number
+ *
+ *         buildingPhoto:
+ *           type: string
+ *           format: byte
+ *           description: Base64‑encoded image blob of the building front
+ *
+ *         pic1:
+ *           type: string
+ *           format: uri
+ *         pic2:
+ *           type: string
+ *           format: uri
+ *         pic3:
+ *           type: string
+ *           format: uri
+ *         pic4:
+ *           type: string
+ *           format: uri
+ *         pic5:
+ *           type: string
+ *           format: uri
+ *
  *         campusname:
  *           type: string
  *         campusid:
  *           type: string
+ *
  *         address1:
  *           type: string
  *         address2:
@@ -85,6 +103,7 @@ const controller = require("../controllers/buildingController");
  *     responses:
  *       200:
  *         description: List of buildings
+ *
  *   post:
  *     summary: Create a new building
  *     tags:
@@ -118,6 +137,7 @@ const controller = require("../controllers/buildingController");
  *         description: Building found
  *       404:
  *         description: Building not found
+ *
  *   put:
  *     summary: Update a building
  *     tags:
@@ -137,6 +157,7 @@ const controller = require("../controllers/buildingController");
  *     responses:
  *       200:
  *         description: Building updated
+ *
  *   delete:
  *     summary: Delete a building
  *     tags:
