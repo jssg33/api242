@@ -191,6 +191,9 @@ app.use("/api/songs", require("./routes/songs"));
 // Add Building API routes - Building GEOFENCING
 const buildingRoutes = require("./routes/buildingRoutes");
 app.use("/api/buildings", buildingRoutes);
+// Add Campuses for Companies or Universities
+const campusRoutes = require("./routes/campusRoutes");
+app.use("/api/campuses", campusRoutes);
 
 
 // Route imports
