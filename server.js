@@ -17,29 +17,64 @@ app.use(morgan("dev"));
 // UPDATES VIA GITHUB ACTIONS WHEN CHANGES POST. THIS ALLOWS FOR API MODIFICATIONS WITHOUT ANY NEED FOR ANY MICROSOFT TOOLS AT ALL. YOU CAN MAKE TEXT MODIFICATIONS TO GITHUB DIRECTLY AND THEY GO RIGHT INTO
 // PRODUCTION... ITS VERY NICE.. THUS GITHUB CAN ACT AS AN IDE IN FACT. IT DOES BASICS LIKE CHECK GRAMMAR BY FILE TYPE.
 
+const allowedOrigins = [
+  "https://jssg33.github.io",
+  "https://react242-ho2o.onrender.com",
+  "http://react242-ho2o.onrender.com",
+  "http://figmamanagerui.onrender.com",
+  "https://figmamanagerui.onrender.com",
+  "https://licenses.greenvilleassociates.com",
+  "https://ordermanagementsystem-50i2.onrender.com",
+  "https://spline-dew-76774247.figma.site",
+  "https://figma.site",
+  "https://figma.com",
+  "https://www.figma.com",
+  "https://gliops.glocation.info"
+];
+
+// USC: 129.0.0.0/8
+const uscIpRange = /^129\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+// AT&T: 99.0.0.0/8
+const attIpRange = /^99\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
 app.use(
   cors({
-    origin: [
-      "https://jssg33.github.io",
-      "https://react242-ho2o.onrender.com",
-      "http://react242-ho2o.onrender.com",
-      "http://figmamanagerui.onrender.com",
-      "https://figmamanagerui.onrender.com",
-      "https://licenses.greenvilleassociates.com",
-      "https://ordermanagementsystem-50i2.onrender.com",
-      "https://spline-dew-76774247.figma.site",
-      "https://figma.site",
-      "https://figma.com",
-      "https://www.figma.com",
-      "https://gliops.glocation.info"
-    ],
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow curl/Postman
+
+      // Allow listed domains
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Extract hostname from origin
+      let hostname = "";
+      try {
+        hostname = new URL(origin).hostname;
+      } catch (e) {
+        return callback(new Error("Invalid origin"));
+      }
+
+      // Allow USC 129.0.0.0/8
+      if (uscIpRange.test(hostname)) {
+        return callback(null, true);
+      }
+
+      // Allow AT&T 99.0.0.0/8
+      if (attIpRange.test(hostname)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
   })
 );
 
-// Update Cors policy to Default policy on match.
+// Preflight handler
 app.use((req, res, next) => {
   if (req.method === "OPTIONS") {
     res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
@@ -49,7 +84,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
 
 
 // Swagger
