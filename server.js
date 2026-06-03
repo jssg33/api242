@@ -194,6 +194,9 @@ app.use("/api/buildings", buildingRoutes);
 // Add Campuses for Companies or Universities
 const campusRoutes = require("./routes/campusRoutes");
 app.use("/api/campuses", campusRoutes);
+//Add Building History
+const buildingHistoryRoutes = require('./routes/buildingHistoryRoutes');
+app.use('/api/building-history', buildingHistoryRoutes);
 
 
 // Route imports
