@@ -38,6 +38,9 @@ const uscIpRange = /^129\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 // AT&T: 99.0.0.0/8
 const attIpRange = /^99\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 
+// CTS: 107.0.0.0/24 VIA ATT ASSIGNED RANGE
+const attIpRange = /^107\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
 app.use(
   cors({
     origin: (origin, callback) => {
