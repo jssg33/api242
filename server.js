@@ -240,6 +240,10 @@ app.use("/api/campuses", campusRoutes);
 const buildingHistoryRoutes = require('./routes/buildingHistoryRoutes');
 app.use('/api/building-history', buildingHistoryRoutes);
 
+const beaconRoutes = require('./routes/beaconRoutes');
+// Routes
+app.use('/api/beacons', beaconRoutes);
+
 
 // Route imports
 const twitterRoutes = require('./routes/twitterRoutes');
