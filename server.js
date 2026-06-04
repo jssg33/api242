@@ -39,7 +39,7 @@ const uscIpRange = /^129\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 const attIpRange = /^99\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 
 // CTS: 107.0.0.0/8 VIA ATT ASSIGNED RANGE
-const attIpRange = /^107\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+const attCustIpRange = /^107\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 
 app.use(
   cors({
@@ -69,6 +69,11 @@ app.use(
         return callback(null, true);
       }
 
+      // Allow AT&T Customer Ranges 107.0.0.0/8
+      if (attCustIpRange.test(hostname)) {
+        return callback(null, true);
+      }
+      
       return callback(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
