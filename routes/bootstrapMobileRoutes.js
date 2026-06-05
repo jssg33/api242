@@ -90,12 +90,12 @@
  *                   $ref: '#/components/schemas/BootstrapMobile'
  */
 
-import express from "express";
-import {
+const express = require("express");
+const {
   getBootstrapConfig,
   updateBootstrapConfig,
   seedBootstrapConfig
-} from "../controllers/BootstrapMobileController.js";
+} = require("../controllers/BootstrapMobileController.js");
 
 const router = express.Router();
 
@@ -103,4 +103,4 @@ router.get("/", getBootstrapConfig);
 router.put("/", updateBootstrapConfig);
 router.post("/seed", seedBootstrapConfig);
 
-export default router;
+module.exports = router;
