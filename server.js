@@ -239,10 +239,13 @@ app.use("/api/campuses", campusRoutes);
 //Add Building History
 const buildingHistoryRoutes = require('./routes/buildingHistoryRoutes');
 app.use('/api/building-history', buildingHistoryRoutes);
-
 const beaconRoutes = require('./routes/beaconRoutes');
 // Routes
 app.use('/api/beacons', beaconRoutes);
+//Bootstrap Parameters
+import bootstrapMobileRoutes from "./routes/bootstrapMobileRoutes.js";
+app.use("/api/bootstrapmobile", bootstrapMobileRoutes);
+
 
 
 // Route imports
