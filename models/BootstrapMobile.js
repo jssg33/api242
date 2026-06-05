@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const BootstrapMobileSchema = new mongoose.Schema({
   // Server IPs (flat fields)
@@ -27,4 +27,4 @@ const BootstrapMobileSchema = new mongoose.Schema({
   region: { type: String, required: true }
 });
 
-export default mongoose.model("BootstrapMobile", BootstrapMobileSchema);
+module.exports = mongoose.model("BootstrapMobile", BootstrapMobileSchema);
