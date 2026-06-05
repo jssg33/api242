@@ -40,7 +40,7 @@
  *         region:
  *           type: string
  *
- * /bootstrapmobile:
+ * /api/bootstrapmobile:
  *   get:
  *     summary: Get the bootstrapmobile configuration
  *     tags:
@@ -71,7 +71,7 @@
  *             schema:
  *               $ref: '#/components/schemas/BootstrapMobile'
  *
- * /bootstrapmobile/seed:
+ * /api/bootstrapmobile/seed:
  *   post:
  *     summary: Seed default test configuration for luna.capitoltechnology.net
  *     tags:
