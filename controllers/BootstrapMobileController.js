@@ -1,9 +1,9 @@
-import BootstrapMobile from "../models/BootstrapMobile.js";
+const BootstrapMobile = require("../models/BootstrapMobile.js");
 
 /**
  * GET the single bootstrapmobile record
  */
-export const getBootstrapConfig = async (req, res) => {
+exports.getBootstrapConfig = async (req, res) => {
   try {
     const record = await BootstrapMobile.findOne();
 
@@ -23,7 +23,7 @@ export const getBootstrapConfig = async (req, res) => {
 /**
  * UPDATE the single bootstrapmobile record
  */
-export const updateBootstrapConfig = async (req, res) => {
+exports.updateBootstrapConfig = async (req, res) => {
   try {
     const updated = await BootstrapMobile.findOneAndUpdate({}, req.body, {
       new: true,
@@ -40,7 +40,7 @@ export const updateBootstrapConfig = async (req, res) => {
 /**
  * SEED default test values for luna.capitoltechnology.net
  */
-export const seedBootstrapConfig = async (req, res) => {
+exports.seedBootstrapConfig = async (req, res) => {
   try {
     const defaults = {
       loginServer1: "172.20.10.11",
