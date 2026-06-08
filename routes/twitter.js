@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const TwitterRequest = require('../models/TwitterRequest');
-const TwitterManager = require('../controllers/twitterManager'); // adjust path
+const TwitterManager = require('../controllers/twitterClient'); // adjust path
 
 const twitterManager = new TwitterManager(); // using hardcoded token for now
 
