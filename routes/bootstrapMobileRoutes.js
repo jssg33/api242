@@ -11,24 +11,37 @@
  *           type: string
  *         loginServer3:
  *           type: string
+ *
+ *         serviceaccount:
+ *           type: string
+ *         servicepasswdencrypted:
+ *           type: string
+ *         wordpresspostaccount:
+ *           type: string
+ *         wordpresspostpassword:
+ *           type: string
+ *
  *         registrationServer1:
  *           type: string
  *         registrationServer2:
  *           type: string
  *         registrationServer3:
  *           type: string
+ *
  *         loginCipherOffset:
  *           type: string
  *         restCipherOffset:
  *           type: string
  *         cipherDefaultAlgorithm:
  *           type: string
+ *
  *         defaultDomainName:
  *           type: string
  *         dnsServers:
  *           type: array
  *           items:
  *             type: string
+ *
  *         instanceId:
  *           type: string
  *         instanceName:
@@ -42,19 +55,19 @@
  *
  * /api/bootstrapmobile:
  *   get:
- *     summary: Get the bootstrapmobile configuration
+ *     summary: Get the BootstrapMobile configuration
  *     tags:
  *       - BootstrapMobile
  *     responses:
  *       200:
- *         description: Returns the bootstrapmobile configuration
+ *         description: Returns the BootstrapMobile configuration
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/BootstrapMobile'
  *
  *   put:
- *     summary: Update the bootstrapmobile configuration
+ *     summary: Update the BootstrapMobile configuration
  *     tags:
  *       - BootstrapMobile
  *     requestBody:
