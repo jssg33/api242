@@ -5,6 +5,10 @@ const BootstrapMobileSchema = new mongoose.Schema({
   loginServer1: { type: String, required: true },
   loginServer2: { type: String, required: true },
   loginServer3: { type: String, required: true },
+  serviceaccount: { type: String, required: false },         //FOR REST POSTS AUTH SYNCH
+  servicepasswdencrypted: { type: String, required: false }, //FOR REST POSTS AUTH SYNCH
+  wordpresspostaccount: { type: String, required: false },   //DEFAULT WORDPRESS POST WITH NO LIVE ACCESS - MANAGERIAL REVIEW
+  wordpresspostpassword: { type: String, required: false },  //DEFAULT NO GLOBAL POST REQUESTS
 
   registrationServer1: { type: String, required: true },
   registrationServer2: { type: String, required: true },
