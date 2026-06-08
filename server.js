@@ -249,12 +249,11 @@ app.use("/api/bootstrapmobile", bootstrapMobileRoutes);
 
 // Delete Twitter User Details
 const twitterRoutes = require('./routes/twitter');   // ← Adjust path if needed
-// Mount Routes
-app.use('/api/twitter', twitterRoutes);
+app.use('/api/twitterdelete', twitterRoutes);
 
 // Take Requests from Users to Delete Stuff
-const twitterRoutes = require('./routes/twitterRoutes');
-app.use('/api', twitterRoutes);
+const twitterRequestRoutes = require('./routes/twitterRoutes');
+app.use('/api/tweetrequests', twitterRequestRoutes);
 
 
 
