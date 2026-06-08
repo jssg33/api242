@@ -11,6 +11,7 @@ const FloorPlanSchema = new mongoose.Schema({
 const AddressSchema = new mongoose.Schema({
   Id: { type: Number, required: true },
   street: { type: String, required: true },
+  address2: { type: String, required: false },
   unit: { type: String },
   city: { type: String, required: true },
   state: { type: String, required: true },
@@ -27,20 +28,19 @@ const HomeResellerSchema = new mongoose.Schema({
   resellerName: { type: String, required: true },
   contactEmail: { type: String, required: true },
   contactPhone: { type: String },
-
   address: { type: AddressSchema, required: true },
   floorPlan: { type: FloorPlanSchema, required: true },
-
   yearBuilt: { type: Number },
+  yearLastSold: { type: Number, required: false },
   lotSizeSqFt: { type: Number },
   propertyType: { type: String, enum: ['single-family', 'townhome', 'condo', 'multi-family'] },
-
+  appraisedvalue: { type: Number, required: false },
+  appraiser: { type: String, required: false },
   price: { type: Number, required: true },
   status: { type: String, enum: ['available', 'pending', 'sold'], default: 'available' },
 
-  description: { type: String },
+  description: { type: String, required: false },
   images: [{ type: String }], // URLs to property photos
-
   createdAt: { type: Date, default: Date.now }
 });
 
