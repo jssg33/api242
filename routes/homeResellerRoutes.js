@@ -20,6 +20,8 @@ const controller = require('../controllers/homeResellerController');
  *           type: number
  *         street:
  *           type: string
+ *         address2:
+ *           type: string
  *         unit:
  *           type: string
  *         city:
@@ -78,11 +80,17 @@ const controller = require('../controllers/homeResellerController');
  *           $ref: '#/components/schemas/FloorPlan'
  *         yearBuilt:
  *           type: number
+ *         yearLastSold:
+ *           type: number
  *         lotSizeSqFt:
  *           type: number
  *         propertyType:
  *           type: string
  *           enum: [single-family, townhome, condo, multi-family]
+ *         appraisedvalue:
+ *           type: number
+ *         appraiser:
+ *           type: string
  *         price:
  *           type: number
  *         status:
@@ -169,7 +177,7 @@ router.put('/:id', controller.updateProperty);
 router.delete('/:id', controller.deleteProperty);
 
 /* ------------------------------------------------------------------
-   ⭐ NEW: FULL CRUD SUPPORT FOR CUSTOM ADDRESS.Id
+   ⭐ CUSTOM ADDRESS.Id ROUTES
 -------------------------------------------------------------------*/
 
 /**
@@ -200,8 +208,3 @@ router.put('/address/:addressId', controller.updatePropertyByAddressId);
 router.delete('/address/:addressId', controller.deletePropertyByAddressId);
 
 module.exports = router;
-
-router.delete('/:id', controller.deleteProperty);
-
-module.exports = router;
-
