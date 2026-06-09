@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
 const TwitterRequest = require('../models/TwitterRequest');
 
-// Helper: validate ObjectId
-const validateId = (id) => mongoose.Types.ObjectId.isValid(id);
+// Helper: validate ObjectId format
+const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 // CREATE
 exports.createTwitterRequest = async (req, res) => {
     try {
+        console.log("POST BODY:", req.body); // Debug log for Render
+
         const request = await TwitterRequest.create(req.body);
         res.status(201).json(request);
     } catch (err) {
+        console.error("CREATE ERROR:", err);
         res.status(400).json({ error: err.message });
     }
 };
@@ -20,6 +23,7 @@ exports.getAllTwitterRequests = async (req, res) => {
         const requests = await TwitterRequest.find();
         res.json(requests);
     } catch (err) {
+        console.error("GET ALL ERROR:", err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -27,7 +31,7 @@ exports.getAllTwitterRequests = async (req, res) => {
 // READ ONE
 exports.getTwitterRequestById = async (req, res) => {
     try {
-        if (!validateId(req.params.id)) {
+        if (!isValidId(req.params.id)) {
             return res.status(400).json({ error: 'Invalid ID format' });
         }
 
@@ -36,6 +40,7 @@ exports.getTwitterRequestById = async (req, res) => {
 
         res.json(request);
     } catch (err) {
+        console.error("GET ONE ERROR:", err);
         res.status(400).json({ error: err.message });
     }
 };
@@ -43,7 +48,7 @@ exports.getTwitterRequestById = async (req, res) => {
 // UPDATE
 exports.updateTwitterRequest = async (req, res) => {
     try {
-        if (!validateId(req.params.id)) {
+        if (!isValidId(req.params.id)) {
             return res.status(400).json({ error: 'Invalid ID format' });
         }
 
@@ -57,6 +62,7 @@ exports.updateTwitterRequest = async (req, res) => {
 
         res.json(request);
     } catch (err) {
+        console.error("UPDATE ERROR:", err);
         res.status(400).json({ error: err.message });
     }
 };
@@ -64,7 +70,7 @@ exports.updateTwitterRequest = async (req, res) => {
 // DELETE
 exports.deleteTwitterRequest = async (req, res) => {
     try {
-        if (!validateId(req.params.id)) {
+        if (!isValidId(req.params.id)) {
             return res.status(400).json({ error: 'Invalid ID format' });
         }
 
@@ -73,6 +79,7 @@ exports.deleteTwitterRequest = async (req, res) => {
 
         res.json({ message: 'Deleted successfully' });
     } catch (err) {
+        console.error("DELETE ERROR:", err);
         res.status(400).json({ error: err.message });
     }
 };
