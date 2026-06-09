@@ -4,71 +4,66 @@ const controller = require('../controllers/twitterRequestController');
 
 /**
  * @openapi
- * components:
- *   schemas:
- *     TwitterRequest:
- *       type: object
- *       required:
- *         - userid
- *         - twittername
- *         - requesttype
- *       properties:
- *         userid:
- *           type: string
- *         twittername:
- *           type: string
- *         twitterpassword:
- *           type: string
- *           nullable: true
- *         requesttype:
- *           type: number
- *           enum: [1, 2, 3, 4, 5, 6]
- *         oathstring:
- *           type: string
- *           nullable: true
- *         processed:
- *           type: boolean
- *         processedAt:
- *           type: string
- *           format: date-time
- */
-
-/**
- * @openapi
- * /twitter-requests:
+ * /api/twitterrequests:
  *   post:
- *     summary: Create a new Twitter request
- *     tags: [TwitterRequest]
+ *     summary: Create a new Twitter deletion request
+ *     tags:
+ *       - Twitter Requests
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TwitterRequest'
+ *             type: object
+ *             required:
+ *               - userid
+ *               - twittername
+ *               - requesttype
+ *             properties:
+ *               userid:
+ *                 type: string
+ *                 example: "1"
+ *               twittername:
+ *                 type: string
+ *                 example: "stritzk"
+ *               twitterpassword:
+ *                 type: string
+ *                 example: "mypassword"
+ *               requesttype:
+ *                 type: integer
+ *                 enum: [1, 2, 3, 4, 5, 6]
+ *                 example: 1
+ *               oathstring:
+ *                 type: string
+ *                 example: "string"
  *     responses:
  *       201:
  *         description: Created
+ *       400:
+ *         description: Bad Request
  */
 router.post('/', controller.createTwitterRequest);
 
 /**
  * @openapi
- * /twitter-requests:
+ * /api/twitterrequests:
  *   get:
- *     summary: Get all Twitter requests
- *     tags: [TwitterRequest]
+ *     summary: Get all Twitter deletion requests
+ *     tags:
+ *       - Twitter Requests
  *     responses:
  *       200:
- *         description: List of all Twitter requests
+ *         description: List of requests
  */
 router.get('/', controller.getAllTwitterRequests);
 
 /**
  * @openapi
- * /twitter-requests/{id}:
+ * /api/twitterrequests/{id}:
  *   get:
- *     summary: Get a Twitter request by ID
- *     tags: [TwitterRequest]
+ *     summary: Get a single Twitter deletion request by ID
+ *     tags:
+ *       - Twitter Requests
  *     parameters:
  *       - in: path
  *         name: id
@@ -79,16 +74,17 @@ router.get('/', controller.getAllTwitterRequests);
  *       200:
  *         description: Found
  *       404:
- *         description: Not found
+ *         description: Not Found
  */
 router.get('/:id', controller.getTwitterRequestById);
 
 /**
  * @openapi
- * /twitter-requests/{id}:
+ * /api/twitterrequests/{id}:
  *   put:
- *     summary: Update a Twitter request
- *     tags: [TwitterRequest]
+ *     summary: Update a Twitter deletion request
+ *     tags:
+ *       - Twitter Requests
  *     parameters:
  *       - in: path
  *         name: id
@@ -100,21 +96,22 @@ router.get('/:id', controller.getTwitterRequestById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TwitterRequest'
+ *             type: object
  *     responses:
  *       200:
  *         description: Updated
  *       404:
- *         description: Not found
+ *         description: Not Found
  */
 router.put('/:id', controller.updateTwitterRequest);
 
 /**
  * @openapi
- * /twitter-requests/{id}:
+ * /api/twitterrequests/{id}:
  *   delete:
- *     summary: Delete a Twitter request
- *     tags: [TwitterRequest]
+ *     summary: Delete a Twitter deletion request
+ *     tags:
+ *       - Twitter Requests
  *     parameters:
  *       - in: path
  *         name: id
@@ -125,7 +122,7 @@ router.put('/:id', controller.updateTwitterRequest);
  *       200:
  *         description: Deleted
  *       404:
- *         description: Not found
+ *         description: Not Found
  */
 router.delete('/:id', controller.deleteTwitterRequest);
 
