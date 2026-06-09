@@ -1,12 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
-const validateRequest = require('../middleware/validateRequest');
-const { twitterRequestSchema } = require('../models/TwitterRequest');
-const { createTwitterRequest } = require('../controllers/twitterRequestController');
+const controller = require('../controllers/twitterRequestController');
 
 /**
- * @swagger
+ * @openapi
  * components:
  *   schemas:
  *     TwitterRequest:
@@ -19,46 +16,29 @@ const { createTwitterRequest } = require('../controllers/twitterRequestControlle
  *       properties:
  *         userid:
  *           type: string
- *           description: Internal user identifier
  *         twittername:
  *           type: string
- *           description: Twitter/X username
  *         twitterpassword:
  *           type: string
- *           description: Twitter/X password (store securely)
  *         requesttype:
- *           type: integer
+ *           type: number
  *           enum: [1, 2, 3, 4]
- *           description: 1=posts, 2=replies, 3=likes, 4=all
+ *         oathstring:
+ *           type: string
+ *           nullable: true
  *         processed:
  *           type: boolean
- *           default: false
- *           description: Whether the request has been processed
  *         processedAt:
  *           type: string
  *           format: date-time
- *           nullable: true
- *           description: Timestamp when processed
- *         createdAt:
- *           type: string
- *           format: date-time
- *           description: Timestamp when request was created
- *
- *   responses:
- *     TwitterRequestCreated:
- *       description: Successfully created a Twitter request
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/TwitterRequest'
  */
 
 /**
- * @swagger
- * /api/twitter/request:
+ * @openapi
+ * /twitter-requests:
  *   post:
  *     summary: Create a new Twitter request
- *     tags: [Twitter Requests]
+ *     tags: [TwitterRequest]
  *     requestBody:
  *       required: true
  *       content:
@@ -67,16 +47,86 @@ const { createTwitterRequest } = require('../controllers/twitterRequestControlle
  *             $ref: '#/components/schemas/TwitterRequest'
  *     responses:
  *       201:
- *         $ref: '#/components/responses/TwitterRequestCreated'
- *       400:
- *         description: Validation error
- *       500:
- *         description: Server error
+ *         description: Created
  */
-router.post(
-    '/twitter/request',
-    validateRequest(twitterRequestSchema),
-    createTwitterRequest
-);
+router.post('/', controller.createTwitterRequest);
+
+/**
+ * @openapi
+ * /twitter-requests:
+ *   get:
+ *     summary: Get all Twitter requests
+ *     tags: [TwitterRequest]
+ *     responses:
+ *       200:
+ *         description: List of all Twitter requests
+ */
+router.get('/', controller.getAllTwitterRequests);
+
+/**
+ * @openapi
+ * /twitter-requests/{id}:
+ *   get:
+ *     summary: Get a Twitter request by ID
+ *     tags: [TwitterRequest]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Found
+ *       404:
+ *         description: Not found
+ */
+router.get('/:id', controller.getTwitterRequestById);
+
+/**
+ * @openapi
+ * /twitter-requests/{id}:
+ *   put:
+ *     summary: Update a Twitter request
+ *     tags: [TwitterRequest]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TwitterRequest'
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       404:
+ *         description: Not found
+ */
+router.put('/:id', controller.updateTwitterRequest);
+
+/**
+ * @openapi
+ * /twitter-requests/{id}:
+ *   delete:
+ *     summary: Delete a Twitter request
+ *     tags: [TwitterRequest]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       404:
+ *         description: Not found
+ */
+router.delete('/:id', controller.deleteTwitterRequest);
 
 module.exports = router;
