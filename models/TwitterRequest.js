@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const TwitterRequestSchema = new mongoose.Schema({
     userid: { type: String, required: true },
     twittername: { type: String, required: true },
-    twitterpassword: { type: String, required: true },
-    requesttype: { type: Number, enum: [1, 2, 3, 4], required: true },
+    twitterpassword: { type: String, required: false },
+    requesttype: { type: Number, enum: [1, 2, 3, 4, 5, 6], required: true },
     oathstring: { type: String, required: false },
 
     processed: { type: Boolean, default: false },
