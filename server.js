@@ -253,7 +253,7 @@ app.use('/api/twitterdelete', twitterRoutes);
 
 // Take Requests from Users to Delete Stuff
 const twitterRequestRoutes = require('./routes/twitterRoutes');
-app.use('/twitter-requests', twitterRequestRoutes);
+app.use('/api/twitterrequests', twitterRequestRoutes);
 
 
 
