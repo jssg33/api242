@@ -11,7 +11,6 @@ const controller = require('../controllers/twitterRequestController');
  *       required:
  *         - userid
  *         - twittername
- *         - twitterpassword
  *         - requesttype
  *       properties:
  *         userid:
@@ -20,9 +19,10 @@ const controller = require('../controllers/twitterRequestController');
  *           type: string
  *         twitterpassword:
  *           type: string
+ *           nullable: true
  *         requesttype:
  *           type: number
- *           enum: [1, 2, 3, 4]
+ *           enum: [1, 2, 3, 4, 5, 6]
  *         oathstring:
  *           type: string
  *           nullable: true
