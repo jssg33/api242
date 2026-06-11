@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const BuildingHistorySchema = new mongoose.Schema({
+const userLocationSchema = new mongoose.Schema({
     buildingId: { 
         type: Number, 
         required: false 
