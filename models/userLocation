@@ -37,4 +37,4 @@ const BuildingHistorySchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('BuildingHistory', BuildingHistorySchema);
+module.exports = mongoose.model('userLocationHistory', userLocationSchema);
