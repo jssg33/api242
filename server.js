@@ -254,8 +254,9 @@ app.use('/api/twitterdelete', twitterRoutes);
 // Take Requests from Users to Delete Stuff
 const twitterRequestRoutes = require('./routes/twitterRoutes');
 app.use('/api/twitterrequests', twitterRequestRoutes);
-
-
+//User location posts.
+const userLocationHistoryRoutes = require('./routes/userLocationHistoryRoutes');
+app.use('/api/userLocationHistory', userLocationHistoryRoutes);
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
