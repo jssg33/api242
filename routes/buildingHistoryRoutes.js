@@ -9,26 +9,25 @@ const controller = require('../controllers/buildingHistoryController');
  *     BuildingHistory:
  *       type: object
  *       required:
- *         - buildingId
- *         - buildingName
- *         - timestamp
+ *         - userId
+ *         - latitude
+ *         - longitude
  *       properties:
  *         buildingId:
  *           type: number
- *           example: 101
  *         buildingName:
  *           type: string
- *           example: "Main Office"
+ *         userId:
+ *           type: string
+ *         userName:
+ *           type: string
  *         timestamp:
  *           type: number
  *           description: Unix timestamp
- *           example: 1717438293
  *         latitude:
  *           type: number
- *           example: 34.0007
  *         longitude:
  *           type: number
- *           example: -81.0348
  *         syncDate:
  *           type: string
  *           format: date-time
@@ -36,7 +35,7 @@ const controller = require('../controllers/buildingHistoryController');
 
 /**
  * @swagger
- * /api/building-history:
+ * /api/buildingHistory:
  *   post:
  *     summary: Create a new building history entry
  *     tags: [BuildingHistory]
@@ -48,45 +47,45 @@ const controller = require('../controllers/buildingHistoryController');
  *             $ref: '#/components/schemas/BuildingHistory'
  *     responses:
  *       201:
- *         description: Created successfully
+ *         description: Created
  */
-router.post('/', controller.createBuildingHistory);
+router.post('/', controller.createHistory);
 
 /**
  * @swagger
- * /api/building-history:
+ * /api/buildingHistory:
  *   get:
  *     summary: Get all building history entries
  *     tags: [BuildingHistory]
  *     responses:
  *       200:
- *         description: List of entries
+ *         description: List of building history entries
  */
-router.get('/', controller.getAllBuildingHistory);
+router.get('/', controller.getAllHistory);
 
 /**
  * @swagger
- * /api/building-history/{buildingId}:
+ * /api/buildingHistory/user/{userId}:
  *   get:
- *     summary: Get history for a specific building
+ *     summary: Get building history entries for a specific user
  *     tags: [BuildingHistory]
  *     parameters:
  *       - in: path
- *         name: buildingId
+ *         name: userId
  *         required: true
  *         schema:
- *           type: number
+ *           type: string
  *     responses:
  *       200:
- *         description: List of entries for the building
+ *         description: User-specific building history
  */
-router.get('/:buildingId', controller.getHistoryByBuildingId);
+router.get('/user/:userId', controller.getHistoryByUser);
 
 /**
  * @swagger
- * /api/building-history/delete/{id}:
+ * /api/buildingHistory/{id}:
  *   delete:
- *     summary: Delete a building history entry by ID
+ *     summary: Delete a building history entry
  *     tags: [BuildingHistory]
  *     parameters:
  *       - in: path
@@ -98,6 +97,6 @@ router.get('/:buildingId', controller.getHistoryByBuildingId);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/delete/:id', controller.deleteBuildingHistory);
+router.delete('/:id', controller.deleteHistory);
 
 module.exports = router;
