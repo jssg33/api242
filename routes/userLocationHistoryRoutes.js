@@ -12,6 +12,7 @@ const controller = require('../controllers/userLocationHistoryController');
  *         - userId
  *         - latitude
  *         - longitude
+ *         - timestamp
  *       properties:
  *         buildingId:
  *           type: number
@@ -22,8 +23,8 @@ const controller = require('../controllers/userLocationHistoryController');
  *         userName:
  *           type: string
  *         timestamp:
- *           type: number
- *           description: Unix timestamp
+ *           type: string
+ *           description: Open Architecture for any time format.
  *         latitude:
  *           type: number
  *         longitude:
