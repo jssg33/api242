@@ -258,7 +258,7 @@ const twitterRequestRoutes = require('./routes/twitterRoutes');
 app.use('/api/twitterrequests', twitterRequestRoutes);
 //User location posts.
 const userLocationHistoryRoutes = require('./routes/userLocationHistoryRoutes');
-app.use('/api/userLocationHistory', userLocationHistoryRoutes);
+app.use('/api/userlocation', userLocationHistoryRoutes);
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
