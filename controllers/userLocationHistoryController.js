@@ -1,144 +1,77 @@
-const express = require('express');
-const router = express.Router();
-const controller = require('../controllers/userLocationHistoryController');
+const UserLocationHistory = require('../models/userLocationHistory');
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     UserLocationHistory:
- *       type: object
- *       required:
- *         - userId
- *         - latitude
- *         - longitude
- *       properties:
- *         buildingId:
- *           type: number
- *         buildingName:
- *           type: string
- *         userId:
- *           type: string
- *         userName:
- *           type: string
- *         timestamp:
- *           type: string
- *           description: Stored as a string. Any format allowed.
- *         latitude:
- *           type: number
- *         longitude:
- *           type: number
- *         syncDate:
- *           type: string
- *           format: date-time
- */
+// CREATE (standard POST)
+exports.createLocation = async (req, res) => {
+    try {
+        const entry = new UserLocationHistory(req.body);
+        const saved = await entry.save();
+        res.status(201).json(saved);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
 
-/**
- * @swagger
- * /api/userlocation:
- *   post:
- *     summary: Create a new user location history entry
- *     tags: [UserLocationHistory]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserLocationHistory'
- *     responses:
- *       201:
- *         description: Created
- */
-router.post('/', controller.createLocation);
+// CREATE BY USER ID (POST /user/:userId)
+exports.createLocationByUserId = async (req, res) => {
+    try {
+        const data = {
+            ...req.body,
+            userId: req.params.userId
+        };
 
-/**
- * @swagger
- * /api/userlocation/user/{userId}:
- *   post:
- *     summary: Create a new user location entry for a specific user
- *     tags: [UserLocationHistory]
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserLocationHistory'
- *     responses:
- *       201:
- *         description: Created
- */
-router.post('/user/:userId', controller.createLocationByUserId);
+        const entry = new UserLocationHistory(data);
+        const saved = await entry.save();
 
-/**
- * @swagger
- * /api/userlocation:
- *   get:
- *     summary: Get all user location history entries
- *     tags: [UserLocationHistory]
- *     responses:
- *       200:
- *         description: List of entries
- */
-router.get('/', controller.getAllLocations);
+        res.status(201).json(saved);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
 
-/**
- * @swagger
- * /api/userlocation/user/{userId}:
- *   get:
- *     summary: Get all location history entries for a specific user
- *     tags: [UserLocationHistory]
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: User history list
- */
-router.get('/user/:userId', controller.getLocationsByUser);
+// READ ALL
+exports.getAllLocations = async (req, res) => {
+    try {
+        const items = await UserLocationHistory.find().sort({ timestamp: -1 });
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 
-/**
- * @swagger
- * /api/userlocation/{id}:
- *   delete:
- *     summary: Delete a location history entry by MongoDB _id
- *     tags: [UserLocationHistory]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Deleted
- */
-router.delete('/:id', controller.deleteLocation);
+// READ BY USER ID
+exports.getLocationsByUser = async (req, res) => {
+    try {
+        const items = await UserLocationHistory.find({ userId: req.params.userId })
+            .sort({ timestamp: -1 });
 
-/**
- * @swagger
- * /api/userlocation/user/{userId}:
- *   delete:
- *     summary: Delete all location history entries for a specific user
- *     tags: [UserLocationHistory]
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: All user entries deleted
- */
-router.delete('/user/:userId', controller.deleteByUserId);
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 
-module.exports = router;
+// DELETE BY MONGO _ID
+exports.deleteLocation = async (req, res) => {
+    try {
+        const deleted = await UserLocationHistory.findByIdAndDelete(req.params.id);
+        if (!deleted) return res.status(404).json({ error: "Not found" });
+
+        res.json({ message: "Deleted", deleted });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// DELETE ALL RECORDS FOR A USER
+exports.deleteByUserId = async (req, res) => {
+    try {
+        const result = await UserLocationHistory.deleteMany({ userId: req.params.userId });
+
+        res.json({
+            message: "Deleted all records for user",
+            deletedCount: result.deletedCount
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
