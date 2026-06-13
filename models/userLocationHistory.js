@@ -5,7 +5,7 @@ const userLocationSchema = new mongoose.Schema({
     buildingName: { type: String, required: false },
     userId: { type: String, required: true },
     userName: { type: String, required: false },
-    timestamp: { type: Number, required: false }, // Unix timestamp
+    timestamp: { type: String, required: false }, 
     latitude: { type: Number, default: 0.0, required: true },
     longitude: { type: Number, default: 0.0, required: true },
     syncDate: { type: Date, default: Date.now }
