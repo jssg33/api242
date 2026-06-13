@@ -29,7 +29,9 @@ const allowedOrigins = [
   "https://figma.site",
   "https://figma.com",
   "https://www.figma.com",
-  "https://gliops.glocation.info"
+  "https://gliops.glocation.info",
+  "capacitor://localhost",
+  "http://localhost"
 ];
 
 // USC: 129.0.0.0/8
