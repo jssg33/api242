@@ -10,8 +10,7 @@ const userLocationSchema = new mongoose.Schema({
     timestamp: { type: String, required: false }, 
     latitude: { type: Number, default: 0.0, required: true },
     longitude: { type: Number, default: 0.0, required: true },
-    syncDate: { type: Date, default: Date.now }
-});
+    });
 
 module.exports = mongoose.model('userLocationHistory', userLocationSchema);
 
