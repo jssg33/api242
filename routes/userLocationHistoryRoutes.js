@@ -24,7 +24,6 @@ const controller = require('../controllers/userLocationHistoryController');
  *           type: string
  *         timestamp:
  *           type: string
- *           description: Open Architecture for any time format.
  *         latitude:
  *           type: number
  *         longitude:
@@ -36,7 +35,7 @@ const controller = require('../controllers/userLocationHistoryController');
 
 /**
  * @swagger
- * /api/userLocationHistory:
+ * /api/userlocation:
  *   post:
  *     summary: Create a new user location history entry
  *     tags: [UserLocationHistory]
@@ -54,7 +53,7 @@ router.post('/', controller.createLocation);
 
 /**
  * @swagger
- * /api/userLocationHistory:
+ * /api/userlocation:
  *   get:
  *     summary: Get all user location history entries
  *     tags: [UserLocationHistory]
@@ -66,7 +65,7 @@ router.get('/', controller.getAllLocations);
 
 /**
  * @swagger
- * /api/userLocationHistory/user/{userId}:
+ * /api/userlocation/user/{userId}:
  *   get:
  *     summary: Get location history for a specific user
  *     tags: [UserLocationHistory]
@@ -84,7 +83,7 @@ router.get('/user/:userId', controller.getLocationsByUser);
 
 /**
  * @swagger
- * /api/userLocationHistory/{id}:
+ * /api/userlocation/{id}:
  *   delete:
  *     summary: Delete a location history entry
  *     tags: [UserLocationHistory]
