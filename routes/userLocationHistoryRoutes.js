@@ -31,9 +31,6 @@ const controller = require('../controllers/userLocationHistoryController');
  *           type: number
  *         longitude:
  *           type: number
- *         syncDate:
- *           type: string
- *           format: date-time
  */
 
 /**
