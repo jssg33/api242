@@ -12,8 +12,10 @@ const controller = require('../controllers/userLocationHistoryController');
  *         - userId
  *         - latitude
  *         - longitude
- *         - timestamp
  *       properties:
+ *         campusId:
+ *           type: number
+ *           description: Optional campus identifier
  *         buildingId:
  *           type: number
  *         buildingName:
@@ -24,6 +26,7 @@ const controller = require('../controllers/userLocationHistoryController');
  *           type: string
  *         timestamp:
  *           type: string
+ *           description: Stored as a string. Any format allowed.
  *         latitude:
  *           type: number
  *         longitude:
@@ -53,6 +56,30 @@ router.post('/', controller.createLocation);
 
 /**
  * @swagger
+ * /api/userlocation/user/{userId}:
+ *   post:
+ *     summary: Create a new user location entry for a specific user
+ *     tags: [UserLocationHistory]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserLocationHistory'
+ *     responses:
+ *       201:
+ *         description: Created
+ */
+router.post('/user/:userId', controller.createLocationByUserId);
+
+/**
+ * @swagger
  * /api/userlocation:
  *   get:
  *     summary: Get all user location history entries
@@ -67,7 +94,7 @@ router.get('/', controller.getAllLocations);
  * @swagger
  * /api/userlocation/user/{userId}:
  *   get:
- *     summary: Get location history for a specific user
+ *     summary: Get all location history entries for a specific user
  *     tags: [UserLocationHistory]
  *     parameters:
  *       - in: path
@@ -85,7 +112,7 @@ router.get('/user/:userId', controller.getLocationsByUser);
  * @swagger
  * /api/userlocation/{id}:
  *   delete:
- *     summary: Delete a location history entry
+ *     summary: Delete a location history entry by MongoDB _id
  *     tags: [UserLocationHistory]
  *     parameters:
  *       - in: path
@@ -98,5 +125,23 @@ router.get('/user/:userId', controller.getLocationsByUser);
  *         description: Deleted
  */
 router.delete('/:id', controller.deleteLocation);
+
+/**
+ * @swagger
+ * /api/userlocation/user/{userId}:
+ *   delete:
+ *     summary: Delete all location history entries for a specific user
+ *     tags: [UserLocationHistory]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: All user entries deleted
+ */
+router.delete('/user/:userId', controller.deleteByUserId);
 
 module.exports = router;
