@@ -19,6 +19,7 @@ app.use(morgan("dev"));
 
 const allowedOrigins = [
   "https://jssg33.github.io",
+   "https://api242.onrender.com",
   "https://react242-ho2o.onrender.com",
   "http://react242-ho2o.onrender.com",
   "http://figmamanagerui.onrender.com",
