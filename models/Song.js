@@ -13,12 +13,12 @@ const SongSchema = new mongoose.Schema({
     },
     album: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     year: {
         type: Number,
-        required: true
+        required: false
     },
     genre: {
         type: String,
@@ -27,7 +27,7 @@ const SongSchema = new mongoose.Schema({
     },
     cover: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     youtube: {
@@ -39,12 +39,12 @@ const SongSchema = new mongoose.Schema({
     // NEW FIELDS
     userid: {
         type: String,
-        required: true,
+        required: false,
         index: true
     },
     instanceid: {
         type: String,
-        required: true,
+        required: false,
         index: true
     }
 });
