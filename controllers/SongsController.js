@@ -12,6 +12,20 @@ exports.createSong = async (req, res) => {
     }
 };
 
+// ✅ NEW: Create many songs at once
+exports.createManySongs = async (req, res) => {
+    try {
+        if (!Array.isArray(req.body)) {
+            return res.status(400).json({ error: "Expected an array of songs" });
+        }
+
+        const songs = await Song.insertMany(req.body);
+        res.status(201).json(songs);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
 // Get all songs
 exports.getAllSongs = async (req, res) => {
     const songs = await Song.find();
@@ -59,3 +73,4 @@ exports.deleteSong = async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 };
+
