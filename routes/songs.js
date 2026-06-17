@@ -59,6 +59,26 @@ router.post("/", SongsController.createSong);
 
 /**
  * @swagger
+ * /api/songs/bulk:
+ *   post:
+ *     summary: Create multiple songs at once
+ *     tags: [Songs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/Song'
+ *     responses:
+ *       201:
+ *         description: Songs created
+ */
+router.post("/bulk", SongsController.createManySongs);
+
+/**
+ * @swagger
  * /api/songs:
  *   get:
  *     summary: Get all songs
@@ -140,7 +160,7 @@ router.get("/:id", SongsController.getSongById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Song'
+ *             $ref: '#/components/schemas/SSong'
  *     responses:
  *       200:
  *         description: Updated song
