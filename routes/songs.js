@@ -1,4 +1,3 @@
-// routes/songs.js
 const express = require("express");
 const router = express.Router();
 const SongsController = require("../controllers/SongsController");
@@ -9,16 +8,6 @@ const SongsController = require("../controllers/SongsController");
  *   schemas:
  *     Song:
  *       type: object
- *       required:
- *         - title
- *         - artist
- *         - album
- *         - year
- *         - genre
- *         - cover
- *         - youtube
- *         - userid
- *         - instanceid
  *       properties:
  *         title:
  *           type: string
@@ -38,6 +27,16 @@ const SongsController = require("../controllers/SongsController");
  *           type: string
  *         instanceid:
  *           type: string
+ *       example:
+ *         title: "Thunderstruck"
+ *         artist: "AC/DC"
+ *         album: "The Razors Edge"
+ *         year: 1990
+ *         genre: "Metal"
+ *         cover: "thunderstruck.jpg"
+ *         youtube: "v2AC41dglnM?si=Wu2TgrTJkJzmuzkd"
+ *         userid: "user_12345"
+ *         instanceid: "instance_001"
  */
 
 /**
