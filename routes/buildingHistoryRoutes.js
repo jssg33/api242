@@ -20,6 +20,8 @@ console.log("BuildingHistoryController loaded:", controller);
  *           type: number
  *         buildingName:
  *           type: string
+          description: 
+             type: String
  *         userId:
  *           type: string
  *         userName:
