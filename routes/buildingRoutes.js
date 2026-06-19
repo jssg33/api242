@@ -14,6 +14,8 @@ const controller = require("../controllers/buildingController");
  *         - primaryLongitude
  *         - campusname
  *         - campusid
+ *         - buildingname
+ *         - description
  *       properties:
  *         _id:
  *           type: string
