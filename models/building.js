@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 const BuildingSchema = new mongoose.Schema({
   buildingid: { type: String, required: true },
+  buildingname: { type: String, required: true },
+  description: { type: String, required: true },
 
   primaryLatitude: { type: Number, required: true },
   primaryLongitude: { type: Number, required: true },
