@@ -1,3 +1,4 @@
+// controllers/albumReviewController.js
 const AlbumReview = require("../models/AlbumReview");
 
 exports.createAlbumReview = async (req, res) => {
@@ -18,3 +19,4 @@ exports.getReviewsByAlbum = async (req, res) => {
     res.status(500).json({ message: "Error fetching album reviews", error: err.message });
   }
 };
+
