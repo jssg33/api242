@@ -233,6 +233,8 @@ app.use("/auth", require("./routes/authRoutes"));
 // OTHER (1)
 app.use("/api/songs", require("./routes/songs"));
 
+//SUMMERCSCE546 ADDS 06/21/2026
+
 // Add Building API routes - Building GEOFENCING
 const buildingRoutes = require("./routes/buildingRoutes");
 app.use("/api/buildings", buildingRoutes);
@@ -249,7 +251,6 @@ app.use('/api/beacons', beaconRoutes);
 const bootstrapMobileRoutes = require('./routes/bootstrapMobileRoutes.js');
 app.use("/api/bootstrapmobile", bootstrapMobileRoutes);
 
-
 // Delete Twitter User Details
 const twitterRoutes = require('./routes/twitterDelete');   // ← Adjust path if needed
 app.use('/api/twitterdelete', twitterRoutes);
@@ -260,6 +261,9 @@ app.use('/api/twitterrequests', twitterRequestRoutes);
 //User location posts.
 const userLocationHistoryRoutes = require('./routes/userLocationHistoryRoutes');
 app.use('/api/userlocation', userLocationHistoryRoutes);
+//Mobile Version Responder.
+const mobileStatusRoutes = require("./routes/mobileStatusRoutes");
+app.use("/api/mobilestatus", mobileStatusRoutes);
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
