@@ -234,6 +234,9 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/api/songs", require("./routes/songs"));
 
 //SUMMERCSCE546 ADDS 06/21/2026
+// server.js (only the new lines you need)
+const songReviewRoutes = require("./routes/songReviewRoutes");
+app.use("/api/songreviews", songReviewRoutes);
 
 // Add Building API routes - Building GEOFENCING
 const buildingRoutes = require("./routes/buildingRoutes");
