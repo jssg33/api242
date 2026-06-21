@@ -237,6 +237,9 @@ app.use("/api/songs", require("./routes/songs"));
 // server.js (only the new lines you need)
 const songReviewRoutes = require("./routes/songReviewRoutes");
 app.use("/api/songreviews", songReviewRoutes);
+// server.js (only the new lines you need)
+const albumReviewRoutes = require("./routes/albumReviewRoutes");
+app.use("/api/albumreviews", albumReviewRoutes);
 
 // Add Building API routes - Building GEOFENCING
 const buildingRoutes = require("./routes/buildingRoutes");
