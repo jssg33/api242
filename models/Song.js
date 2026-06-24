@@ -16,6 +16,11 @@ const SongSchema = new mongoose.Schema({
         required: false,
         trim: true
     },
+    albumId: {
+        type: String,
+        required: false,
+        trim: true
+    },
     year: {
         type: Number,
         required: false
