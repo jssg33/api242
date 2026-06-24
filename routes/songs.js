@@ -15,6 +15,8 @@ const SongsController = require("../controllers/SongsController");
  *           type: string
  *         album:
  *           type: string
+  *         albumId:
+ *           type: string
  *         year:
  *           type: number
  *         genre:
