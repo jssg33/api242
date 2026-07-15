@@ -1,5 +1,3 @@
-// routes/keyRoutes.js
-
 const express = require("express");
 const router = express.Router();
 const keyController = require("../controllers/keyController");
@@ -15,22 +13,22 @@ const keyController = require("../controllers/keyController");
  *           type: string
  *         sessionId:
  *           type: string
-         keyId:
-           type: string
-         alias:
-           type: string
-         keyType:
-           type: string
-         publicKey:
-           type: string
-         createdAt:
-           type: string
-           format: date-time
-       required:
-         - sessionId
-         - keyId
-         - keyType
-         - publicKey
+ *         keyId:
+ *           type: string
+ *         alias:
+ *           type: string
+ *         keyType:
+ *           type: string
+ *         publicKey:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *       required:
+ *         - sessionId
+ *         - keyId
+ *         - keyType
+ *         - publicKey
  */
 
 /**
@@ -145,4 +143,3 @@ router.get("/pki/session-keys/:sessionId", keyController.getSessionKeys);
 router.delete("/pki/keys/:id", keyController.deleteKey);
 
 module.exports = router;
-
