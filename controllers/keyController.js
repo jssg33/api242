@@ -1,18 +1,24 @@
 // controllers/keyController.js
 
+const crypto = require("crypto");
 const UserSession = require("../models/UserSession");
 const KeyAssignment = require("../models/KeyAssignment");
-const PkiLite = require("pki-lite"); // adapt to actual API
 
-const pkiClient = new PkiLite({
-  baseUrl: process.env.PKI_LITE_URL,
-  apiKey: process.env.PKI_LITE_API_KEY
-});
+// Generate RSA key pair (PEM)
+function generateRsaKeyPair(keySize = 2048) {
+  const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+    modulusLength: keySize,
+    publicKeyEncoding: { type: "spki", format: "pem" },
+    privateKeyEncoding: { type: "pkcs8", format: "pem" }
+  });
 
-// Create + assign a key to a user session
+  return { publicKeyPem: publicKey, privateKeyPem: privateKey };
+}
+
+// Issue a key for a user session
 exports.issueSessionKey = async (req, res) => {
   try {
-    const { sessionId, alias } = req.body;
+    const { sessionId, alias, keySize } = req.body;
 
     const session = await UserSession.findById(sessionId);
     if (!session) {
@@ -23,20 +29,25 @@ exports.issueSessionKey = async (req, res) => {
       return res.status(400).json({ message: "Session is closed" });
     }
 
-    const keyPair = await pkiClient.generateKeyPair({ alias });
+    const { publicKeyPem, privateKeyPem } = generateRsaKeyPair(keySize || 2048);
 
     const assignment = await KeyAssignment.create({
       sessionId: session._id,
-      keyId: keyPair.id,
-      alias: keyPair.alias,
-      publicKey: keyPair.publicKey
+      keyId: crypto.randomUUID(), // your model expects keyId
+      alias,
+      publicKey: publicKeyPem,
+      privateKey: privateKeyPem,
+      deliveredToUser: false
     });
 
+    // Return only public key to the application user
     res.status(201).json({
-      sessionId: session._id,
+      id: assignment._id,
+      sessionId: assignment.sessionId,
       keyId: assignment.keyId,
       alias: assignment.alias,
-      publicKey: assignment.publicKey
+      publicKey: assignment.publicKey,
+      createdAt: assignment.createdAt
     });
   } catch (err) {
     console.error("Error issuing key:", err);
@@ -44,7 +55,7 @@ exports.issueSessionKey = async (req, res) => {
   }
 };
 
-// Retrieve keys for a session
+// Get all keys for a session
 exports.getSessionKeys = async (req, res) => {
   try {
     const { sessionId } = req.params;
@@ -54,11 +65,30 @@ exports.getSessionKeys = async (req, res) => {
       return res.status(404).json({ message: "Session not found" });
     }
 
-    const keys = await KeyAssignment.find({ sessionId });
+    const keys = await KeyAssignment.find({ sessionId }).select(
+      "keyId alias publicKey createdAt"
+    );
 
     res.json(keys);
   } catch (err) {
     console.error("Error fetching session keys:", err);
     res.status(500).json({ message: "Failed to fetch keys" });
+  }
+};
+
+// Delete a key
+exports.deleteKey = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const key = await KeyAssignment.findByIdAndDelete(id);
+    if (!key) {
+      return res.status(404).json({ message: "Key not found" });
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    console.error("Error deleting key:", err);
+    res.status(500).json({ message: "Failed to delete key" });
   }
 };
