@@ -278,7 +278,7 @@ app.use("/api/mobilestatus", mobileStatusRoutes);
 //07/15 MAJOR SECURITY UPDATE - ADD pki-lite, pki-lite-crypto-extended
 //THIS RENDER API CAN NOW RETURN KEYS TO ANY CLIENT IN THE WORLD!!!!
 const keyRoutes = require("./routes/keyRoutes");
-app.use("/api", keyRoutes);
+app.use("/api/keyserver", keyRoutes);
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOTAL ROUTES:51 x 5 +(User, Region, SalesId)= 255 ENPOINTS + LICENSE & LICENSELOGS & ANALYSTS, QUOTES AND SPECIALPRICING (ADD GET BY USER, BY GROUP, BY COMPANY) = 265 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
