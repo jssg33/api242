@@ -38,6 +38,8 @@ const ProjectController = require("../controllers/ProjectController");
  *           type: string
  *         logoUrl:
  *           type: string
+ *         privacysetting:
+ *           type: string
  */
 
 /**
