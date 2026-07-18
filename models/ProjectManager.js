@@ -59,6 +59,12 @@ const ProjectSchema = new mongoose.Schema({
         trim: true
     },
 
+    privacysetting: {
+        type: String,
+        required: false,
+        trim: true
+    },
+
     companyid: {
         type: String,
         required: false,
