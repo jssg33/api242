@@ -118,6 +118,8 @@ const userSchema = new mongoose.Schema(
     facebookurl: { type: String, trim: true },
     googleurl: { type: String, trim: true },
 
+    //GEM Project Manager
+    publicprojectid: { type: String, trim: true },
     // -------------------------------------------------
     // System Fields
     // -------------------------------------------------
