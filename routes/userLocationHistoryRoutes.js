@@ -14,9 +14,11 @@ const controller = require('../controllers/userLocationHistoryController');
  *         - latitude
  *         - longitude
  *       properties:
+ *         _id:
+ *           type: string
+ *           description: Custom record ID (required)
  *         campusId:
  *           type: number
- *           description: Optional campus identifier
  *         buildingId:
  *           type: number
  *         buildingName:
@@ -27,7 +29,6 @@ const controller = require('../controllers/userLocationHistoryController');
  *           type: string
  *         timestamp:
  *           type: string
- *           description: Stored as a string. Any format allowed.
  *         latitude:
  *           type: number
  *         longitude:
@@ -105,6 +106,24 @@ router.get('/', controller.getAllLocations);
  *         description: User history list
  */
 router.get('/user/:userId', controller.getLocationsByUser);
+
+/**
+ * @swagger
+ * /api/userlocation/{id}:
+ *   get:
+ *     summary: Get a single location history entry by MongoDB _id
+ *     tags: [UserLocationHistory]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Single entry
+ */
+router.get('/:id', controller.getLocationById);
 
 /**
  * @swagger
