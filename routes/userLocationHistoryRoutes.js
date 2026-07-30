@@ -9,6 +9,7 @@ const controller = require('../controllers/userLocationHistoryController');
  *     UserLocationHistory:
  *       type: object
  *       required:
+ *         - _id
  *         - userId
  *         - latitude
  *         - longitude
