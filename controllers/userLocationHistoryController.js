@@ -50,6 +50,18 @@ exports.getLocationsByUser = async (req, res) => {
     }
 };
 
+// READ BY MONGO _ID
+exports.getLocationById = async (req, res) => {
+    try {
+        const item = await UserLocationHistory.findById(req.params.id);
+        if (!item) return res.status(404).json({ error: "Not found" });
+
+        res.json(item);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 // DELETE BY MONGO _ID
 exports.deleteLocation = async (req, res) => {
     try {
