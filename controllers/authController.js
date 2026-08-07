@@ -86,54 +86,12 @@ function randomSix() {
 }
 
 // -----------------------------
-// LOGIN (LOCAL JSON FIRST → MONGO SECOND)
+// LOGIN (NETWORK LOGIN)
 // -----------------------------
 exports.login = async (req, res) => {
   const { username, plainpassword, location, ipaddress, uiorigin } = req.dto;
 
-  // 1. LOCAL JSON USERS FIRST
-  let users = await loadUsers();
-
-  let localUser = users.find(
-    u => u.Username?.toLowerCase() === username.toLowerCase()
-  );
-
-  if (localUser) {
-    const creds = await loadCreds();
-    const cred = creds.find(c => c.UserId === localUser.Id);
-
-    if (cred) {
-      const ok = bcrypt.compareSync(plainpassword, cred.EncryptedPassword);
-
-      await UserLog.create({
-        id: Date.now(),
-        username,
-        hashid: localUser.Id,
-        location: location || "",
-        ipaddress: ipaddress || "",
-        loginstatus: ok ? "success" : "failed",
-        description: "Local JSON login attempt",
-        uiorigin: uiorigin || "unknown"
-      });
-
-      if (!ok)
-        return res.status(400).json({ message: "Password mismatch." });
-
-      const token = generateJwt({
-        username: localUser.Username,
-        email: localUser.Email,
-        role: localUser.Role
-      });
-
-      return res.json({
-        user: safeUserDto(localUser),
-        token,
-        source: "local"
-      });
-    }
-  }
-
-  // 2. MONGO LOGIN
+   // 2. MONGO LOGIN
   try {
     const user = await User.findOne({
       username: new RegExp(`^${username}$`, "i")
@@ -188,16 +146,19 @@ exports.login = async (req, res) => {
       email: user.email,
       role: user.role
     });
-
-   return res.status(200).json({
+    
+    if(ok)
+    {
+    return res.status(200).json({
     code: 106,
     message: "Login successful",
     mongoid: user._id || "901",
     mongousername: user.username || "unknownuser@velocity.com",
     token,
-    source: "mongo"
+    source: "mongo",
+    user: user,
   });
-
+}
 
   } catch (err) {
     console.error("MongoDB login error:", err);
