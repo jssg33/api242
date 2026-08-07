@@ -85,9 +85,8 @@ function randomSix() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-
 // -----------------------------
-// LOGIN - DB OBJECT LOGIN AND NOT LOCAL JSON.
+// LOGIN (LOCAL JSON FIRST → MONGO SECOND)
 // -----------------------------
 exports.login = async (req, res) => {
   const { username, plainpassword, location, ipaddress, uiorigin } = req.dto;
@@ -118,7 +117,7 @@ exports.login = async (req, res) => {
       });
 
       if (!ok)
-        return res.status(105).json({ message: "Password mismatch." });
+        return res.status(400).json({ message: "Password mismatch." });
 
       const token = generateJwt({
         username: localUser.Username,
@@ -126,9 +125,7 @@ exports.login = async (req, res) => {
         role: localUser.Role
       });
 
-      return res.status(200).json({
-        code: 106,
-        message: "Password successful",
+      return res.json({
         user: safeUserDto(localUser),
         token,
         source: "local"
@@ -138,10 +135,9 @@ exports.login = async (req, res) => {
 
   // 2. MONGO LOGIN
   try {
-    // ❌ REMOVE .lean() — this is the fix
     const user = await User.findOne({
       username: new RegExp(`^${username}$`, "i")
-    });
+    }).lean();
 
     if (!user) {
       await UserLog.create({
@@ -175,7 +171,7 @@ exports.login = async (req, res) => {
     await UserLog.create({
       id: Date.now(),
       username,
-      hashid: user._id,   // FIXED
+      hashid: user.userid || user.id || 0,
       location: location || "",
       ipaddress: ipaddress || "",
       loginstatus: ok ? "success" : "failed",
@@ -193,21 +189,21 @@ exports.login = async (req, res) => {
       role: user.role
     });
 
-    // SUCCESS RESPONSE — NOW WORKS
-    return res.status(200).json({
-      code: 106,
-      message: "Password successful",
-      user: safeUserDto(user),
-      token,
-      source: "mongo"
-    });
+    if (ok) {
+  return res.status(200).json({
+    code: 106,
+    message: "Password successful",
+    user: safeUserDto(user) || user,
+    token,
+    source: "mongo"
+  });
+}
 
   } catch (err) {
     console.error("MongoDB login error:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 // -----------------------------
 // LOGOUT
