@@ -22,8 +22,11 @@ function safeUserDto(user) {
   const u = user.toObject ? user.toObject() : { ...user };
 
   delete u.plainpassword;
-  delete u.hashedpassword;
   delete u.password;
+  delete u.hashedpassword;
+  delete u.Hashedpassword;
+  delete u.EncryptedPassword;
+
   delete u.resettoken;
   delete u.resettokenexpiration;
 
@@ -123,7 +126,7 @@ exports.login = async (req, res) => {
       });
 
       return res.json({
-        ...safeUserDto(localUser),
+        user: safeUserDto(localUser),
         token,
         source: "local"
       });
@@ -150,7 +153,20 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "User not found." });
     }
 
-    const ok = bcrypt.compareSync(plainpassword, user.hashedpassword);
+    const hashed =
+      user.hashedpassword ||
+      user.Hashedpassword ||
+      user.password ||
+      null;
+
+    if (!hashed) {
+      console.error("User record missing hashed password:", user);
+      return res.status(500).json({
+        message: "Corrupt user record: missing hashedpassword"
+      });
+    }
+
+    const ok = bcrypt.compareSync(plainpassword, hashed);
 
     await UserLog.create({
       id: Date.now(),
@@ -174,7 +190,7 @@ exports.login = async (req, res) => {
     });
 
     return res.json({
-      ...safeUserDto(user),
+      user: safeUserDto(user),
       token,
       source: "mongo"
     });
@@ -410,7 +426,7 @@ exports.loginLocal = async (req, res) => {
     });
 
     return res.json({
-      ...safeUserDto(localUser),
+      user: safeUserDto(localUser),
       token,
       source: "local"
     });
@@ -525,7 +541,6 @@ exports.getUser = async (req, res) => {
     if (!user)
       return res.status(404).json({ message: "User not found." });
 
-    // Apply your safe DTO
     const safeUser = safeUserDto(user);
 
     return res.json({
