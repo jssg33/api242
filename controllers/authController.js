@@ -180,7 +180,7 @@ exports.login = async (req, res) => {
     });
 
     if (!ok)
-      return res.status(105).json({ message: "Password mismatch." });
+      return res.status(401).json({ message: "Password mismatch." });
 
     const token = generateJwt({
       id: user._id,
@@ -189,15 +189,14 @@ exports.login = async (req, res) => {
       role: user.role
     });
 
-    if (ok) {
-  return res.status(200).json({
+   return res.status(200).json({
     code: 106,
-    message: "Password successful",
-    user: safeUserDto(user) || user,
+    message: "Login successful",
+    user: user,
     token,
     source: "mongo"
   });
-}
+
 
   } catch (err) {
     console.error("MongoDB login error:", err);
