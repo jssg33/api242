@@ -156,7 +156,7 @@ exports.login = async (req, res) => {
     mongousername: user.username || "unknownuser@velocity.com",
     token,
     source: "mongo",
-    user: user,
+    user: safeUserDto(user) || user,
   });
 }
 
