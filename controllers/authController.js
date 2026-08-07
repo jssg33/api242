@@ -192,7 +192,8 @@ exports.login = async (req, res) => {
    return res.status(200).json({
     code: 106,
     message: "Login successful",
-    user: user,
+    mongoid: user._id || "901",
+    mongousername: user.username || "unknownuser@velocity.com",
     token,
     source: "mongo"
   });
