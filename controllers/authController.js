@@ -16,6 +16,21 @@ const JWT_ISSUER = process.env.JWT_ISSUER;
 const JWT_AUDIENCE = process.env.JWT_AUDIENCE;
 
 // -----------------------------
+// SAFE DTO (REMOVE PASSWORD FIELDS ONLY)
+// -----------------------------
+function safeUserDto(user) {
+  const u = user.toObject ? user.toObject() : { ...user };
+
+  delete u.plainpassword;
+  delete u.hashedpassword;
+  delete u.password;
+  delete u.resettoken;
+  delete u.resettokenexpiration;
+
+  return u;
+}
+
+// -----------------------------
 // FILE HELPERS (LOCAL JSON MODE)
 // -----------------------------
 async function loadUsers() {
@@ -76,7 +91,7 @@ exports.login = async (req, res) => {
   // 1. LOCAL JSON USERS FIRST
   let users = await loadUsers();
 
-   let localUser = users.find(
+  let localUser = users.find(
     u => u.Username?.toLowerCase() === username.toLowerCase()
   );
 
@@ -87,7 +102,6 @@ exports.login = async (req, res) => {
     if (cred) {
       const ok = bcrypt.compareSync(plainpassword, cred.EncryptedPassword);
 
-      // Log attempt
       await UserLog.create({
         id: Date.now(),
         username,
@@ -109,7 +123,7 @@ exports.login = async (req, res) => {
       });
 
       return res.json({
-        ...localUser,
+        ...safeUserDto(localUser),
         token,
         source: "local"
       });
@@ -121,8 +135,7 @@ exports.login = async (req, res) => {
     const user = await User.findOne({
       username: new RegExp(`^${username}$`, "i")
     }).lean();
-    console.log("user", user);
-    
+
     if (!user) {
       await UserLog.create({
         id: Date.now(),
@@ -139,7 +152,6 @@ exports.login = async (req, res) => {
 
     const ok = bcrypt.compareSync(plainpassword, user.hashedpassword);
 
-    // Log attempt
     await UserLog.create({
       id: Date.now(),
       username,
@@ -154,69 +166,18 @@ exports.login = async (req, res) => {
     if (!ok)
       return res.status(400).json({ message: "Password mismatch." });
 
-    //const token = generateJwt(user);
     const token = generateJwt({
-  id: user._id,
-  username: user.username,
-  email: user.email,
-  role: user.role
-});
-console.log("token",token);
-  /*
-    // Create session
-    const session = new UserSession({
-      userid: user.userid || user.id || user._id,
-      token: token,
-
-      sessionstart: new Date().toISOString(),
-      sessionend: null,
-
-      sessionusername: user.username,
-      sessionemail: user.email,
-      sessionfirstname: user.firstname,
-      sessionlastname: user.lastname,
-      sessionfullname: user.fullname,
-
-      sessiondescription: "User login session",
-
-      // NEW FIELDS
-      ipaddress: ipaddress || "",
-      location: location || "",
-
-      acknowledged: 0,
-      actionpriority: 0,
-      sessionrecorded: 0,
-      sessionrecordurl: "",
-      sessioncomplete: 0,
-
-      twofactorkey: "",
-      twofactorkeysmsdestination: "",
-      twofactorkeyemaildestination: "",
-      twofactorprovider: "",
-      twofactorprovidertoken: randomSix().toString(),
-      twofactorproviderauthstring: "",
-
-      useridasstring: String(user.userid || user.id || user._id)
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role
     });
 
-    await session.save();*/
-
-    /*return res.json({
-      ...user.toObject(),
+    return res.json({
+      ...safeUserDto(user),
       token,
-      sessionId: 33,
-      //sessionId: session._id,
       source: "mongo"
-    });*/
-  
-  return res.json({
-  message: "Login successful",
-  username: user.username,
-  email: user.email,
-  fullname: user.fullname,
-  token: token,
-  source: "mongo"
-});
+    });
 
   } catch (err) {
     console.error("MongoDB login error:", err);
@@ -225,7 +186,7 @@ console.log("token",token);
 };
 
 // -----------------------------
-// LOGOUT (UPDATES SESSION + CREATES USERLOG)
+// LOGOUT
 // -----------------------------
 exports.logout = async (req, res) => {
   const auth = req.headers.authorization || "";
@@ -252,7 +213,6 @@ exports.logout = async (req, res) => {
 
     await session.save();
 
-    // Log logout
     await UserLog.create({
       id: Date.now(),
       username: decoded.sub,
@@ -273,7 +233,7 @@ exports.logout = async (req, res) => {
 };
 
 // -----------------------------
-// SIGNUP (MONGO MINIMAL REGISTRATION)
+// SIGNUP (MONGO)
 // -----------------------------
 exports.signup = async (req, res) => {
   try {
@@ -286,7 +246,7 @@ exports.signup = async (req, res) => {
       activepictureurl
     } = req.body;
     
-     const existsEmail = await User.findOne({
+    const existsEmail = await User.findOne({
       email: new RegExp(`^${email}$`, "i")
     });
     if (existsEmail)
@@ -307,19 +267,17 @@ exports.signup = async (req, res) => {
       email,
       fullname: `${firstname} ${lastname}`,
       role: "registered",
-
-      // relic, never changed again
       plainpassword,
-
-      // actual login password
       hashedpassword: hashed,
-
       activepictureurl
     });
 
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully." });
+    return res.status(201).json({
+      message: "User registered successfully.",
+      user: safeUserDto(newUser)
+    });
 
   } catch (err) {
     console.error("Signup Error:", err);
@@ -383,12 +341,14 @@ exports.resetPasswordLocal = async (req, res) => {
 
   res.json({ message: "Password reset successfully (local)." });
 };
-//MISSING FUNCTION1
+
+// -----------------------------
+// LOCAL LOGIN
+// -----------------------------
 exports.loginLocal = async (req, res) => {
   const { username, plainPassword, location, ipaddress, uiorigin } = req.body;
 
   try {
-    // Load local JSON users
     const users = await loadUsers();
     const localUser = users.find(
       u => u.Username?.toLowerCase() === username.toLowerCase()
@@ -409,7 +369,6 @@ exports.loginLocal = async (req, res) => {
       return res.status(400).json({ message: "User not found (local)." });
     }
 
-    // Load local credentials
     const creds = await loadCreds();
     const cred = creds.find(c => c.UserId === localUser.Id);
 
@@ -428,10 +387,8 @@ exports.loginLocal = async (req, res) => {
       return res.status(400).json({ message: "Credentials not found (local)." });
     }
 
-    // Compare bcrypt password
     const ok = bcrypt.compareSync(plainPassword, cred.EncryptedPassword);
 
-    // Log attempt
     await UserLog.create({
       id: Date.now(),
       username,
@@ -446,16 +403,14 @@ exports.loginLocal = async (req, res) => {
     if (!ok)
       return res.status(400).json({ message: "Password mismatch." });
 
-    // Generate JWT
     const token = generateJwt({
       username: localUser.Username,
       email: localUser.Email,
       role: localUser.Role
     });
 
-    // Return full local user + token
     return res.json({
-      ...localUser,
+      ...safeUserDto(localUser),
       token,
       source: "local"
     });
@@ -465,7 +420,57 @@ exports.loginLocal = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-//MISSING FUNCTION2
+
+// -----------------------------
+// LOCAL SIGNUP
+// -----------------------------
+exports.signupLocal = async (req, res) => {
+  const { firstname, lastname, username, email, plainPassword, activepictureurl } = req.body;
+
+  try {
+    const users = await loadUsers();
+    const creds = await loadCreds();
+
+    if (users.some(u => u.Username.toLowerCase() === username.toLowerCase())) {
+      return res.status(400).json({ message: "Username already exists (local)." });
+    }
+
+    const newUser = {
+      Id: Date.now(),
+      Username: username,
+      Firstname: firstname,
+      Lastname: lastname,
+      Email: email,
+      Fullname: `${firstname} ${lastname}`,
+      Role: "registered",
+      Activepictureurl: activepictureurl
+    };
+
+    users.push(newUser);
+    await saveUsers(users);
+
+    const hashed = bcrypt.hashSync(plainPassword, 10);
+    creds.push({
+      UserId: newUser.Id,
+      EncryptedPassword: hashed
+    });
+
+    await saveCreds(creds);
+
+    return res.status(201).json({
+      message: "User created successfully (local).",
+      user: safeUserDto(newUser)
+    });
+
+  } catch (err) {
+    console.error("signupLocal error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// -----------------------------
+// RESET PASSWORD FROM PROFILE
+// -----------------------------
 exports.resetPasswordProfile = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
@@ -488,12 +493,10 @@ exports.resetPasswordProfile = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "User not found." });
 
-    // Compare current password
     const ok = bcrypt.compareSync(currentPassword, user.hashedpassword);
     if (!ok)
       return res.status(400).json({ message: "Current password incorrect." });
 
-    // Update bcrypt hash
     user.hashedpassword = bcrypt.hashSync(newPassword, 10);
     await user.save();
 
@@ -504,48 +507,5 @@ exports.resetPasswordProfile = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-//MISSING FUNCTION 3
-exports.signupLocal = async (req, res) => {
-  const { firstname, lastname, username, email, plainPassword, activepictureurl } = req.body;
 
-  try {
-    const users = await loadUsers();
-    const creds = await loadCreds();
-
-    // Check if username exists
-    if (users.some(u => u.Username.toLowerCase() === username.toLowerCase())) {
-      return res.status(400).json({ message: "Username already exists (local)." });
-    }
-
-    // Create new user
-    const newUser = {
-      Id: Date.now(),
-      Username: username,
-      Firstname: firstname,
-      Lastname: lastname,
-      Email: email,
-      Fullname: `${firstname} ${lastname}`,
-      Role: "registered",
-      Activepictureurl: activepictureurl
-    };
-
-    users.push(newUser);
-    await saveUsers(users);
-
-    // Save credentials
-    const hashed = bcrypt.hashSync(plainPassword, 10);
-    creds.push({
-      UserId: newUser.Id,
-      EncryptedPassword: hashed
-    });
-
-    await saveCreds(creds);
-
-    return res.status(201).json({ message: "User created successfully (local)." });
-
-  } catch (err) {
-    console.error("signupLocal error:", err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
 
