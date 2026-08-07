@@ -274,4 +274,34 @@ router.post(
   controller.resetPassword
 );
 
+/**
+ * @swagger
+ * /auth/getUser:
+ *   post:
+ *     summary: Get user by username (MongoDB)
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: johndoe
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: User not found
+ */
+router.post("/getUser", controller.getUser);
+
+
+
 module.exports = router;
