@@ -508,4 +508,33 @@ exports.resetPasswordProfile = async (req, res) => {
   }
 };
 
+// -----------------------------
+// GET USER BY USERNAME (MONGO)
+// -----------------------------
+exports.getUser = async (req, res) => {
+  try {
+    const { username } = req.body;
 
+    if (!username)
+      return res.status(400).json({ message: "Username is required." });
+
+    const user = await User.findOne({
+      username: new RegExp(`^${username}$`, "i")
+    });
+
+    if (!user)
+      return res.status(404).json({ message: "User not found." });
+
+    // Apply your safe DTO
+    const safeUser = safeUserDto(user);
+
+    return res.json({
+      mongoid: user._id,
+      user: safeUser
+    });
+
+  } catch (err) {
+    console.error("getUser error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
