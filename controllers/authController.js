@@ -1,4 +1,4 @@
-// controllers/authController.js
+/// controllers/authController.js
 const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcryptjs");
@@ -89,7 +89,7 @@ function randomSix() {
 // LOGIN (LOCAL JSON FIRST → MONGO SECOND)
 // -----------------------------
 exports.login = async (req, res) => {
-  const { username, plainpassword, location, ipaddress, uiorigin } = req.body;
+  const { username, plainpassword, location, ipaddress, uiorigin } = req.dto;
 
   // 1. LOCAL JSON USERS FIRST
   let users = await loadUsers();
@@ -207,7 +207,7 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
   const auth = req.headers.authorization || "";
   const token = auth.split(" ")[1];
-  const { location, ipaddress, uiorigin } = req.body;
+  const { location, ipaddress, uiorigin } = req.dto;
 
   if (!token)
     return res.status(401).json({ message: "Missing token" });
@@ -260,7 +260,7 @@ exports.signup = async (req, res) => {
       email,
       plainpassword,
       activepictureurl
-    } = req.body;
+    } = req.dto;
     
     const existsEmail = await User.findOne({
       email: new RegExp(`^${email}$`, "i")
@@ -305,7 +305,7 @@ exports.signup = async (req, res) => {
 // RESET PASSWORD (MONGO)
 // -----------------------------
 exports.resetPassword = async (req, res) => {
-  const { resetToken, newPassword } = req.body;
+  const { resetToken, newPassword } = req.dto;
 
   if (!resetToken)
     return res.status(400).json({ message: "Token is null." });
@@ -331,7 +331,7 @@ exports.resetPassword = async (req, res) => {
 // RESET PASSWORD (LOCAL JSON)
 // -----------------------------
 exports.resetPasswordLocal = async (req, res) => {
-  const { resetToken, newPassword } = req.body;
+  const { resetToken, newPassword } = req.dto;
 
   if (!resetToken)
     return res.status(400).json({ message: "Token is null." });
@@ -362,7 +362,7 @@ exports.resetPasswordLocal = async (req, res) => {
 // LOCAL LOGIN
 // -----------------------------
 exports.loginLocal = async (req, res) => {
-  const { username, plainPassword, location, ipaddress, uiorigin } = req.body;
+  const { username, plainPassword, location, ipaddress, uiorigin } = req.dto;
 
   try {
     const users = await loadUsers();
@@ -441,7 +441,7 @@ exports.loginLocal = async (req, res) => {
 // LOCAL SIGNUP
 // -----------------------------
 exports.signupLocal = async (req, res) => {
-  const { firstname, lastname, username, email, plainPassword, activepictureurl } = req.body;
+  const { firstname, lastname, username, email, plainPassword, activepictureurl } = req.dto;
 
   try {
     const users = await loadUsers();
@@ -488,7 +488,7 @@ exports.signupLocal = async (req, res) => {
 // RESET PASSWORD FROM PROFILE
 // -----------------------------
 exports.resetPasswordProfile = async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+  const { currentPassword, newPassword } = req.dto;
 
   try {
     const auth = req.headers.authorization || "";
@@ -529,7 +529,7 @@ exports.resetPasswordProfile = async (req, res) => {
 // -----------------------------
 exports.getUser = async (req, res) => {
   try {
-    const { username } = req.body;
+    const { username } = req.dto;
 
     if (!username)
       return res.status(400).json({ message: "Username is required." });
