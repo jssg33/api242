@@ -87,3 +87,56 @@ exports.deleteByUserId = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+/* ---------------------------------------------------------
+   NEW ENDPOINTS
+--------------------------------------------------------- */
+
+// GET BY IMEI (deviceIMEI1 or deviceIMEI2)
+exports.getLocationsByIMEI = async (req, res) => {
+    try {
+        const imei = req.params.imei;
+
+        const items = await UserLocationHistory.find({
+            $or: [
+                { deviceIMEI1: imei },
+                { deviceIMEI2: imei }
+            ]
+        }).sort({ timestamp: -1 });
+
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// GET BY SERIAL NUMBER
+exports.getLocationsBySerial = async (req, res) => {
+    try {
+        const serial = req.params.serial;
+
+        const items = await UserLocationHistory.find({
+            deviceserialnumber: serial
+        }).sort({ timestamp: -1 });
+
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// GET BY CLLP ADDRESS
+exports.getLocationsByCLLP = async (req, res) => {
+    try {
+        const cllp = req.params.cllp;
+
+        const items = await UserLocationHistory.find({
+            deviceCLLP: cllp
+        }).sort({ timestamp: -1 });
+
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
