@@ -11,8 +11,11 @@ const controller = require("../controllers/userDeviceController");
  *       required:
  *         - userId
  *       properties:
+ *         _id:
+ *           type: string
  *         userId:
  *           type: string
+ *           description: MongoDB ObjectId of the user who owns the device
  *         deviceserialnumber:
  *           type: string
  *         deviceIMEI1:
@@ -37,10 +40,126 @@ const controller = require("../controllers/userDeviceController");
  *           type: boolean
  *         nickname:
  *           type: string
+ *         lastSeenLocationId:
+ *           type: string
+ *         lastSeenTimestamp:
+ *           type: string
+ *         supportsGPS:
+ *           type: boolean
+ *         supportsCellular:
+ *           type: boolean
  */
 
 /**
  * @swagger
+ * /api/userdevice:
+ *   post:
+ *     summary: Create a new device
+ *     tags: [UserDevice]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserDevice'
+ *     responses:
+ *       201:
+ *         description: Created
+ */
+router.post("/", controller.createDevice);
+
+/**
+ * @swagger
+ * /api/userdevice:
+ *   get:
+ *     summary: Get all devices
+ *     tags: [UserDevice]
+ *     responses:
+ *       200:
+ *         description: List of devices
+ */
+router.get("/", controller.getAllDevices);
+
+/**
+ * @swagger
+ * /api/userdevice/user/{userId}:
+ *   get:
+ *     summary: Get all devices for a specific user
+ *     tags: [UserDevice]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Devices for the user
+ */
+router.get("/user/:userId", controller.getDevicesByUser);
+
+/**
+ * @swagger
+ * /api/userdevice/{id}:
+ *   get:
+ *     summary: Get a device by ID
+ *     tags: [UserDevice]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Device record
+ */
+router.get("/:id", controller.getDeviceById);
+
+/**
+ * @swagger
+ * /api/userdevice/{id}:
+ *   put:
+ *     summary: Update a device
+ *     tags: [UserDevice]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserDevice'
+ *     responses:
+ *       200:
+ *         description: Updated device
+ */
+router.put("/:id", controller.updateDevice);
+
+/**
+ * @swagger
+ * /api/userdevice/{id}:
+ *   delete:
+ *     summary: Delete a device
+ *     tags: [UserDevice]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Deleted device
+ */
+router.delete("/:id", controller.deleteDevice);
+
+module.exports = router;
+
  * /api/userdevice:
  *   post:
  *     summary: Create a new device
