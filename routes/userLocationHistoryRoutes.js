@@ -15,7 +15,6 @@ const controller = require('../controllers/userLocationHistoryController');
  *       properties:
  *         _id:
  *           type: string
- *           description: Custom record ID (required)
  *         campusId:
  *           type: number
  *         buildingId:
@@ -27,6 +26,28 @@ const controller = require('../controllers/userLocationHistoryController');
  *         userName:
  *           type: string
  *         timestamp:
+ *           type: string
+ *         deviceserialnumber:
+ *           type: string
+ *         deviceIMEI1:
+ *           type: string
+ *         deviceIMEI2:
+ *           type: string
+ *         devicemodel:
+ *           type: string
+ *         deviceosversion:
+ *           type: string
+ *         devicetype:
+ *           type: string
+ *         devicecarrier:
+ *           type: string
+ *         deviceCLLP:
+ *           type: string
+ *         instance:
+ *           type: string
+ *         region:
+ *           type: string
+ *         collectorid:
  *           type: string
  *         latitude:
  *           type: number
@@ -160,4 +181,63 @@ router.delete('/:id', controller.deleteLocation);
  */
 router.delete('/user/:userId', controller.deleteByUserId);
 
+/* ---------------------------------------------------------
+   NEW GET ENDPOINTS
+--------------------------------------------------------- */
+
+/**
+ * @swagger
+ * /api/userlocation/imei/{imei}:
+ *   get:
+ *     summary: Get all location history entries by IMEI number
+ *     tags: [UserLocationHistory]
+ *     parameters:
+ *       - in: path
+ *         name: imei
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Entries matching IMEI
+ */
+router.get('/imei/:imei', controller.getLocationsByIMEI);
+
+/**
+ * @swagger
+ * /api/userlocation/serial/{serial}:
+ *   get:
+ *     summary: Get all location history entries by device serial number
+ *     tags: [UserLocationHistory]
+ *     parameters:
+ *       - in: path
+ *         name: serial
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Entries matching serial number
+ */
+router.get('/serial/:serial', controller.getLocationsBySerial);
+
+/**
+ * @swagger
+ * /api/userlocation/cllp/{cllp}:
+ *   get:
+ *     summary: Get all location history entries by CLLP address
+ *     tags: [UserLocationHistory]
+ *     parameters:
+ *       - in: path
+ *         name: cllp
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Entries matching CLLP address
+ */
+router.get('/cllp/:cllp', controller.getLocationsByCLLP);
+
 module.exports = router;
+
