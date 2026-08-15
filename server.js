@@ -286,6 +286,9 @@ app.use('/api/userfriends', userFriendsRoutes);
 const userFriendRequestsRoutes = require('./routes/userFriendRequestsRoutes');
 app.use('/api/userfriendrequests', userFriendRequestsRoutes);
 
+//08/15/2026 - Added UserDevices & Updated location controller to V3.
+const userDeviceRoutes = require('./routes/userDeviceRoutes');
+app.use('/api/userdevice', userDeviceRoutes);
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOTAL ROUTES:51 x 5 +(User, Region, SalesId)= 255 ENPOINTS + LICENSE & LICENSELOGS & ANALYSTS, QUOTES AND SPECIALPRICING (ADD GET BY USER, BY GROUP, BY COMPANY) = 265 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
