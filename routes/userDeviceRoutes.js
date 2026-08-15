@@ -159,7 +159,8 @@ router.put("/:id", controller.updateDevice);
 router.delete("/:id", controller.deleteDevice);
 
 module.exports = router;
-
+/**
+ * @swagger
  * /api/userdevice:
  *   post:
  *     summary: Create a new device
