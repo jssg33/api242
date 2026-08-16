@@ -291,10 +291,11 @@ const userDeviceRoutes = require('./routes/userDeviceRoutes');
 app.use('/api/userdevice', userDeviceRoutes);
 
 //08/16/2026
-const userLocationHistoryRoutes = require('./routes/userLocationHistoryRoutes');
-app.use('/api/userlocationhistory', userLocationHistoryRoutes);
-const buildingHistoryRoutes = require('./routes/buildingHistoryRoutes');
-app.use('/api/buildinghistory', buildingHistoryRoutes);
+const featureHistoryRoutes = require('./routes/featureHistoryRoutes');
+app.use('/api/featurehistory', featureHistoryRoutes);
+const musicHistoryRoutes = require('./routes/musicHistoryRoutes');
+app.use('/api/musichistory', musicHistoryRoutes);
+
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
