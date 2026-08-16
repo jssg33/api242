@@ -290,6 +290,13 @@ app.use('/api/userfriendrequests', userFriendRequestsRoutes);
 const userDeviceRoutes = require('./routes/userDeviceRoutes');
 app.use('/api/userdevice', userDeviceRoutes);
 
+//08/16/2026
+const userLocationHistoryRoutes = require('./routes/userLocationHistoryRoutes');
+app.use('/api/userlocationhistory', userLocationHistoryRoutes);
+const buildingHistoryRoutes = require('./routes/buildingHistoryRoutes');
+app.use('/api/buildinghistory', buildingHistoryRoutes);
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOTAL ROUTES:51 x 5 +(User, Region, SalesId)= 255 ENPOINTS + LICENSE & LICENSELOGS & ANALYSTS, QUOTES AND SPECIALPRICING (ADD GET BY USER, BY GROUP, BY COMPANY) = 265 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
 // NOTES ON PORT VS NEW || NEW->(SONGS(1), PROJECT TASKS(5), SALES (4 OF 8), DTOS (2 OF 4), LICENSES(2) -> 14/47 TABLES NEW -> 33 TABLES PORTED FROM C#.
