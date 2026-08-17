@@ -25,6 +25,8 @@ const controller = require('../controllers/userLocationHistoryController');
  *           type: string
  *         userName:
  *           type: string
+ *         userStatus:
+ *           type: string
  *         timestamp:
  *           type: string
  *         deviceserialnumber:
