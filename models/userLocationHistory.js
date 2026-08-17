@@ -7,6 +7,7 @@ const userLocationSchema = new mongoose.Schema({
     buildingName: { type: String, required: false },
     userId: { type: String, required: true },
     userName: { type: String, required: false },
+    userStatus: { type: String, required: false } || "available",
     timestamp: { type: String, required: false },
     deviceserialnumber: { type: String, required: false },
     deviceIMEI1: { type: String, required: false },
