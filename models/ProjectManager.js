@@ -8,8 +8,7 @@ const ProjectSchema = new mongoose.Schema({
     },
     projectid: {
         type: String,
-        required: true,
-        index: true
+        required: false,
     },
     description: {
         type: String,
