@@ -90,7 +90,7 @@ exports.deleteProject = async (req, res) => {
 exports.getProjectByMongoId = async (req, res) => {
     try {
         const project = await Project.findOne({
-            mongoid: req.params.mongoid
+            _id: req.params.mongoid
         });
 
         if (!project) {
@@ -107,7 +107,7 @@ exports.getProjectByMongoId = async (req, res) => {
 exports.updateProjectByMongoId = async (req, res) => {
     try {
         const project = await Project.findOneAndUpdate(
-            { mongoid: req.params.mongoid },
+            { _id: req.params.mongoid },
             req.body,
             { new: true }
         );
@@ -126,7 +126,7 @@ exports.updateProjectByMongoId = async (req, res) => {
 exports.deleteProjectByMongoId = async (req, res) => {
     try {
         const project = await Project.findOneAndDelete({
-            mongoid: req.params.mongoid
+            _id: req.params.mongoid
         });
 
         if (!project) {
