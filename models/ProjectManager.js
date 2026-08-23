@@ -6,7 +6,7 @@ const ProjectSchema = new mongoose.Schema({
         required: true,
         index: true
     },
-    userid: {
+    projectid: {
         type: String,
         required: true,
         index: true
