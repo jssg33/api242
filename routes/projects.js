@@ -48,6 +48,9 @@ const ProjectController = require("../controllers/ProjectController");
  *           type: string
  *         privacysetting:
  *           type: string
+ *         permittedUsers:
+ *          type: array
+ *          description: List of User document IDs that can access this project
  */
 
 /**
