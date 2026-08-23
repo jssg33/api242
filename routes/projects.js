@@ -13,6 +13,7 @@ const ProjectController = require("../controllers/ProjectController");
  *         - instanceid
  *         - projectname
  *         - githubRepoUrl
+ *         - groupid
  *       properties:
  *         userid:
  *           type: string
