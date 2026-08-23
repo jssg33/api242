@@ -26,7 +26,7 @@ const UserProjectController = require('../controllers/UserProjectController');
  *         description:
  *           type: string
  *           description: Desription of the project
-  *         owner:
+ *         projectowner:
  *           type: string
  *           description: Owner of the project
  *         projectName:
