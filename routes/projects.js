@@ -20,6 +20,10 @@ const ProjectController = require("../controllers/ProjectController");
  *           type: string
  *         projectname:
  *           type: string
+ *         description:
+ *           type: string
+ *         projectowner:
+ *           type: string
  *         githubRepoUrl:
  *           type: string
  *         githubPagesUrl:
