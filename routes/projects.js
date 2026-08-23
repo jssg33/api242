@@ -16,6 +16,8 @@ const ProjectController = require("../controllers/ProjectController");
  *       properties:
  *         userid:
  *           type: string
+ *         projectid:
+ *           type: string
  *         instanceid:
  *           type: string
  *         projectname:
