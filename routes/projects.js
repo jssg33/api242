@@ -116,31 +116,33 @@ router.get("/instance/:instanceid", ProjectController.getProjectsByInstance);
 
 /**
  * @swagger
- * /api/projects/{id}:
+ * /api/projects/{projectid}:
  *   get:
- *     summary: Get a project by MongoDB _id
+ *     summary: Get a project by projectid
  *     tags: [Projects]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: projectid
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
  *         description: Project data
+ *       404:
+ *         description: Project not found
  */
-router.get("/:id", ProjectController.getProjectById);
+router.get("/:projectid", ProjectController.getProjectById);
 
 /**
  * @swagger
- * /api/projects/{id}:
+ * /api/projects/{projectid}:
  *   put:
- *     summary: Update a project by MongoDB _id
+ *     summary: Update a project by projectid
  *     tags: [Projects]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: projectid
  *         required: true
  *         schema:
  *           type: string
@@ -153,33 +155,33 @@ router.get("/:id", ProjectController.getProjectById);
  *     responses:
  *       200:
  *         description: Updated project
+ *       404:
+ *         description: Project not found
  */
-router.put("/:id", ProjectController.updateProject);
+router.put("/:projectid", ProjectController.updateProject);
 
 /**
  * @swagger
- * /api/projects/{id}:
+ * /api/projects/{projectid}:
  *   delete:
- *     summary: Delete a project by MongoDB _id
+ *     summary: Delete a project by projectid
  *     tags: [Projects]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: projectid
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
  *         description: Project deleted
+ *       404:
+ *         description: Project not found
  */
-router.delete("/:id", ProjectController.deleteProject);
-
-
-
-
+router.delete("/:projectid", ProjectController.deleteProject);
 
 /* ---------------------------------------------------------
-   NEW: CRUD ROUTES USING CUSTOM mongoid FIELD
+   CRUD ROUTES USING CUSTOM mongoid FIELD
 --------------------------------------------------------- */
 
 /**
