@@ -20,8 +20,7 @@ const ProjectSchema = new mongoose.Schema({
         },
     groupid: {
         type: String,
-        required: true,
-        index: true
+        required: false,
     },
     instanceid: {
         type: String,
