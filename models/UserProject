@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const UserProjectSchema = new mongoose.Schema({
   userId: { type: String, required: true },
   description: { type: String, required: false },
+  projectowner: { type: String, required: false },
   projectId: { type: String, required: true },
   projectName: { type: String, required: true }
 }, { timestamps: true });
