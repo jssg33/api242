@@ -94,7 +94,14 @@ const ProjectSchema = new mongoose.Schema({
         required: false,
         index: true,
         trim: true
+    },
+    permittedUsers: [
+    {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
     }
+   ]
 });
 
 module.exports = mongoose.model("Project", ProjectSchema);
