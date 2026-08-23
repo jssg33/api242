@@ -6,6 +6,19 @@ const ProjectSchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    userid: {
+        type: String,
+        required: true,
+        index: true
+    },
+    description: {
+        type: String,
+        required: false,
+        },
+    projectowner: {
+        type: String,
+        required: false,
+        },
     groupid: {
         type: String,
         required: true,
