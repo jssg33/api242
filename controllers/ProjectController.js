@@ -29,30 +29,53 @@ exports.getProjectsByInstance = async (req, res) => {
     res.json(projects);
 };
 
-// Get a single project by Mongo _id
+// Get a single project by projectid
 exports.getProjectById = async (req, res) => {
-    const project = await Project.findById(req.params.id);
-    res.json(project);
-};
-
-// Update a project by Mongo _id
-exports.updateProject = async (req, res) => {
     try {
-        const project = await Project.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
+        const project = await Project.findOne({
+            projectid: req.params.projectid
+        });
+
+        if (!project) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
         res.json(project);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 };
 
-// Delete a project by Mongo _id
+// Update a project by projectid
+exports.updateProject = async (req, res) => {
+    try {
+        const project = await Project.findOneAndUpdate(
+            { projectid: req.params.projectid },
+            req.body,
+            { new: true }
+        );
+
+        if (!project) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
+        res.json(project);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+// Delete a project by projectid
 exports.deleteProject = async (req, res) => {
     try {
-        await Project.findByIdAndDelete(req.params.id);
+        const project = await Project.findOneAndDelete({
+            projectid: req.params.projectid
+        });
+
+        if (!project) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
         res.json({ message: "Project deleted" });
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -66,7 +89,9 @@ exports.deleteProject = async (req, res) => {
 // Get project by mongoid
 exports.getProjectByMongoId = async (req, res) => {
     try {
-        const project = await Project.findOne({ mongoid: req.params.mongoid });
+        const project = await Project.findOne({
+            mongoid: req.params.mongoid
+        });
 
         if (!project) {
             return res.status(404).json({ error: "Project not found" });
@@ -100,7 +125,9 @@ exports.updateProjectByMongoId = async (req, res) => {
 // Delete project by mongoid
 exports.deleteProjectByMongoId = async (req, res) => {
     try {
-        const project = await Project.findOneAndDelete({ mongoid: req.params.mongoid });
+        const project = await Project.findOneAndDelete({
+            mongoid: req.params.mongoid
+        });
 
         if (!project) {
             return res.status(404).json({ error: "Project not found" });
