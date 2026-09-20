@@ -1,0 +1,18 @@
+Core Table: criminal_cases
+Column	Type	Description
+case_id	UUID / BIGINT (PK)	Internal unique identifier for the case
+case_number	VARCHAR(50)	Official case/report number (e.g., agency's RMS number)
+user_id	VARCHAR(100)	SSO identifier of the officer who created/owns the case (string, per SSO's format — often not a simple integer)
+manager_id	VARCHAR(100)	SSO ID of the approving officer (e.g., shift supervisor/sergeant)
+sr_manager_id	VARCHAR(100)	SSO ID of the senior manager (e.g., captain/lieutenant) in the approval chain
+company_id	VARCHAR(50)	Identifier for the PD/agency (useful if this table serves multiple departments — a multi-tenant design)
+status	VARCHAR(30)	e.g., Open, Under Investigation, Closed, Referred to DA
+offense_type	VARCHAR(100)	Primary charge/offense classification (e.g., NIBRS/UCR code)
+incident_date	TIMESTAMP	When the offense occurred
+report_date	TIMESTAMP	When the report was filed
+location	VARCHAR(255)	Address or jurisdiction of incident
+approval_status	VARCHAR(30)	Pending, Approved, Rejected
+approved_at	TIMESTAMP	When manager_id approved
+sr_approved_at	TIMESTAMP	When sr_manager_id signed off (if a two-tier approval is required)
+created_at	TIMESTAMP	Row creation
+updated_at	TIMESTAMP	Last modified
