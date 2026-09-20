@@ -10,7 +10,7 @@ exports.getAllCompanies = async (req, res) => {
   }
 };
 
-// GET company by Mongo ID
+// GET company by Mongo _id
 exports.getCompanyById = async (req, res) => {
   try {
     const company = await Company.findById(req.params.id).lean();
@@ -25,11 +25,11 @@ exports.getCompanyById = async (req, res) => {
   }
 };
 
-// GET company by tenantId
+// GET company by tenantid
 exports.getCompanyByTenantId = async (req, res) => {
   try {
     const company = await Company.findOne({
-      tenantId: req.params.tenantId
+      tenantid: req.params.tenantid
     }).lean();
 
     if (!company) {
@@ -50,7 +50,7 @@ exports.createCompany = async (req, res) => {
   } catch (err) {
     if (err.code === 11000) {
       return res.status(409).json({
-        error: "companyId or tenantId must be unique"
+        error: "companyId must be unique"
       });
     }
 
@@ -58,7 +58,7 @@ exports.createCompany = async (req, res) => {
   }
 };
 
-// UPDATE company (including OUs and BUs)
+// UPDATE company
 exports.updateCompany = async (req, res) => {
   try {
     const company = await Company.findByIdAndUpdate(
@@ -94,4 +94,3 @@ exports.deleteCompany = async (req, res) => {
     res.status(400).json({ error: "Invalid ID" });
   }
 };
-
