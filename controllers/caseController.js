@@ -74,7 +74,7 @@ exports.getCaseById = async (req, res) => {
   }
 };
 
-// Get By Case Number
+// Get Case By Number
 exports.getCaseByNumber = async (req, res) => {
   try {
     const caseRecord = await Case.findOne({
