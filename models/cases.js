@@ -69,7 +69,8 @@ const caseSchema = new mongoose.Schema(
     incidentdate: Date,
     reportdate: Date,
     location: { type: String, trim: true }, // free-text address/jurisdiction
- 
+    vmsurl: { type: String, trim: true, default: "", }, // Link to external Video Management System repository
+    azurebloburl: { type: String, trim: true, default: "", }, // Direct Azure Blob URL when video is stored outside VMS
     // -------------------------------------------------
     // Geolocation
     // -------------------------------------------------
