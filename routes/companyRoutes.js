@@ -67,11 +67,16 @@ const companyController = require("../controllers/companyController");
  *           type: string
  *         email:
  *           type: string
+ *         tenantid:
+ *           type: string
  *         organizationunits:
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/OrganizationUnit'
  *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
  *           type: string
  *           format: date-time
  *       example:
@@ -87,6 +92,7 @@ const companyController = require("../controllers/companyController");
  *         phone: "555-123-4567"
  *         fax: "555-987-6543"
  *         email: "info@wavecrest.com"
+ *         tenantid: "72f988bf-86f1-41af-91ab-2d7cd011db47"
  *         organizationunits:
  *           - ouid: "OU-001"
  *             ouname: "North America Division"
@@ -96,6 +102,7 @@ const companyController = require("../controllers/companyController");
  *               - buid: "BU-200"
  *                 buname: "Wireless Services"
  *         createdAt: "2025-01-30T12:34:56.000Z"
+ *         updatedAt: "2025-01-30T12:34:56.000Z"
  */
 
 /**
@@ -118,9 +125,37 @@ router.get("/", companyController.getAllCompanies);
 
 /**
  * @openapi
+ * /companies/tenant/{tenantid}:
+ *   get:
+ *     summary: Get a company by tenant ID
+ *     tags: [Companies]
+ *     parameters:
+ *       - in: path
+ *         name: tenantid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Azure Entra tenant ID
+ *     responses:
+ *       200:
+ *         description: Company found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Company'
+ *       404:
+ *         description: Company not found
+ */
+router.get(
+  "/tenant/:tenantid",
+  companyController.getCompanyByTenantId
+);
+
+/**
+ * @openapi
  * /companies/{id}:
  *   get:
- *     summary: Get a company by ID
+ *     summary: Get a company by MongoDB ID
  *     tags: [Companies]
  *     parameters:
  *       - in: path
@@ -158,7 +193,7 @@ router.get("/:id", companyController.getCompanyById);
  *       400:
  *         description: Invalid input
  *       409:
- *         description: companyId must be unique
+ *         description: companyId already exists
  */
 router.post("/", companyController.createCompany);
 
@@ -166,7 +201,7 @@ router.post("/", companyController.createCompany);
  * @openapi
  * /companies/{id}:
  *   put:
- *     summary: Update a company (including OUs and BUs)
+ *     summary: Update a company (including organization units and business units)
  *     tags: [Companies]
  *     parameters:
  *       - in: path
