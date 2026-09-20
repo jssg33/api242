@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema(
     displayname: { type: String, trim: true },
     username: { type: String, trim: true },
     pronoun: { type: String, trim: true }, // added
+    tenantid: { type: String, trim: true }, // added
 
     email: {
       type: String,
