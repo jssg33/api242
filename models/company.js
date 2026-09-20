@@ -94,7 +94,7 @@ const companySchema = new mongoose.Schema(
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"]
     },
-    tenant: { type: String, trim: true },
+    tenantid: { type: String, trim: true },
     // ⭐ NEW: Multiple OUs, each with nested BUs
     organizationunits: [organizationUnitSchema],
 
