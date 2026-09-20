@@ -10,14 +10,35 @@ exports.getAllCompanies = async (req, res) => {
   }
 };
 
-// GET company by ID
+// GET company by Mongo ID
 exports.getCompanyById = async (req, res) => {
   try {
     const company = await Company.findById(req.params.id).lean();
-    if (!company) return res.status(404).json({ error: "Company not found" });
+
+    if (!company) {
+      return res.status(404).json({ error: "Company not found" });
+    }
+
     res.json(company);
   } catch {
     res.status(400).json({ error: "Invalid ID" });
+  }
+};
+
+// GET company by tenantId
+exports.getCompanyByTenantId = async (req, res) => {
+  try {
+    const company = await Company.findOne({
+      tenantId: req.params.tenantId
+    }).lean();
+
+    if (!company) {
+      return res.status(404).json({ error: "Company not found" });
+    }
+
+    res.json(company);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -28,8 +49,11 @@ exports.createCompany = async (req, res) => {
     res.status(201).json(company);
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(409).json({ error: "companyId must be unique" });
+      return res.status(409).json({
+        error: "companyId or tenantId must be unique"
+      });
     }
+
     res.status(400).json({ error: err.message });
   }
 };
@@ -46,7 +70,9 @@ exports.updateCompany = async (req, res) => {
       }
     ).lean();
 
-    if (!company) return res.status(404).json({ error: "Company not found" });
+    if (!company) {
+      return res.status(404).json({ error: "Company not found" });
+    }
 
     res.json(company);
   } catch (err) {
@@ -58,12 +84,14 @@ exports.updateCompany = async (req, res) => {
 exports.deleteCompany = async (req, res) => {
   try {
     const company = await Company.findByIdAndDelete(req.params.id);
-    if (!company) return res.status(404).json({ error: "Company not found" });
+
+    if (!company) {
+      return res.status(404).json({ error: "Company not found" });
+    }
 
     res.json({ message: "Company deleted" });
   } catch {
     res.status(400).json({ error: "Invalid ID" });
   }
 };
-
 
