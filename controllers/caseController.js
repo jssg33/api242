@@ -1,4 +1,4 @@
-const Case = require("../models/case");
+const Case = require("../models/cases");
 
 // Create Case
 exports.createCase = async (req, res) => {
