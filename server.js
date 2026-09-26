@@ -113,7 +113,7 @@ app.use(
     }
   })
 );
-app.get("/swagger/v1/swagger.json", (req, res) => {res.setHeader("Content-Type", "application/json");res.send(swaggerSpec);});
+app.get("/swagger.json", (req, res) => {res.json(swaggerSpec);});
 // -------------------------
 // ROUTES
 // -------------------------
