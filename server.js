@@ -32,6 +32,9 @@ const allowedOrigins = [
   "https://www.figma.com",
   "https://gliops.glocation.info",
   "capacitor://localhost",
+  "https://analytics.capitoltechnology.net",
+  "https://g4.capitoltechnology.net",
+  "https://luna.capitoltechnology.net",
   "http://localhost"
 ];
 
