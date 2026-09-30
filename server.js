@@ -310,6 +310,17 @@ app.use("/api/cases", require("./routes/caseRoutes"));
 // GEN1 -> THE ORIGINAL MODEL WAS BUILT IN CSCE590 IN THE SPRING OF 25 BY JOHN S. STRITZINGER AT THE UNIVERSITY OF SOUTH CAROLINA - C# CLIENT SIDE DEVELOPMENT FOR THE BIKES CLASS PROJECT.
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//09/30/2026
+//Added Greenville Project Manager Missing APIs which was causing locally rendered data...
+// Releases, Scopes & Project Tasks (5)
+app.use("/scopes", require("./routes/scopeRoutes"));
+app.use("/projecttasks", require("./routes/projectTaskRoutes"));
+app.use("/api/releases", require("./routes/releaseRoutes"));
+app.use("/api/projects", require("./routes/projects"));
+app.use("/projectmilestones", require("./routes/projectMilestoneRoutes"));
+app.use("/homecontent", require("./routes/homeContentRoutes"));
+app.use("/projectteam", require("./routes/projectTeamRoutes"));
+app.use("/personalpages", require("./routes/personalPageContentRoutes"));
 
 // -------------------------
 // DATABASE + SERVER START
