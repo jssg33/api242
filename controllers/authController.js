@@ -216,9 +216,6 @@ exports.logout = async (req, res) => {
 // -----------------------------
 // SIGNUP (MONGO)
 // -----------------------------
-
-
-
 exports.signup = async (req, res) => {
   try {
     const {
@@ -230,32 +227,42 @@ exports.signup = async (req, res) => {
       activepictureurl
     } = req.dto;
 
-    const fillname = username || email;
-    
+    // Default username to email when it wasn't provided
+    const effectiveUsername = (username && String(username).trim()) || email;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+    if (!plainpassword) {
+      return res.status(400).json({ message: "Password is required." });
+    }
+
     const existsEmail = await User.findOne({
       email: new RegExp(`^${email}$`, "i")
     });
-    if (existsEmail)
+    if (existsEmail) {
       return res.status(400).json({ message: "Email already registered." });
+    }
 
     const existsUser = await User.findOne({
-      username: new RegExp(`^${username}$`, "i")
+      username: new RegExp(`^${effectiveUsername}$`, "i")
     });
-    if (existsUser)
+    if (existsUser) {
       return res.status(400).json({ message: "Username already in use." });
+    }
 
     const hashed = bcrypt.hashSync(plainpassword, 10);
 
     const newUser = new User({
-      "firstname": firstname || 'some',
-      "lastname": lastname || 'newuser',
-      "username": fillname,
+      firstname: firstname || "some",
+      lastname: lastname || "newuser",
+      username: effectiveUsername,          // ← always set
       email,
-      fullname: `${firstname} ${lastname}`,
+      fullname: `${firstname || ""} ${lastname || ""}`.trim() || effectiveUsername,
       role: "registered",
-      plainpassword,
+      plainpassword,                       // consider removing this field entirely
       hashedpassword: hashed,
-      "activepictureurl": activepictureurl || './images/default.png'
+      activepictureurl: activepictureurl || "./images/default.png"
     });
 
     await newUser.save();
@@ -264,7 +271,6 @@ exports.signup = async (req, res) => {
       message: "User registered successfully.",
       user: safeUserDto(newUser)
     });
-
   } catch (err) {
     console.error("Signup Error:", err);
     res.status(500).json({ message: "Internal server error", error: err.message });
