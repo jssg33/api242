@@ -495,29 +495,32 @@ exports.resetPasswordProfile = async (req, res) => {
 };
 
 // -----------------------------
-// GET USER BY USERNAME (MONGO)
+// GET USER BY USERNAME OR EMAIL (MONGO)
 // -----------------------------
 exports.getUser = async (req, res) => {
   try {
-    const { username } = req.dto;
+    const { username, email } = req.dto;
 
-    if (!username)
-      return res.status(400).json({ message: "Username is required." });
+    if (!username && !email) {
+      return res.status(400).json({
+        message: "Username or email is required."
+      });
+    }
 
-    const user = await User.findOne({
-      username: new RegExp(`^${username}$`, "i")
-    });
+    const query = username
+      ? { username: new RegExp(`^${username}$`, "i") }
+      : { email: new RegExp(`^${email}$`, "i") };
 
-    if (!user)
+    const user = await User.findOne(query);
+
+    if (!user) {
       return res.status(404).json({ message: "User not found." });
-
-    const safeUser = safeUserDto(user);
+    }
 
     return res.json({
       mongoid: user._id,
-      user: safeUser
+      user: safeUserDto(user)
     });
-
   } catch (err) {
     console.error("getUser error:", err);
     return res.status(500).json({ message: "Internal server error" });
