@@ -216,6 +216,9 @@ exports.logout = async (req, res) => {
 // -----------------------------
 // SIGNUP (MONGO)
 // -----------------------------
+
+
+
 exports.signup = async (req, res) => {
   try {
     const {
@@ -226,6 +229,8 @@ exports.signup = async (req, res) => {
       plainpassword,
       activepictureurl
     } = req.dto;
+
+    const fillname = username || email;
     
     const existsEmail = await User.findOne({
       email: new RegExp(`^${email}$`, "i")
@@ -244,7 +249,7 @@ exports.signup = async (req, res) => {
     const newUser = new User({
       firstname,
       lastname,
-      username,
+      "username": fillname,
       email,
       fullname: `${firstname} ${lastname}`,
       role: "registered",
