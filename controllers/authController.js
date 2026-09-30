@@ -247,15 +247,15 @@ exports.signup = async (req, res) => {
     const hashed = bcrypt.hashSync(plainpassword, 10);
 
     const newUser = new User({
-      firstname,
-      lastname,
+      "firstname": firstname || 'some',
+      "lastname": lastname || 'newuser',
       "username": fillname,
       email,
       fullname: `${firstname} ${lastname}`,
       role: "registered",
       plainpassword,
       hashedpassword: hashed,
-      activepictureurl
+      "activepictureurl": activepictureurl || './images/default.png'
     });
 
     await newUser.save();
