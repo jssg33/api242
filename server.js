@@ -323,6 +323,7 @@ app.use("/projectteam", require("./routes/projectTeamRoutes"));
 app.use("/personalpages", require("./routes/personalPageContentRoutes"));
 app.use("/trophies", require("./routes/trophiesRoutes"));
 app.use("/matransactions", require("./routes/mandATransactionsRoutes"));
+app.use("/projectstorage", require("./routes/projectStorageRoutes"));
 
 // -------------------------
 // DATABASE + SERVER START
