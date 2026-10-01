@@ -460,6 +460,287 @@ exports.signupLocal = async (req, res) => {
   }
 };
 
+// ============================================================
+// SOCIAL + PGP LOGIN ENDPOINTS
+// ============================================================
+
+function buildSyntheticEmail(firstname = "user") {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const clean = (firstname || "user")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .slice(0, 20) || "user";
+  return `${clean}${month}${day}@greenvilleassociates.com`;
+}
+
+async function findOrCreateSocialUser({ email, firstname, lastname, provider, socialId }) {
+  let finalEmail = email?.trim().toLowerCase() || null;
+  let user = null;
+
+  // 1. Try real email first
+  if (finalEmail) {
+    user = await User.findOne({ email: new RegExp(`^${finalEmail}$`, "i") });
+  }
+
+  // 2. If no email or not found → generate synthetic
+  if (!user) {
+    if (!finalEmail) {
+      finalEmail = buildSyntheticEmail(firstname);
+    }
+
+    // Check if synthetic already exists (same day login)
+    user = await User.findOne({ email: new RegExp(`^${finalEmail}$`, "i") });
+
+    if (!user) {
+      // Create new user
+      const usernameBase = finalEmail.split("@")[0];
+      user = new User({
+        firstname: firstname || "Social",
+        lastname: lastname || "User",
+        fullname: `${firstname || "Social"} ${lastname || "User"}`.trim(),
+        username: usernameBase,
+        email: finalEmail,
+        role: "registered",
+        hashedpassword: bcrypt.hashSync(`${provider}_${socialId || Date.now()}`, 10),
+        activepictureurl: "./images/default.png",
+        status: "active"
+      });
+      await user.save();
+    }
+  }
+
+  return user;
+}
+
+async function createSessionAndToken(user, extra = {}) {
+  const token = generateJwt({
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    role: user.role
+  });
+
+  const session = new UserSession({
+    userid: user.userid || user.id || 0,
+    token,
+    sessionstart: new Date().toISOString(),
+    sessionusername: user.username,
+    sessionemail: user.email,
+    sessionfirstname: user.firstname,
+    sessionlastname: user.lastname,
+    sessionfullname: user.fullname,
+    useridasstring: (user._id || user.id || "").toString(),
+    sessioncomplete: 0,
+    acknowledged: 0,
+    ...extra
+  });
+
+  await session.save();
+
+  return { token, session };
+}
+
+// ---------- GOOGLE ----------
+exports.loginGoogle = async (req, res) => {
+  try {
+    const { email, firstname, lastname, googleToken, socialId } = req.body;
+
+    if (!googleToken && !email && !socialId) {
+      return res.status(400).json({ message: "Google token or user info required." });
+    }
+
+    const user = await findOrCreateSocialUser({
+      email,
+      firstname: firstname || "Google",
+      lastname: lastname || "User",
+      provider: "google",
+      socialId: socialId || googleToken?.slice(0, 20)
+    });
+
+    const { token, session } = await createSessionAndToken(user, {
+      // googleToken: googleToken // optional – avoid storing long tokens if not needed
+    });
+
+    return res.json({
+      code: 106,
+      message: "Google login successful",
+      mongoid: user._id,
+      userId: user.userid || user.id,
+      userFirstname: user.firstname,
+      userLastname: user.lastname,
+      userUsername: user.username,
+      userEmail: user.email,
+      userRole: user.role,
+      token,
+      sessionId: session._id || session.id,
+      source: "google",
+      user: safeUserDto(user)
+    });
+  } catch (err) {
+    console.error("loginGoogle error:", err);
+    return res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+// ---------- FACEBOOK ----------
+exports.loginFacebook = async (req, res) => {
+  try {
+    const { email, firstname, lastname, facebookToken, socialId } = req.body;
+
+    if (!facebookToken && !email && !socialId) {
+      return res.status(400).json({ message: "Facebook token or user info required." });
+    }
+
+    const user = await findOrCreateSocialUser({
+      email,
+      firstname: firstname || "Facebook",
+      lastname: lastname || "User",
+      provider: "facebook",
+      socialId: socialId || facebookToken?.slice(0, 20)
+    });
+
+    const { token, session } = await createSessionAndToken(user);
+
+    return res.json({
+      code: 106,
+      message: "Facebook login successful",
+      mongoid: user._id,
+      userId: user.userid || user.id,
+      userFirstname: user.firstname,
+      userLastname: user.lastname,
+      userUsername: user.username,
+      userEmail: user.email,
+      userRole: user.role,
+      token,
+      sessionId: session._id || session.id,
+      source: "facebook",
+      user: safeUserDto(user)
+    });
+  } catch (err) {
+    console.error("loginFacebook error:", err);
+    return res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+// ---------- MICROSOFT (lightweight – no Entra validation yet) ----------
+exports.loginMicrosoft = async (req, res) => {
+  try {
+    const { email, firstname, lastname, microsoftToken, socialId } = req.body;
+
+    if (!microsoftToken && !email) {
+      return res.status(400).json({ message: "Microsoft token or email required." });
+    }
+
+    const user = await findOrCreateSocialUser({
+      email,
+      firstname: firstname || "Microsoft",
+      lastname: lastname || "User",
+      provider: "microsoft",
+      socialId: socialId || microsoftToken?.slice(0, 20)
+    });
+
+    const { token, session } = await createSessionAndToken(user);
+
+    return res.json({
+      code: 106,
+      message: "Microsoft login successful",
+      mongoid: user._id,
+      userId: user.userid || user.id,
+      userFirstname: user.firstname,
+      userLastname: user.lastname,
+      userUsername: user.username,
+      userEmail: user.email,
+      userRole: user.role,
+      token,
+      sessionId: session._id || session.id,
+      source: "microsoft",
+      user: safeUserDto(user)
+    });
+  } catch (err) {
+    console.error("loginMicrosoft error:", err);
+    return res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+// ---------- PGP / ENCRYPTED LOGIN ----------
+// Simple Caesar cipher implementation to match your C# "caesar,N" style
+function caesarDecrypt(text, shift) {
+  return text
+    .split("")
+    .map((char) => {
+      if (char.match(/[a-z]/i)) {
+        const code = char.charCodeAt(0);
+        const base = code >= 65 && code <= 90 ? 65 : 97;
+        return String.fromCharCode(((code - base - shift + 26) % 26) + base);
+      }
+      return char;
+    })
+    .join("");
+}
+
+exports.pgpLogin = async (req, res) => {
+  try {
+    const { encryptedUsername, encryptedPassword, cipher } = req.body;
+
+    if (!encryptedUsername || !encryptedPassword) {
+      return res.status(400).json({ message: "EncryptedUsername and EncryptedPassword are required." });
+    }
+
+    let cipherToUse = cipher || "caesar,7";
+    let shift = 7;
+
+    if (cipherToUse.toLowerCase().startsWith("caesar,")) {
+      shift = parseInt(cipherToUse.split(",")[1], 10) || 7;
+    }
+
+    // Decrypt
+    const decryptedUsername = caesarDecrypt(encryptedUsername, shift);
+    const decryptedPassword = caesarDecrypt(encryptedPassword, shift);
+
+    // Normal login flow
+    const user = await User.findOne({
+      username: new RegExp(`^${decryptedUsername}$`, "i")
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found." });
+    }
+
+    const hashed = user.hashedpassword || user.password;
+    if (!hashed || !bcrypt.compareSync(decryptedPassword, hashed)) {
+      return res.status(401).json({ message: "Password mismatch." });
+    }
+
+    const { token, session } = await createSessionAndToken(user, {
+      // targetcipher: cipherToUse
+    });
+
+    return res.json({
+      code: 106,
+      message: "PGP login successful",
+      mongoid: user._id,
+      userId: user.userid || user.id,
+      userFirstname: user.firstname,
+      userLastname: user.lastname,
+      userUsername: user.username,
+      userEmail: user.email,
+      userRole: user.role,
+      token,
+      sessionId: session._id || session.id,
+      cipherUsed: cipherToUse,
+      source: "pgp",
+      user: safeUserDto(user)
+    });
+  } catch (err) {
+    console.error("pgpLogin error:", err);
+    return res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+
+
 // -----------------------------
 // RESET PASSWORD FROM PROFILE
 // -----------------------------
