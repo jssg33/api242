@@ -4,7 +4,6 @@
  *   name: Auth
  *   description: Authentication endpoints
  */
-
 /**
  * @swagger
  * components:
@@ -91,11 +90,41 @@
  *         newPassword:
  *           type: string
  *           example: NewPassword456
+ *
+ *     SocialLoginRequest:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *         firstname:
+ *           type: string
+ *         lastname:
+ *           type: string
+ *         socialId:
+ *           type: string
+ *         googleToken:
+ *           type: string
+ *         facebookToken:
+ *           type: string
+ *         microsoftToken:
+ *           type: string
+ *
+ *     PgpLoginRequest:
+ *       type: object
+ *       required:
+ *         - encryptedUsername
+ *         - encryptedPassword
+ *       properties:
+ *         encryptedUsername:
+ *           type: string
+ *         encryptedPassword:
+ *           type: string
+ *         cipher:
+ *           type: string
+ *           example: caesar,7
  */
-
 const express = require("express");
 const router = express.Router();
-
 const {
   LoginRequest,
   SignupRequest,
@@ -103,7 +132,6 @@ const {
   ResetPasswordRequest,
   ResetPasswordRequestProfile
 } = require("../dtos/authDto");
-
 const controller = require("../controllers/authController");
 
 function validate(dtoClass) {
@@ -278,7 +306,7 @@ router.post(
  * @swagger
  * /auth/getUser:
  *   post:
- *     summary: Get user by username (MongoDB)
+ *     summary: Get user by username or email (MongoDB)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -286,12 +314,11 @@ router.post(
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - username
  *             properties:
  *               username:
  *                 type: string
- *                 example: johndoe
+ *               email:
+ *                 type: string
  *     responses:
  *       200:
  *         description: User retrieved successfully
@@ -302,6 +329,90 @@ router.post(
  */
 router.post("/getUser", controller.getUser);
 
+// ============================================================
+// SOCIAL LOGINS + PGP
+// ============================================================
 
+/**
+ * @swagger
+ * /auth/loginGoogle:
+ *   post:
+ *     summary: Login or auto-register with Google
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SocialLoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Validation error
+ */
+router.post("/loginGoogle", controller.loginGoogle);
+
+/**
+ * @swagger
+ * /auth/loginFacebook:
+ *   post:
+ *     summary: Login or auto-register with Facebook
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SocialLoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Validation error
+ */
+router.post("/loginFacebook", controller.loginFacebook);
+
+/**
+ * @swagger
+ * /auth/loginMicrosoft:
+ *   post:
+ *     summary: Login or auto-register with Microsoft
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SocialLoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Validation error
+ */
+router.post("/loginMicrosoft", controller.loginMicrosoft);
+
+/**
+ * @swagger
+ * /auth/pgpLogin:
+ *   post:
+ *     summary: Login with PGP / Caesar encrypted credentials
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PgpLoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Invalid credentials
+ */
+router.post("/pgpLogin", controller.pgpLogin);
 
 module.exports = router;
