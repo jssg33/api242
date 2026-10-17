@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const controller =
-    require("../controllers/ProjectStorageController");
+    require("../controllers/projectStorageController");
 
 router.post(
     "/api/projects/ensure-directories",
