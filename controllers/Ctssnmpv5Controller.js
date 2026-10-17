@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
-const db = require("../models");
+const db = require("../models/Ctssnmpv5.js");
 
 const Ctssnmpv5 = db.Ctssnmpv5;
 const User = db.User;
