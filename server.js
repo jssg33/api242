@@ -302,6 +302,11 @@ app.use('/api/musichistory', musicHistoryRoutes);
 
 //09/20/2026 -- Added support for Cases so that VMS can be referenced
 app.use("/api/cases", require("./routes/caseRoutes"));
+
+//10/17/2026
+//Added CTSSNMPv5
+const ctssnmpv5Routes = require("./routes/Ctssnmpv5Routes");
+app.use(ctssnmpv5Routes);
 // --------------------------------------------------------------------------------------------------------------------------------------------------------
 // TOTAL ROUTES:51 x 5 +(User, Region, SalesId)= 255 ENPOINTS + LICENSE & LICENSELOGS & ANALYSTS, QUOTES AND SPECIALPRICING (ADD GET BY USER, BY GROUP, BY COMPANY) = 265 TOTAL API ENDPOINTS ALL BUILT OR PORTED IN SPRING OF 2026.
 // NOTES ON PORT VS NEW || NEW->(SONGS(1), PROJECT TASKS(5), SALES (4 OF 8), DTOS (2 OF 4), LICENSES(2) -> 14/47 TABLES NEW -> 33 TABLES PORTED FROM C#.
