@@ -7,125 +7,202 @@ const controller = require("../controllers/Ctssnmpv5Controller");
  * @swagger
  * components:
  *   schemas:
+ *     Ctssnmpv5Variable:
+ *       type: object
+ *       properties:
+ *         oid:
+ *           type: string
+ *         name:
+ *           type: string
+ *         value:
+ *           type: string
+ *         dataType:
+ *           type: string
+ *         units:
+ *           type: string
+ *         sequenceOrder:
+ *           type: integer
+ *
  *     Ctssnmpv5:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
+ *         _id:
+ *           type: string
+ *
  *         trapId:
  *           type: string
+ *
  *         timestamp:
  *           type: string
+ *
  *         sourceIp:
  *           type: string
+ *
  *         communityString:
  *           type: string
+ *
  *         snmpVersion:
  *           type: string
+ *
  *         enterpriseOid:
  *           type: string
+ *
  *         genericTrapType:
  *           type: integer
+ *
  *         specificTrapCode:
  *           type: integer
+ *
  *         agentAddress:
  *           type: string
+ *
  *         messageGuid:
  *           type: string
  *           format: uuid
+ *
  *         receivedUtc:
  *           type: string
  *           format: date-time
+ *
  *         destinationIp:
  *           type: string
+ *
  *         trapOid:
  *           type: string
+ *
  *         sysUpTime:
  *           type: string
+ *
  *         engineId:
  *           type: string
+ *
  *         userName:
  *           type: string
+ *
  *         securityLevel:
  *           type: string
+ *
  *         authProtocol:
  *           type: string
+ *
  *         privacyProtocol:
  *           type: string
+ *
  *         engineBoots:
  *           type: integer
+ *
  *         engineTime:
  *           type: integer
+ *
  *         contextEngineId:
  *           type: string
+ *
  *         contextName:
  *           type: string
+ *
  *         correlationId:
  *           type: string
+ *
  *         tenantId:
  *           type: string
+ *
  *         region:
  *           type: string
+ *
  *         collectorVersion:
  *           type: string
+ *
  *         collectionMethod:
  *           type: string
+ *
  *         jsonPayload:
  *           type: string
+ *
  *         rawPayload:
  *           type: string
+ *
  *         lat:
  *           type: string
+ *
  *         long:
  *           type: string
+ *
  *         ctsfulllocation:
  *           type: string
+ *
  *         vpnid:
  *           type: string
- *         user1:
- *           type: string
- *         user2:
- *           type: string
- *         user3:
- *           type: string
- *         user4:
- *           type: string
- *         user5:
- *           type: string
- *         loopbackSourceIp:
- *           type: string
- *         description:
- *           type: string
- *         severity:
- *           type: string
+ *
  *         vpnid1:
  *           type: string
+ *
  *         vpnid2:
  *           type: string
+ *
  *         vpnid3:
  *           type: string
+ *
  *         vpnid4:
  *           type: string
+ *
  *         vpnid5:
  *           type: string
+ *
+ *         user1:
+ *           type: string
+ *
+ *         user2:
+ *           type: string
+ *
+ *         user3:
+ *           type: string
+ *
+ *         user4:
+ *           type: string
+ *
+ *         user5:
+ *           type: string
+ *
+ *         loopbackSourceIp:
+ *           type: string
+ *
+ *         description:
+ *           type: string
+ *
+ *         severity:
+ *           type: string
+ *
  *         userid:
  *           type: string
+ *
  *         oracleid:
  *           type: string
+ *
  *         dynamicsid:
  *           type: string
+ *
  *         ncrid:
  *           type: string
+ *
  *         inventoryid:
  *           type: string
+ *
  *         queue:
  *           type: string
+ *
  *         producttypeid:
  *           type: string
+ *
  *         techassigned:
  *           type: integer
+ *
  *         repairticket:
  *           type: integer
+ *
+ *         variables:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Ctssnmpv5Variable'
  */
 
 /**
@@ -149,6 +226,12 @@ const controller = require("../controllers/Ctssnmpv5Controller");
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Ctssnmpv5'
  */
 router.get(
     "/api/Ctssnmpv5/:apiusername/:apipassword",
@@ -161,7 +244,7 @@ router.get(
  *   get:
  *     tags:
  *       - Ctssnmpv5
- *     summary: Get SNMP record by ID
+ *     summary: Get SNMP record by id
  *     parameters:
  *       - in: path
  *         name: apiusername
@@ -177,12 +260,14 @@ router.get(
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Success
- *       404:
- *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ctssnmpv5'
  */
 router.get(
     "/api/Ctssnmpv5/:apiusername/:apipassword/:id",
@@ -244,7 +329,7 @@ router.post(
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -282,7 +367,7 @@ router.put(
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Deleted
