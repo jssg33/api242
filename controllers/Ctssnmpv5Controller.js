@@ -6,8 +6,8 @@ const User = require("../models/user");
 async function validateUser(apiusername, apipassword) {
 
     const user = await User.findOne({
-        username: apiusername,
-        password: apipassword
+        apiusername: apiusername,
+        apipassword: apipassword
     });
 
     return !!user;
