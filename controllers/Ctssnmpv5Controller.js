@@ -1,139 +1,250 @@
-const { v4: uuidv4 } = require("uuid");
-const db = require("../models/Ctssnmpv5.js");
+const crypto = require("crypto");
 
-const Ctssnmpv5 = db.Ctssnmpv5;
-const User = db.User;
+const Ctssnmpv5 = require("../models/Ctssnmpv5");
+const User = require("../models/User");
 
 async function validateUser(apiusername, apipassword) {
+
     const user = await User.findOne({
-        where: {
-            Username: apiusername,
-            Password: apipassword
-        }
+        username: apiusername,
+        password: apipassword
     });
 
     return !!user;
 }
 
 exports.getAll = async (req, res) => {
-    try {
-        const { apiusername, apipassword } = req.params;
 
-        if (!(await validateUser(apiusername, apipassword))) {
+    try {
+
+        const {
+            apiusername,
+            apipassword
+        } = req.params;
+
+        if (!(await validateUser(
+            apiusername,
+            apipassword
+        ))) {
+
             return res.status(401).json({
                 message: "Unauthorized"
             });
+
         }
 
-        const data = await Ctssnmpv5.findAll();
+        const data = await Ctssnmpv5.find()
+            .sort({
+                receivedUtc: -1
+            });
 
         return res.json(data);
-    } catch (err) {
-        return res.status(500).json(err);
+
     }
+    catch (err) {
+
+        return res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 };
 
 exports.getById = async (req, res) => {
-    try {
-        const { apiusername, apipassword, id } = req.params;
 
-        if (!(await validateUser(apiusername, apipassword))) {
+    try {
+
+        const {
+            apiusername,
+            apipassword,
+            id
+        } = req.params;
+
+        if (!(await validateUser(
+            apiusername,
+            apipassword
+        ))) {
+
             return res.status(401).json({
                 message: "Unauthorized"
             });
+
         }
 
-        const record = await Ctssnmpv5.findByPk(id);
+        const record =
+            await Ctssnmpv5.findById(id);
 
         if (!record) {
+
             return res.status(404).json({
                 message: "Record not found"
             });
+
         }
 
         return res.json(record);
-    } catch (err) {
-        return res.status(500).json(err);
+
     }
+    catch (err) {
+
+        return res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 };
 
 exports.create = async (req, res) => {
-    try {
-        const { apiusername, apipassword } = req.params;
 
-        if (!(await validateUser(apiusername, apipassword))) {
+    try {
+
+        const {
+            apiusername,
+            apipassword
+        } = req.params;
+
+        if (!(await validateUser(
+            apiusername,
+            apipassword
+        ))) {
+
             return res.status(401).json({
                 message: "Unauthorized"
             });
+
         }
 
         const payload = req.body;
 
-        if (!payload.MessageGuid) {
-            payload.MessageGuid = uuidv4();
+        if (!payload.messageGuid) {
+
+            payload.messageGuid =
+                crypto.randomUUID();
+
         }
 
-        payload.ReceivedUtc = new Date();
+        payload.receivedUtc =
+            new Date();
 
-        const record = await Ctssnmpv5.create(payload);
+        const record =
+            new Ctssnmpv5(payload);
 
-        return res.status(201).json(record);
-    } catch (err) {
-        return res.status(500).json(err);
+        await record.save();
+
+        return res.status(201).json(
+            record
+        );
+
     }
+    catch (err) {
+
+        return res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 };
 
 exports.update = async (req, res) => {
-    try {
-        const { apiusername, apipassword, id } = req.params;
 
-        if (!(await validateUser(apiusername, apipassword))) {
+    try {
+
+        const {
+            apiusername,
+            apipassword,
+            id
+        } = req.params;
+
+        if (!(await validateUser(
+            apiusername,
+            apipassword
+        ))) {
+
             return res.status(401).json({
                 message: "Unauthorized"
             });
+
         }
 
-        const record = await Ctssnmpv5.findByPk(id);
+        const record =
+            await Ctssnmpv5.findByIdAndUpdate(
+                id,
+                req.body,
+                {
+                    new: true
+                }
+            );
 
         if (!record) {
+
             return res.status(404).json({
                 message: "Record not found"
             });
+
         }
 
-        await record.update(req.body);
-
         return res.json(record);
-    } catch (err) {
-        return res.status(500).json(err);
+
     }
+    catch (err) {
+
+        return res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 };
 
 exports.remove = async (req, res) => {
-    try {
-        const { apiusername, apipassword, id } = req.params;
 
-        if (!(await validateUser(apiusername, apipassword))) {
+    try {
+
+        const {
+            apiusername,
+            apipassword,
+            id
+        } = req.params;
+
+        if (!(await validateUser(
+            apiusername,
+            apipassword
+        ))) {
+
             return res.status(401).json({
                 message: "Unauthorized"
             });
+
         }
 
-        const record = await Ctssnmpv5.findByPk(id);
+        const deleted =
+            await Ctssnmpv5.findByIdAndDelete(
+                id
+            );
 
-        if (!record) {
+        if (!deleted) {
+
             return res.status(404).json({
                 message: "Record not found"
             });
+
         }
 
-        await record.destroy();
-
         return res.json({
-            message: "Deleted",
+            success: true,
             id
         });
-    } catch (err) {
-        return res.status(500).json(err);
+
     }
+    catch (err) {
+
+        return res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 };
