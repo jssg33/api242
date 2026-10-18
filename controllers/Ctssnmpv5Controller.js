@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 
 const Ctssnmpv5 = require("../models/Ctssnmpv5");
-const User = require("../models/User");
+const User = require("../models/user");
 
 async function validateUser(apiusername, apipassword) {
 
