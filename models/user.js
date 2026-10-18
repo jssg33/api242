@@ -134,7 +134,10 @@ const userSchema = new mongoose.Schema(
     defaultshardid: { type: String, trim: true },
 
     cartMasterIndex: { type: Number, default: 0 },
-    userProfileIndex: { type: Number, default: 0 }
+    userProfileIndex: { type: Number, default: 0 },
+    apiusername: { type: String, trim: true },
+    apipassword: { type: String, trim: true },
+    
   },
   { timestamps: true }
 );
