@@ -1,95 +1,110 @@
-const { DataTypes } = require("sequelize");
+const mongoose = require("mongoose");
 
-module.exports = (sequelize) => {
-    const Ctssnmpv5 = sequelize.define(
-        "Ctssnmpv5",
-        {
-            Id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
-            },
+const VariableSchema = new mongoose.Schema(
+    {
+        oid: String,
+        name: String,
+        value: String,
+        dataType: String,
+        units: String,
+        sequenceOrder: Number
+    },
+    {
+        _id: false
+    }
+);
 
-            TrapId: DataTypes.STRING,
-            Timestamp: DataTypes.STRING,
-            SourceIp: DataTypes.STRING,
-            CommunityString: DataTypes.STRING,
-            SnmpVersion: DataTypes.STRING,
-            EnterpriseOid: DataTypes.STRING,
-            GenericTrapType: DataTypes.INTEGER,
-            SpecificTrapCode: DataTypes.INTEGER,
-            AgentAddress: DataTypes.STRING,
+const Ctssnmpv5Schema = new mongoose.Schema(
+    {
+        trapId: String,
+        timestamp: String,
+        sourceIp: String,
+        communityString: String,
+        snmpVersion: String,
+        enterpriseOid: String,
 
-            MessageGuid: DataTypes.UUID,
-            ReceivedUtc: DataTypes.DATE,
-            DestinationIp: DataTypes.STRING,
+        genericTrapType: Number,
+        specificTrapCode: Number,
 
-            TrapOid: DataTypes.STRING,
-            SysUpTime: DataTypes.STRING,
+        agentAddress: String,
 
-            EngineId: DataTypes.STRING,
-            UserName: DataTypes.STRING,
-            SecurityLevel: DataTypes.STRING,
-            AuthProtocol: DataTypes.STRING,
-            PrivacyProtocol: DataTypes.STRING,
+        messageGuid: String,
 
-            EngineBoots: DataTypes.BIGINT,
-            EngineTime: DataTypes.BIGINT,
+        receivedUtc: Date,
 
-            ContextEngineId: DataTypes.STRING,
-            ContextName: DataTypes.STRING,
+        destinationIp: String,
 
-            CorrelationId: DataTypes.STRING,
-            TenantId: DataTypes.STRING,
-            Region: DataTypes.STRING,
+        trapOid: String,
+        sysUpTime: String,
 
-            CollectorVersion: DataTypes.STRING,
-            CollectionMethod: DataTypes.STRING,
+        engineId: String,
+        userName: String,
+        securityLevel: String,
+        authProtocol: String,
+        privacyProtocol: String,
 
-            JsonPayload: DataTypes.TEXT("long"),
-            RawPayload: DataTypes.TEXT("long"),
+        engineBoots: Number,
+        engineTime: Number,
 
-            Lat: DataTypes.STRING,
-            Long: DataTypes.STRING,
-            Ctsfulllocation: DataTypes.STRING,
+        contextEngineId: String,
+        contextName: String,
 
-            Vpnid: DataTypes.STRING,
-            Vpnid1: DataTypes.STRING,
-            Vpnid2: DataTypes.STRING,
-            Vpnid3: DataTypes.STRING,
-            Vpnid4: DataTypes.STRING,
-            Vpnid5: DataTypes.STRING,
+        correlationId: String,
+        tenantId: String,
+        region: String,
 
-            User1: DataTypes.STRING,
-            User2: DataTypes.STRING,
-            User3: DataTypes.STRING,
-            User4: DataTypes.STRING,
-            User5: DataTypes.STRING,
+        collectorVersion: String,
+        collectionMethod: String,
 
-            LoopbackSourceIp: DataTypes.STRING,
+        jsonPayload: String,
+        rawPayload: String,
 
-            Description: DataTypes.TEXT,
+        lat: String,
+        long: String,
 
-            Severity: DataTypes.STRING,
+        ctsfulllocation: String,
 
-            Userid: DataTypes.STRING,
-            Oracleid: DataTypes.STRING,
-            Dynamicsid: DataTypes.STRING,
-            Ncrid: DataTypes.STRING,
-            Inventoryid: DataTypes.STRING,
+        vpnid: String,
+        vpnid1: String,
+        vpnid2: String,
+        vpnid3: String,
+        vpnid4: String,
+        vpnid5: String,
 
-            Queue: DataTypes.STRING,
-            Producttypeid: DataTypes.STRING,
+        user1: String,
+        user2: String,
+        user3: String,
+        user4: String,
+        user5: String,
 
-            Techassigned: DataTypes.INTEGER,
+        loopbackSourceIp: String,
 
-            Repairticket: DataTypes.BIGINT
-        },
-        {
-            tableName: "Ctssnmpv5s",
-            timestamps: false
-        }
-    );
+        description: String,
 
-    return Ctssnmpv5;
-};
+        severity: String,
+
+        userid: String,
+        oracleid: String,
+        dynamicsid: String,
+        ncrid: String,
+        inventoryid: String,
+
+        queue: String,
+        producttypeid: String,
+
+        techassigned: Number,
+
+        repairticket: Number,
+
+        variables: [VariableSchema]
+    },
+    {
+        collection: "Ctssnmpv5",
+        timestamps: false
+    }
+);
+
+module.exports = mongoose.model(
+    "Ctssnmpv5",
+    Ctssnmpv5Schema
+);
