@@ -30,6 +30,19 @@ const instanceController = require("../controllers/instanceController");
  *         createdAt:
  *           type: string
  *           format: date-time
+ *         InsertDate:
+ *           type: string
+ *           format: date-time
+ *           description: Set once when the record is created
+ *         LastUpdateDate:
+ *           type: string
+ *           format: date-time
+ *           description: Refreshed on every update
+ *         SoftDeleteDate:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Null until the record is soft-deleted
  *       example:
  *         id: "67a1b2c3d4e5f6a7b8c9d0e1"
  *         branchId: "66f1a2b3c4d5e6f7a8b9c0d1"

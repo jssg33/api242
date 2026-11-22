@@ -27,6 +27,19 @@ const LicenseType = require('../models/LicenseType');
  *         Description:
  *           type: string
  *           description: Description of the license type
+ *         InsertDate:
+ *           type: string
+ *           format: date-time
+ *           description: Set once when the record is created
+ *         LastUpdateDate:
+ *           type: string
+ *           format: date-time
+ *           description: Refreshed on every update
+ *         SoftDeleteDate:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Null until the record is soft-deleted
  *       example:
  *         LicenseTypeID: 1
  *         LicenseTypeName: "Enterprise"

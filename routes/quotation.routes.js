@@ -79,6 +79,19 @@ const controller = require("../controllers/quotation.controller");
  *           type: string
  *         branch:
  *           type: string
+ *         InsertDate:
+ *           type: string
+ *           format: date-time
+ *           description: Set once when the record is created
+ *         LastUpdateDate:
+ *           type: string
+ *           format: date-time
+ *           description: Refreshed on every update
+ *         SoftDeleteDate:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Null until the record is soft-deleted
  *
  *     QuotationLine:
  *       type: object
@@ -103,6 +116,19 @@ const controller = require("../controllers/quotation.controller");
  *           type: number
  *         lineTotal:
  *           type: number
+ *         InsertDate:
+ *           type: string
+ *           format: date-time
+ *           description: Set once when the record is created
+ *         LastUpdateDate:
+ *           type: string
+ *           format: date-time
+ *           description: Refreshed on every update
+ *         SoftDeleteDate:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Null until the record is soft-deleted
  *
  *     CreateQuotationRequest:
  *       type: object

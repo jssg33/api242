@@ -137,8 +137,71 @@ const userSchema = new mongoose.Schema(
     userProfileIndex: { type: Number, default: 0 },
     apiusername: { type: String, trim: true },
     apipassword: { type: String, trim: true },
-    token: { type: String, trim: true }
+    token: { type: String, trim: true },
 
+    // -------------------------------------------------
+    // C# Enterprise.Models.User parity
+    // Names are the camelCase JSON form ASP.NET emits for each C# property.
+    // (InsertDate / LastUpdateDate / SoftDeleteDate come from the global
+    //  auditDates plugin — see models/plugins/auditDates.js.)
+    // -------------------------------------------------
+
+    // Authentication
+    twoFactorRequired: { type: Number, default: 0 },
+
+    // Employee
+    analystId: Number,
+
+    // Customer
+    customerId: { type: String, trim: true },
+
+    // Authorization (secondary roles are free-form, like the C# model)
+    role2: { type: String, trim: true },
+    role3: { type: String, trim: true },
+
+    // Investor
+    investorMode: { type: String, trim: true },
+    investorGroupId: { type: String, trim: true },
+
+    // Groups - Security Only - VPN Groups External
+    groupid1: { type: String, trim: true },
+    groupid2: { type: String, trim: true },
+    groupid3: { type: String, trim: true },
+    groupid4: { type: String, trim: true },
+    groupid5: { type: String, trim: true },
+
+    // Account Status
+    accountstatus: { type: String, trim: true },
+    accountactiondate: { type: String, trim: true },
+    accountactiondescription: { type: String, trim: true },
+
+    // Profile
+    title: { type: String, trim: true },
+    title2: { type: String, trim: true },
+
+    // Address
+    addressId: Number,
+
+    // Images
+    profileurl: { type: String, trim: true },
+
+    // Security
+    cipherSupportId: { type: String, trim: true },
+    targetcipher: { type: String, trim: true },
+
+    // Applications
+    applicationIds: { type: [String], default: undefined },
+    applicationPermissions: { type: [String], default: undefined },
+
+    database: { type: [String], default: undefined },
+    databaseTables: { type: [String], default: undefined },
+    databaseFields: { type: [String], default: undefined },
+
+    // Flags (0/1 integers, as in the C# model)
+    isDeleted: { type: Number, default: 0 },
+    isDisabled: { type: Number, default: 0 },
+
+    captcha: { type: String, trim: true }
   },
   { timestamps: true }
 );

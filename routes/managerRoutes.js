@@ -36,6 +36,19 @@ const router = express.Router();
  *         isceo:
  *           type: number
  *           enum: [0, 1]
+ *         InsertDate:
+ *           type: string
+ *           format: date-time
+ *           description: Set once when the record is created
+ *         LastUpdateDate:
+ *           type: string
+ *           format: date-time
+ *           description: Refreshed on every update
+ *         SoftDeleteDate:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Null until the record is soft-deleted
  *       example:
  *         manager: "65f1c2a9b1234a0012cd5678"
  *         company: "65f1c2a9b1234a0012cd9999"

@@ -104,6 +104,58 @@ const userController = require("../controllers/userController");
  *           format: password
  *           writeOnly: true
  *         token: { type: string }
+ *         twoFactorRequired: { type: integer, default: 0 }
+ *         analystId: { type: integer }
+ *         customerId: { type: string }
+ *         role2: { type: string }
+ *         role3: { type: string }
+ *         investorMode: { type: string }
+ *         investorGroupId: { type: string }
+ *         groupid1: { type: string }
+ *         groupid2: { type: string }
+ *         groupid3: { type: string }
+ *         groupid4: { type: string }
+ *         groupid5: { type: string }
+ *         accountstatus: { type: string }
+ *         accountactiondate: { type: string }
+ *         accountactiondescription: { type: string }
+ *         title: { type: string }
+ *         title2: { type: string }
+ *         addressId: { type: integer }
+ *         profileurl: { type: string }
+ *         cipherSupportId: { type: string }
+ *         targetcipher: { type: string }
+ *         applicationIds:
+ *           type: array
+ *           items: { type: string }
+ *         applicationPermissions:
+ *           type: array
+ *           items: { type: string }
+ *         database:
+ *           type: array
+ *           items: { type: string }
+ *         databaseTables:
+ *           type: array
+ *           items: { type: string }
+ *         databaseFields:
+ *           type: array
+ *           items: { type: string }
+ *         isDeleted: { type: integer, default: 0 }
+ *         isDisabled: { type: integer, default: 0 }
+ *         captcha: { type: string }
+ *         InsertDate:
+ *           type: string
+ *           format: date-time
+ *           description: Set once when the record is created
+ *         LastUpdateDate:
+ *           type: string
+ *           format: date-time
+ *           description: Refreshed on every update
+ *         SoftDeleteDate:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Null until the record is soft-deleted
  *       required:
  *         - fullname
  *         - email
