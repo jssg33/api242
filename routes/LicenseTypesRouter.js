@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const { numberParam } = require("../middleware/validateParams");
+router.param("id", numberParam);
 const LicenseType = require('../models/LicenseType');
 
 /**

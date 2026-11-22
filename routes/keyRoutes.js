@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { objectIdParam } = require("../middleware/validateParams");
 router.param("sessionId", objectIdParam);
+router.param("id", objectIdParam);
 const keyController = require("../controllers/keyController");
 
 /**

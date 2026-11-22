@@ -8,6 +8,8 @@ const {
 } = require("../controllers/managerController.js");
 
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 
 /**
  * @swagger
