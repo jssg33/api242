@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require("../controllers/truckController");
 
 /**
@@ -46,7 +48,7 @@ const controller = require("../controllers/truckController");
 
 /**
  * @openapi
- * /trucks:
+ * /api/trucks:
  *   get:
  *     summary: Get all trucks
  *     tags: [Trucks]
@@ -58,7 +60,7 @@ router.get("/", controller.getAllTrucks);
 
 /**
  * @openapi
- * /trucks/{id}:
+ * /api/trucks/{id}:
  *   get:
  *     summary: Get a truck by ID
  *     tags: [Trucks]
@@ -67,7 +69,7 @@ router.get("/:id", controller.getTruckById);
 
 /**
  * @openapi
- * /trucks:
+ * /api/trucks:
  *   post:
  *     summary: Create a new truck
  *     tags: [Trucks]
@@ -76,7 +78,7 @@ router.post("/", controller.createTruck);
 
 /**
  * @openapi
- * /trucks/{id}:
+ * /api/trucks/{id}:
  *   put:
  *     summary: Update a truck
  *     tags: [Trucks]
@@ -85,7 +87,7 @@ router.put("/:id", controller.updateTruck);
 
 /**
  * @openapi
- * /trucks/{id}:
+ * /api/trucks/{id}:
  *   delete:
  *     summary: Delete a truck
  *     tags: [Trucks]

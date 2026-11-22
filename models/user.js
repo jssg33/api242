@@ -92,7 +92,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["admin", "manager", "guest", "superuser", "registered", "systemadmin"],
-      default: "user"
+      default: "registered"
     },
 
     corporateuser: { type: String, trim: true, default: "False" },
@@ -137,7 +137,8 @@ const userSchema = new mongoose.Schema(
     userProfileIndex: { type: Number, default: 0 },
     apiusername: { type: String, trim: true },
     apipassword: { type: String, trim: true },
-    
+    token: { type: String, trim: true }
+
   },
   { timestamps: true }
 );

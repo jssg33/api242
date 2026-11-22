@@ -1,6 +1,8 @@
 // routes/installerManagerRoutes.js
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require("../controllers/installerManagerController");
 
 /**
@@ -73,7 +75,7 @@ const controller = require("../controllers/installerManagerController");
 
 /**
  * @swagger
- * /installermanagers:
+ * /api/installermanagers:
  *   get:
  *     summary: Get all installer managers
  *     tags: [InstallerManagers]
@@ -91,7 +93,7 @@ router.get("/", controller.getAllInstallerManagers);
 
 /**
  * @swagger
- * /installermanagers/{id}:
+ * /api/installermanagers/{id}:
  *   get:
  *     summary: Get installer manager by ID
  *     tags: [InstallerManagers]
@@ -116,7 +118,7 @@ router.get("/:id", controller.getInstallerManagerById);
 
 /**
  * @swagger
- * /installermanagers:
+ * /api/installermanagers:
  *   post:
  *     summary: Create a new installer manager
  *     tags: [InstallerManagers]
@@ -136,7 +138,7 @@ router.post("/", controller.createInstallerManager);
 
 /**
  * @swagger
- * /installermanagers/{id}:
+ * /api/installermanagers/{id}:
  *   put:
  *     summary: Update an installer manager
  *     tags: [InstallerManagers]
@@ -162,7 +164,7 @@ router.put("/:id", controller.updateInstallerManager);
 
 /**
  * @swagger
- * /installermanagers/{id}:
+ * /api/installermanagers/{id}:
  *   delete:
  *     summary: Delete an installer manager
  *     tags: [InstallerManagers]

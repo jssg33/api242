@@ -1,49 +1,17 @@
 // models/UserGroup.js
-module.exports = (sequelize, DataTypes) => {
-  const UserGroup = sequelize.define(
-    "UserGroup",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      groupId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      role: {
-        type: DataTypes.STRING,
-        defaultValue: "member",
-      },
-      status: {
-        type: DataTypes.STRING,
-        defaultValue: "active",
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-    },
-    {
-      tableName: "UserGroups",
-      timestamps: true,
-    }
-  );
+// Migrated from Sequelize to Mongoose (the Sequelize factory was never
+// initialised, so every /usergroups endpoint returned 500).
+// userId / groupId stay numeric to match the legacy integer keys.
+const mongoose = require("mongoose");
 
-  UserGroup.associate = (models) => {
-    UserGroup.belongsTo(models.User, { foreignKey: "userId" });
-    UserGroup.belongsTo(models.Group, { foreignKey: "groupId" });
-  };
+const UserGroupSchema = new mongoose.Schema(
+  {
+    userId: { type: Number, required: true, index: true },
+    groupId: { type: Number, required: true, index: true },
+    role: { type: String, default: "member", trim: true },
+    status: { type: String, default: "active", trim: true }
+  },
+  { timestamps: true }
+);
 
-  return UserGroup;
-};
-
+module.exports = mongoose.model("UserGroup", UserGroupSchema);

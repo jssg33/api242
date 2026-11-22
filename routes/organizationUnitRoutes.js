@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require("../controllers/organizationUnitController");
 
 /**
@@ -40,7 +42,7 @@ const controller = require("../controllers/organizationUnitController");
 
 /**
  * @openapi
- * /organization-units:
+ * /api/organizationunits:
  *   get:
  *     tags: [OrganizationUnits]
  *     summary: Get all organization units
@@ -58,7 +60,7 @@ router.get("/", controller.getAllOrganizationUnits);
 
 /**
  * @openapi
- * /organization-units/{id}:
+ * /api/organizationunits/{id}:
  *   get:
  *     tags: [OrganizationUnits]
  *     summary: Get an organization unit by ID
@@ -83,7 +85,7 @@ router.get("/:id", controller.getOrganizationUnitById);
 
 /**
  * @openapi
- * /organization-units:
+ * /api/organizationunits:
  *   post:
  *     tags: [OrganizationUnits]
  *     summary: Create a new organization unit
@@ -107,7 +109,7 @@ router.post("/", controller.createOrganizationUnit);
 
 /**
  * @openapi
- * /organization-units/{id}:
+ * /api/organizationunits/{id}:
  *   put:
  *     tags: [OrganizationUnits]
  *     summary: Update an organization unit
@@ -140,7 +142,7 @@ router.put("/:id", controller.updateOrganizationUnit);
 
 /**
  * @openapi
- * /organization-units/{id}:
+ * /api/organizationunits/{id}:
  *   delete:
  *     tags: [OrganizationUnits]
  *     summary: Delete an organization unit

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require('../controllers/buildingHistoryController');
 
 // Debug to verify controller loaded correctly
@@ -39,7 +41,7 @@ console.log("BuildingHistoryController loaded:", controller);
 
 /**
  * @swagger
- * /api/buildingHistory:
+ * /api/building-history:
  *   post:
  *     summary: Create a new building history entry
  *     tags: [BuildingHistory]
@@ -48,7 +50,7 @@ router.post('/', controller.createBuildingHistory);
 
 /**
  * @swagger
- * /api/buildingHistory:
+ * /api/building-history:
  *   get:
  *     summary: Get all building history entries
  *     tags: [BuildingHistory]
@@ -57,7 +59,7 @@ router.get('/', controller.getAllBuildingHistory);
 
 /**
  * @swagger
- * /api/buildingHistory/building/{buildingId}:
+ * /api/building-history/building/{buildingId}:
  *   get:
  *     summary: Get building history by buildingId
  *     tags: [BuildingHistory]
@@ -66,7 +68,7 @@ router.get('/building/:buildingId', controller.getHistoryByBuildingId);
 
 /**
  * @swagger
- * /api/buildingHistory/{id}:
+ * /api/building-history/{id}:
  *   delete:
  *     summary: Delete a building history entry
  *     tags: [BuildingHistory]

@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("albumId", objectIdParam);
 const { createAlbumReview, getReviewsByAlbum } = require("../controllers/albumReviewController");
 
 /**

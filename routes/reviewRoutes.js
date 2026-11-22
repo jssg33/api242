@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("productId", objectIdParam);
 const reviewController = require("../controllers/reviewController");
 
 /**

@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("userId", objectIdParam);
 const controller = require("../controllers/userDeviceController");
 
 /**

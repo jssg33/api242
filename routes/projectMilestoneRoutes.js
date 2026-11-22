@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { numberParam, objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("projectId", numberParam);
+router.param("userId", numberParam);
 const controller = require("../controllers/projectMilestoneController");
 
 /**
@@ -19,8 +23,9 @@ const controller = require("../controllers/projectMilestoneController");
  *         - projectId
  *         - title
  *       properties:
- *         id:
- *           type: integer
+ *         _id:
+ *           type: string
+ *           description: MongoDB ObjectId
  *         projectId:
  *           type: integer
  *         title:
@@ -89,7 +94,7 @@ router.get("/", controller.getAllMilestones);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Milestone found
@@ -109,7 +114,7 @@ router.get("/:id", controller.getMilestoneById);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -133,7 +138,7 @@ router.put("/:id", controller.updateMilestone);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Milestone deleted

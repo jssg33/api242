@@ -1,6 +1,8 @@
 // routes/nocTechRoutes.js
 const express = require('express');
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require('../controllers/nocTechController');
 
 /**
@@ -60,10 +62,131 @@ const controller = require('../controllers/nocTechController');
  *           enum: [active, suspended, terminated, leave]
  */
 
+/**
+ * @swagger
+ * /api/noctechs:
+ *   get:
+ *     summary: Get all NOC techs
+ *     tags: [NocTechs]
+ *     responses:
+ *       200:
+ *         description: List of NOC techs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/NocTech'
+ *       500:
+ *         description: Server error
+ */
 router.get('/', controller.getAllNocTechs);
+
+/**
+ * @swagger
+ * /api/noctechs/{id}:
+ *   get:
+ *     summary: Get a NOC tech by ID
+ *     tags: [NocTechs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId
+ *     responses:
+ *       200:
+ *         description: NOC tech found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NocTech'
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id', controller.getNocTechById);
+
+/**
+ * @swagger
+ * /api/noctechs:
+ *   post:
+ *     summary: Create a new NOC tech
+ *     tags: [NocTechs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NocTech'
+ *     responses:
+ *       201:
+ *         description: NOC tech created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NocTech'
+ *       400:
+ *         description: Validation error
+ */
 router.post('/', controller.createNocTech);
+
+/**
+ * @swagger
+ * /api/noctechs/{id}:
+ *   put:
+ *     summary: Update a NOC tech
+ *     tags: [NocTechs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NocTech'
+ *     responses:
+ *       200:
+ *         description: NOC tech updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NocTech'
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: Not found
+ */
 router.put('/:id', controller.updateNocTech);
+
+/**
+ * @swagger
+ * /api/noctechs/{id}:
+ *   delete:
+ *     summary: Delete a NOC tech
+ *     tags: [NocTechs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId
+ *     responses:
+ *       200:
+ *         description: NOC tech deleted
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id', controller.deleteNocTech);
 
 module.exports = router;

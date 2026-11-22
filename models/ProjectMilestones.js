@@ -1,82 +1,25 @@
-// models/ProjectMilestone.js
-module.exports = (sequelize, DataTypes) => {
-  const ProjectMilestone = sequelize.define(
-    "ProjectMilestone",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
+// models/ProjectMilestones.js
+// Migrated from Sequelize to Mongoose (the Sequelize factory was never
+// initialised, so every /projectmilestones endpoint returned 500).
+// projectId / assignedTo stay numeric to match the legacy integer keys.
+const mongoose = require("mongoose");
 
-      projectId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-
-      dueDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-
-      completed: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
-
-      completedAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-
-      assignedTo: {
-        type: DataTypes.INTEGER, // userId
-        allowNull: true,
-      },
-
-      status: {
-        type: DataTypes.STRING,
-        defaultValue: "pending", // pending | in-progress | completed | delayed
-      },
-
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-
-      updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-    },
-    {
-      tableName: "ProjectMilestones",
-      timestamps: true,
+const ProjectMilestoneSchema = new mongoose.Schema(
+  {
+    projectId: { type: Number, required: true, index: true },
+    title: { type: String, required: true, trim: true },
+    description: { type: String },
+    dueDate: { type: Date },
+    completed: { type: Boolean, default: false },
+    completedAt: { type: Date },
+    assignedTo: { type: Number, index: true }, // userId
+    status: {
+      type: String,
+      enum: ["pending", "in-progress", "completed", "delayed"],
+      default: "pending"
     }
-  );
+  },
+  { timestamps: true }
+);
 
-  ProjectMilestone.associate = (models) => {
-    ProjectMilestone.belongsTo(models.Project, {
-      foreignKey: "projectId",
-      as: "project",
-    });
-
-    ProjectMilestone.belongsTo(models.User, {
-      foreignKey: "assignedTo",
-      as: "assignedUser",
-    });
-  };
-
-  return ProjectMilestone;
-};
-
+module.exports = mongoose.model("ProjectMilestone", ProjectMilestoneSchema);

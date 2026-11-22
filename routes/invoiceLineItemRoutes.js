@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const lineItemController = require("../controllers/invoiceLineItemController");
 
 /**
@@ -45,7 +47,7 @@ const lineItemController = require("../controllers/invoiceLineItemController");
 
 /**
  * @swagger
- * /invoice-line-items:
+ * /invoicelineitems:
  *   get:
  *     tags: [Invoice Line Items]
  *     summary: Get all invoice line items
@@ -63,7 +65,7 @@ router.get("/", lineItemController.getLineItems);
 
 /**
  * @swagger
- * /invoice-line-items:
+ * /invoicelineitems:
  *   post:
  *     tags: [Invoice Line Items]
  *     summary: Create a new invoice line item
@@ -81,7 +83,7 @@ router.post("/", lineItemController.createLineItem);
 
 /**
  * @swagger
- * /invoice-line-items/{id}:
+ * /invoicelineitems/{id}:
  *   get:
  *     tags: [Invoice Line Items]
  *     summary: Get a line item by ID
@@ -101,7 +103,7 @@ router.get("/:id", lineItemController.getLineItemById);
 
 /**
  * @swagger
- * /invoice-line-items/{id}:
+ * /invoicelineitems/{id}:
  *   put:
  *     tags: [Invoice Line Items]
  *     summary: Update a line item
@@ -127,7 +129,7 @@ router.put("/:id", lineItemController.updateLineItem);
 
 /**
  * @swagger
- * /invoice-line-items/{id}:
+ * /invoicelineitems/{id}:
  *   delete:
  *     tags: [Invoice Line Items]
  *     summary: Delete a line item
@@ -147,7 +149,7 @@ router.delete("/:id", lineItemController.deleteLineItem);
 
 /**
  * @swagger
- * /invoice-line-items/invoice/{invoiceId}:
+ * /invoicelineitems/invoice/{invoiceId}:
  *   get:
  *     tags: [Invoice Line Items]
  *     summary: Get all line items for a specific invoice

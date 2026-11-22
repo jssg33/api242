@@ -1,6 +1,8 @@
 // routes/songReviewRoutes.js
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("songId", objectIdParam);
 const { createReview, getReviewsBySong } = require("../controllers/songReviewController");
 
 /**

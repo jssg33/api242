@@ -1,5 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+
+// Audit date fields (InsertDate, LastUpdateDate, SoftDeleteDate) on every
+// model, matching the C# API. Must be registered before any model is required.
+mongoose.plugin(require("./models/plugins/auditDates"));
 const morgan = require("morgan");
 const cors = require("cors");
 
@@ -329,6 +333,24 @@ app.use("/personalpages", require("./routes/personalPageContentRoutes"));
 app.use("/trophies", require("./routes/trophiesRoutes"));
 app.use("/matransactions", require("./routes/mandATransactionsRoutes"));
 app.use("/projectstorage", require("./routes/projectStorageRoutes"));
+
+// -------------------------
+// ERROR HANDLING SAFETY NET
+// -------------------------
+// Last-resort JSON error handler for anything passed to next(err) or thrown
+// synchronously in a route (bad JSON bodies, CORS rejections, etc.).
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  const status =
+    err.name === "CastError" ? 400 : err.status || err.statusCode || 500;
+  res.status(status).json({ error: err.message || "Internal server error" });
+});
+
+// On Node 15+ an unhandled promise rejection terminates the process, which
+// takes every endpoint down until Render restarts the service. Log instead.
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled promise rejection:", reason);
+});
 
 // -------------------------
 // DATABASE + SERVER START

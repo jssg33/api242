@@ -1,6 +1,9 @@
 // routes/quotationlines.routes.js
 const express = require("express");
 const router = express.Router();
+const { numberParam, objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("quotationId", numberParam);
 const controller = require("../controllers/quotationlines.controller");
 
 /**

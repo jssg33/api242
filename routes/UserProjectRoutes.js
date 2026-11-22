@@ -1,6 +1,8 @@
 // routes/UserProjectRoutes.js
 const express = require('express');
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const UserProjectController = require('../controllers/UserProjectController');
 
 /**

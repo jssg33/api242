@@ -49,7 +49,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/employees:
+ * /employees:
  *   get:
  *     summary: Get all employees
  *     tags: [Employees]
@@ -61,7 +61,7 @@ router.get("/", getEmployees);
 
 /**
  * @swagger
- * /api/employees/{id}:
+ * /employees/{id}:
  *   get:
  *     summary: Get employee by ID
  *     tags: [Employees]
@@ -81,7 +81,7 @@ router.get("/:id", getEmployeeById);
 
 /**
  * @swagger
- * /api/employees:
+ * /employees:
  *   post:
  *     summary: Create a new employee
  *     tags: [Employees]
@@ -99,7 +99,7 @@ router.post("/", createEmployee);
 
 /**
  * @swagger
- * /api/employees/{id}:
+ * /employees/{id}:
  *   put:
  *     summary: Update an employee
  *     tags: [Employees]
@@ -125,7 +125,7 @@ router.put("/:id", updateEmployee);
 
 /**
  * @swagger
- * /api/employees/{id}:
+ * /employees/{id}:
  *   delete:
  *     summary: Delete an employee
  *     tags: [Employees]

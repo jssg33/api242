@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const userController = require("../controllers/userController");
 
 /**
@@ -26,6 +28,7 @@ const userController = require("../controllers/userController");
  *         displayname: { type: string }
  *         username: { type: string }
  *         pronoun: { type: string }
+ *         tenantid: { type: string }
  *         email:
  *           type: string
  *           format: email
@@ -73,6 +76,7 @@ const userController = require("../controllers/userController");
  *         role:
  *           type: string
  *           enum: ["admin", "manager", "guest", "superuser", "registered", "systemadmin"]
+ *           default: registered
  *         corporateuser: { type: string }
  *         status:
  *           type: string
@@ -94,6 +98,12 @@ const userController = require("../controllers/userController");
  *         defaultshardid: { type: string }
  *         cartMasterIndex: { type: number }
  *         userProfileIndex: { type: number }
+ *         apiusername: { type: string }
+ *         apipassword:
+ *           type: string
+ *           format: password
+ *           writeOnly: true
+ *         token: { type: string }
  *       required:
  *         - fullname
  *         - email

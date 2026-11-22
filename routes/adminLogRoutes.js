@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { numberParam } = require("../middleware/validateParams");
+router.param("id", numberParam);
 const controller = require('../controllers/adminLogController');
 
 /**

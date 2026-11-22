@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require("../controllers/installerController");
 
 /**
@@ -53,7 +55,7 @@ const controller = require("../controllers/installerController");
 
 /**
  * @openapi
- * /installers:
+ * /api/installers:
  *   get:
  *     summary: Get all installers
  *     tags: [Installers]
@@ -62,7 +64,7 @@ router.get("/", controller.getAllInstallers);
 
 /**
  * @openapi
- * /installers/{id}:
+ * /api/installers/{id}:
  *   get:
  *     summary: Get an installer by ID
  *     tags: [Installers]
@@ -71,7 +73,7 @@ router.get("/:id", controller.getInstallerById);
 
 /**
  * @openapi
- * /installers:
+ * /api/installers:
  *   post:
  *     summary: Create a new installer
  *     tags: [Installers]
@@ -80,7 +82,7 @@ router.post("/", controller.createInstaller);
 
 /**
  * @openapi
- * /installers/{id}:
+ * /api/installers/{id}:
  *   put:
  *     summary: Update an installer
  *     tags: [Installers]
@@ -89,7 +91,7 @@ router.put("/:id", controller.updateInstaller);
 
 /**
  * @openapi
- * /installers/{id}:
+ * /api/installers/{id}:
  *   delete:
  *     summary: Delete an installer
  *     tags: [Installers]

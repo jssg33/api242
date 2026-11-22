@@ -46,7 +46,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/managers:
+ * /managers:
  *   get:
  *     summary: Get all managers
  *     tags: [Managers]
@@ -58,7 +58,7 @@ router.get("/", getManagers);
 
 /**
  * @swagger
- * /api/managers/{id}:
+ * /managers/{id}:
  *   get:
  *     summary: Get manager by ID
  *     tags: [Managers]
@@ -78,7 +78,7 @@ router.get("/:id", getManagerById);
 
 /**
  * @swagger
- * /api/managers:
+ * /managers:
  *   post:
  *     summary: Create a new manager
  *     tags: [Managers]
@@ -96,7 +96,7 @@ router.post("/", createManager);
 
 /**
  * @swagger
- * /api/managers/{id}:
+ * /managers/{id}:
  *   put:
  *     summary: Update a manager
  *     tags: [Managers]
@@ -122,7 +122,7 @@ router.put("/:id", updateManager);
 
 /**
  * @swagger
- * /api/managers/{id}:
+ * /managers/{id}:
  *   delete:
  *     summary: Delete a manager
  *     tags: [Managers]

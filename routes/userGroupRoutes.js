@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { numberParam, objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("userId", numberParam);
+router.param("groupId", numberParam);
 const userGroupController = require("../controllers/userGroupController");
 
 /**
@@ -19,8 +23,9 @@ const userGroupController = require("../controllers/userGroupController");
  *         - userId
  *         - groupId
  *       properties:
- *         id:
- *           type: integer
+ *         _id:
+ *           type: string
+ *           description: MongoDB ObjectId
  *         userId:
  *           type: integer
  *         groupId:
@@ -80,7 +85,7 @@ router.get("/", userGroupController.getAllUserGroups);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: UserGroup found
@@ -100,7 +105,7 @@ router.get("/:id", userGroupController.getUserGroupById);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -124,7 +129,7 @@ router.put("/:id", userGroupController.updateUserGroup);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: UserGroup deleted

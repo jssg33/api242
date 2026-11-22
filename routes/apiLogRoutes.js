@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { numberParam } = require("../middleware/validateParams");
+router.param("id", numberParam);
 const controller = require('../controllers/apiLogController');
 
 /**
@@ -35,7 +37,7 @@ const controller = require('../controllers/apiLogController');
 
 /**
  * @swagger
- * /api/logs:
+ * /api/apilogs:
  *   get:
  *     summary: Get all API logs
  *     tags: [ApiLog]
@@ -44,7 +46,7 @@ router.get('/', controller.getAllLogs);
 
 /**
  * @swagger
- * /api/logs/{id}:
+ * /api/apilogs/{id}:
  *   get:
  *     summary: Get a log by ID
  *     tags: [ApiLog]
@@ -53,7 +55,7 @@ router.get('/:id', controller.getLogById);
 
 /**
  * @swagger
- * /api/logs:
+ * /api/apilogs:
  *   post:
  *     summary: Create a new API log
  *     tags: [ApiLog]

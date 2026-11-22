@@ -1,6 +1,8 @@
 // routes/quotation.routes.js
 const express = require("express");
 const router = express.Router();
+const { numberParam } = require("../middleware/validateParams");
+router.param("id", numberParam);
 const controller = require("../controllers/quotation.controller");
 
 /**
@@ -117,7 +119,7 @@ const controller = require("../controllers/quotation.controller");
 
 /**
  * @swagger
- * /quotations:
+ * /quotation:
  *   post:
  *     summary: Create a new quotation
  *     tags: [Quotations]
@@ -135,7 +137,7 @@ router.post("/", controller.createQuotation);
 
 /**
  * @swagger
- * /quotations:
+ * /quotation:
  *   get:
  *     summary: Get all quotations
  *     tags: [Quotations]
@@ -147,7 +149,7 @@ router.get("/", controller.getQuotations);
 
 /**
  * @swagger
- * /quotations/{id}:
+ * /quotation/{id}:
  *   get:
  *     summary: Get a quotation by ID
  *     tags: [Quotations]
@@ -167,7 +169,7 @@ router.get("/:id", controller.getQuotationById);
 
 /**
  * @swagger
- * /quotations/{id}:
+ * /quotation/{id}:
  *   put:
  *     summary: Update a quotation
  *     tags: [Quotations]
@@ -191,7 +193,7 @@ router.put("/:id", controller.updateQuotation);
 
 /**
  * @swagger
- * /quotations/{id}:
+ * /quotation/{id}:
  *   delete:
  *     summary: Delete a quotation
  *     tags: [Quotations]
@@ -209,7 +211,7 @@ router.delete("/:id", controller.deleteQuotation);
 
 /**
  * @swagger
- * /quotations/user/{userId}:
+ * /quotation/user/{userId}:
  *   get:
  *     summary: Get quotations by customer/user ID
  *     tags: [Quotations]
@@ -227,7 +229,7 @@ router.get("/user/:userId", controller.getQuotationsByUserId);
 
 /**
  * @swagger
- * /quotations/sales/{salesId}:
+ * /quotation/sales/{salesId}:
  *   get:
  *     summary: Get quotations by salesperson ID
  *     tags: [Quotations]
@@ -245,7 +247,7 @@ router.get("/sales/:salesId", controller.getQuotationsBySalespersonId);
 
 /**
  * @swagger
- * /quotations/{id}/accept:
+ * /quotation/{id}/accept:
  *   post:
  *     summary: Accept a quotation and generate an invoice
  *     tags: [Quotations]

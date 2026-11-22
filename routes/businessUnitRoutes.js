@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require("../controllers/businessUnitController");
 
 /**
@@ -44,7 +46,7 @@ const controller = require("../controllers/businessUnitController");
 
 /**
  * @openapi
- * /business-units:
+ * /api/businessunits:
  *   get:
  *     tags: [BusinessUnits]
  *     summary: Get all business units
@@ -62,7 +64,7 @@ router.get("/", controller.getAllBusinessUnits);
 
 /**
  * @openapi
- * /business-units/{id}:
+ * /api/businessunits/{id}:
  *   get:
  *     tags: [BusinessUnits]
  *     summary: Get a business unit by ID
@@ -87,7 +89,7 @@ router.get("/:id", controller.getBusinessUnitById);
 
 /**
  * @openapi
- * /business-units:
+ * /api/businessunits:
  *   post:
  *     tags: [BusinessUnits]
  *     summary: Create a new business unit
@@ -111,7 +113,7 @@ router.post("/", controller.createBusinessUnit);
 
 /**
  * @openapi
- * /business-units/{id}:
+ * /api/businessunits/{id}:
  *   put:
  *     tags: [BusinessUnits]
  *     summary: Update a business unit
@@ -144,7 +146,7 @@ router.put("/:id", controller.updateBusinessUnit);
 
 /**
  * @openapi
- * /business-units/{id}:
+ * /api/businessunits/{id}:
  *   delete:
  *     tags: [BusinessUnits]
  *     summary: Delete a business unit

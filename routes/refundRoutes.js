@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { numberParam, objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("bookingId", numberParam);
 const refundController = require("../controllers/refundController");
 
 /**

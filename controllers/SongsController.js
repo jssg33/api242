@@ -28,26 +28,43 @@ exports.createManySongs = async (req, res) => {
 
 // Get all songs
 exports.getAllSongs = async (req, res) => {
-    const songs = await Song.find();
-    res.json(songs);
+    try {
+        const songs = await Song.find();
+        res.json(songs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Get songs by user
 exports.getSongsByUser = async (req, res) => {
-    const songs = await Song.find({ userid: req.params.userid });
-    res.json(songs);
+    try {
+        const songs = await Song.find({ userid: req.params.userid });
+        res.json(songs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Get songs by instance
 exports.getSongsByInstance = async (req, res) => {
-    const songs = await Song.find({ instanceid: req.params.instanceid });
-    res.json(songs);
+    try {
+        const songs = await Song.find({ instanceid: req.params.instanceid });
+        res.json(songs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Get a single song
 exports.getSongById = async (req, res) => {
-    const song = await Song.findById(req.params.id);
-    res.json(song);
+    try {
+        const song = await Song.findById(req.params.id);
+        if (!song) return res.status(404).json({ error: "Song not found" });
+        res.json(song);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Update a song

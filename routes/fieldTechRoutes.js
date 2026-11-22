@@ -1,6 +1,8 @@
 // routes/fieldTechRoutes.js
 const express = require('express');
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const controller = require('../controllers/fieldTechController');
 
 /**
@@ -60,10 +62,131 @@ const controller = require('../controllers/fieldTechController');
  *           enum: [active, suspended, terminated, leave]
  */
 
+/**
+ * @swagger
+ * /api/fieldtechs:
+ *   get:
+ *     summary: Get all field techs
+ *     tags: [FieldTechs]
+ *     responses:
+ *       200:
+ *         description: List of field techs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/FieldTech'
+ *       500:
+ *         description: Server error
+ */
 router.get('/', controller.getAllFieldTechs);
+
+/**
+ * @swagger
+ * /api/fieldtechs/{id}:
+ *   get:
+ *     summary: Get a field tech by ID
+ *     tags: [FieldTechs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId
+ *     responses:
+ *       200:
+ *         description: Field tech found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/FieldTech'
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id', controller.getFieldTechById);
+
+/**
+ * @swagger
+ * /api/fieldtechs:
+ *   post:
+ *     summary: Create a new field tech
+ *     tags: [FieldTechs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FieldTech'
+ *     responses:
+ *       201:
+ *         description: Field tech created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/FieldTech'
+ *       400:
+ *         description: Validation error
+ */
 router.post('/', controller.createFieldTech);
+
+/**
+ * @swagger
+ * /api/fieldtechs/{id}:
+ *   put:
+ *     summary: Update a field tech
+ *     tags: [FieldTechs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FieldTech'
+ *     responses:
+ *       200:
+ *         description: Field tech updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/FieldTech'
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: Not found
+ */
 router.put('/:id', controller.updateFieldTech);
+
+/**
+ * @swagger
+ * /api/fieldtechs/{id}:
+ *   delete:
+ *     summary: Delete a field tech
+ *     tags: [FieldTechs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: MongoDB ObjectId
+ *     responses:
+ *       200:
+ *         description: Field tech deleted
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id', controller.deleteFieldTech);
 
 module.exports = router;

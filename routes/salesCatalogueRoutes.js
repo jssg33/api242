@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
 const salesCatalogueController = require("../controllers/salesCatalogueController");
 
 /**
@@ -59,7 +61,7 @@ const salesCatalogueController = require("../controllers/salesCatalogueControlle
 
 /**
  * @swagger
- * /sales-catalogue:
+ * /salescatalogue:
  *   get:
  *     tags: [Sales Catalogue]
  *     summary: Get all sales catalogue items
@@ -77,7 +79,7 @@ router.get("/", salesCatalogueController.getItems);
 
 /**
  * @swagger
- * /sales-catalogue:
+ * /salescatalogue:
  *   post:
  *     tags: [Sales Catalogue]
  *     summary: Create a new sales catalogue item
@@ -95,7 +97,7 @@ router.post("/", salesCatalogueController.createItem);
 
 /**
  * @swagger
- * /sales-catalogue/{id}:
+ * /salescatalogue/{id}:
  *   get:
  *     tags: [Sales Catalogue]
  *     summary: Get a catalogue item by ID
@@ -115,7 +117,7 @@ router.get("/:id", salesCatalogueController.getItemById);
 
 /**
  * @swagger
- * /sales-catalogue/{id}:
+ * /salescatalogue/{id}:
  *   put:
  *     tags: [Sales Catalogue]
  *     summary: Update a catalogue item
@@ -141,7 +143,7 @@ router.put("/:id", salesCatalogueController.updateItem);
 
 /**
  * @swagger
- * /sales-catalogue/{id}:
+ * /salescatalogue/{id}:
  *   delete:
  *     tags: [Sales Catalogue]
  *     summary: Delete a catalogue item
@@ -161,7 +163,7 @@ router.delete("/:id", salesCatalogueController.deleteItem);
 
 /**
  * @swagger
- * /sales-catalogue/park/{parkId}:
+ * /salescatalogue/park/{parkId}:
  *   get:
  *     tags: [Sales Catalogue]
  *     summary: Get catalogue items by park ID

@@ -13,20 +13,32 @@ exports.createProject = async (req, res) => {
 
 // Get all projects
 exports.getAllProjects = async (req, res) => {
-    const projects = await Project.find();
-    res.json(projects);
+    try {
+        const projects = await Project.find();
+        res.json(projects);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Get projects by user
 exports.getProjectsByUser = async (req, res) => {
-    const projects = await Project.find({ userid: req.params.userid });
-    res.json(projects);
+    try {
+        const projects = await Project.find({ userid: req.params.userid });
+        res.json(projects);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Get projects by instance
 exports.getProjectsByInstance = async (req, res) => {
-    const projects = await Project.find({ instanceid: req.params.instanceid });
-    res.json(projects);
+    try {
+        const projects = await Project.find({ instanceid: req.params.instanceid });
+        res.json(projects);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Get a single project by projectid

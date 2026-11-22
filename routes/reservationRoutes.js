@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { numberParam, objectIdParam } = require("../middleware/validateParams");
+router.param("id", objectIdParam);
+router.param("bookingId", numberParam);
+router.param("userid", numberParam);
 const reservationController = require("../controllers/reservationController");
 
 /**
