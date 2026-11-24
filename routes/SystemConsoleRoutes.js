@@ -13,6 +13,8 @@ const SqlAzureSecurityAudit = require('../services/SqlAzureSecurityAudit');
 const SqlAzureFieldAudit = require('../services/SqlAzureFieldAudit');
 const SqlAzureTableAudit = require('../services/SqlAzureTableAudit');
 const BackendWebServerPoller = require('../services/BackendWebServerPoller');
+const MongoCatalog = require('../services/MongoCatalog');
+const AuditorPostService = require('../services/AuditorPostService');
 
 router.get('/:option/:apiusername/:apipassword/:token', async (req, res) => {
 
@@ -112,6 +114,22 @@ router.get('/:option/:apiusername/:apipassword/:token', async (req, res) => {
 
                 return res.json(
                     getRegisteredInterfaces()
+                );
+
+            // POLL TARGET: schema, tables and fields in the same JSON the Auditor's
+            // POST /api/structureingest takes (G4 StructureIngestRequest).
+            case 11:
+
+                return res.json(
+                    await MongoCatalog.getStructure()
+                );
+
+            // PUSH: send the same structure to the parent Auditor's /api/structureingest
+            // (like the G2's postaudit).
+            case 12:
+
+                return res.json(
+                    await AuditorPostService.postStructure()
                 );
 
             default:
