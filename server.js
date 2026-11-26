@@ -367,6 +367,51 @@ app.use("/trophies", require("./routes/trophiesRoutes"));
 app.use("/matransactions", require("./routes/mandATransactionsRoutes"));
 app.use("/projectstorage", require("./routes/projectStorageRoutes"));
 
+// =====================================================================
+// AUDIT (ported from analyticsgen4rev2/Audit — see Audit/{models,controllers,routes})
+// Mount paths match the original C# MapGroup(...) prefixes for parity; most are
+// FusionAuth-secured (.../{apiusername}/{apipassword}/{token}), same as the C# source.
+// =====================================================================
+app.use("/api/databasetables", require("./Audit/routes/databasetables.controller"));
+app.use("/api/databasefields", require("./Audit/routes/databasefields.controller"));
+app.use("/api/structureingest", require("./Audit/routes/structureingest.controller"));
+app.use("/api/ApiauditRunHistory", require("./Audit/routes/apiauditrunhistorycontroller"));
+app.use("/api/AuditTicketSnapshot", require("./Audit/routes/auditticketsnapshotcontroller"));
+app.use("/api/webfarmservers", require("./Audit/routes/webfarmserver.controller"));
+app.use("/api/apiaccesspermissions", require("./Audit/routes/apiaccesspermissions.controller"));
+app.use("/api/Apiaudit", require("./Audit/routes/apiauditcontroller"));
+app.use("/api/aiagents", require("./Audit/routes/aiagents.controller"));
+app.use("/api/Application", require("./Audit/routes/apiapplication.controller"));
+app.use("/api/ApiHostException", require("./Audit/routes/apihostexception.controller"));
+app.use("/api/apiserviceendpoints", require("./Audit/routes/apiServiceEndpointsController-6.3"));
+app.use("/AuditApplicationVersions", require("./Audit/routes/auditapplication.version.controller"));
+app.use("/api/AuditBatchApi", require("./Audit/routes/auditbatchapicontroller"));
+app.use("/api/databases", require("./Audit/routes/databases.controller"));
+app.use("/api/databaseservers", require("./Audit/routes/databaseservers.controllers"));
+app.use("/api/sites", require("./Audit/routes/site.controller"));
+app.use("/api/siteaccesspermissions", require("./Audit/routes/siteaccesspermissions.controller"));
+app.use("/api/webfarms", require("./Audit/routes/webfarm.controller"));
+app.use("/api/webservers", require("./Audit/routes/webserver.controller"));
+app.use("/api/ApplicationApi", require("./Audit/routes/apiapplicationapi.controller"));
+app.use("/api/applicationaccess", require("./Audit/routes/apiapplicationuser.controller"));
+app.use("/api/AuditExceptions", require("./Audit/routes/apiauditexceptionscontroller"));
+app.use("/api/ApiInterfacesAudit", require("./Audit/routes/apiauditinterfaces.controller"));
+app.use("/api/auditorinstances", require("./Audit/routes/auditorinstance.controller"));
+app.use("/api/ApiAuditResults", require("./Audit/routes/auditresultscontroller"));
+app.use("/api/Apihosts", require("./Audit/routes/apihost.controller"));
+app.use("/api/apiservices", require("./Audit/routes/apiservices.controller"));
+app.use("/api/WorkerTroubleTickets", require("./Audit/routes/apitrouble.controller"));
+app.use("/AuditApplicationReplicas", require("./Audit/routes/auditapplication.replicas.controller"));
+app.use("/api/auditcatalogue", require("./Audit/routes/auditcatalogue.controller"));
+app.use("/api/auditschedule", require("./Audit/routes/AuditScheduleEndpoints-110"));
+app.use("/api/trafficrouters", require("./Audit/routes/trafficrouters.controller"));
+app.use("/api/enterprise9", require("./Audit/routes/apienterprisenine.controller"));
+app.use("/api/UserDataAccess", require("./Audit/routes/UserDataAccess.controller"));
+app.use("/api/apipricing", require("./Audit/routes/apipricing.controller"));
+app.use("/api/auditconfig", require("./Audit/routes/AuditConfigEndpoints-110"));
+app.use("/api/app/directory", require("./Audit/routes/apidirectory.controller"));
+app.use("/api/AuditSql", require("./Audit/routes/auditsql.controller"));
+
 // -------------------------
 // ERROR HANDLING SAFETY NET
 // -------------------------

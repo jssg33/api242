@@ -395,6 +395,38 @@ router.post("/loginMicrosoft", controller.loginMicrosoft);
 
 /**
  * @swagger
+ * /auth/loginCloudflareAccess:
+ *   post:
+ *     summary: Login or auto-register from a Cloudflare Access JWT (Cf-Access-Jwt-Assertion header)
+ *     tags: [Auth]
+ *     parameters:
+ *       - in: header
+ *         name: Cf-Access-Jwt-Assertion
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Sent automatically by Cloudflare Access on every request to a protected app; alternatively pass cfAccessJwtAssertion in the body.
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cfAccessJwtAssertion: { type: string }
+ *               email: { type: string }
+ *               firstname: { type: string }
+ *               lastname: { type: string }
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Missing assertion or email claim
+ */
+router.post("/loginCloudflareAccess", controller.loginCloudflareAccess);
+
+/**
+ * @swagger
  * /auth/pgpLogin:
  *   post:
  *     summary: Login with PGP / Caesar encrypted credentials

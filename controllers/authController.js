@@ -664,6 +664,57 @@ exports.loginMicrosoft = async (req, res) => {
   }
 };
 
+// ---------- CLOUDFLARE ACCESS (lightweight – no JWKS signature validation yet, same as loginMicrosoft) ----------
+// Cloudflare Access puts its JWT in the Cf-Access-Jwt-Assertion header on every request to a protected app.
+// Verifying it for real means fetching Cloudflare's JWKS (https://<team>.cloudflareaccess.com/cdn-cgi/access/certs)
+// and checking aud against CLOUDFLARE_ACCESS_AUD — not wired in here, so this only decodes the claims (email,
+// given_name, family_name) the same way loginMicrosoft trusts its token today.
+exports.loginCloudflareAccess = async (req, res) => {
+  try {
+    const assertion = req.headers["cf-access-jwt-assertion"] || req.body.cfAccessJwtAssertion;
+
+    if (!assertion) {
+      return res.status(400).json({ message: "Cf-Access-Jwt-Assertion header or cfAccessJwtAssertion required." });
+    }
+
+    const claims = jwt.decode(assertion) || {};
+    const email = claims.email || req.body.email;
+
+    if (!email) {
+      return res.status(400).json({ message: "No email claim in the Cloudflare Access token." });
+    }
+
+    const user = await findOrCreateSocialUser({
+      email,
+      firstname: claims.given_name || req.body.firstname || "Cloudflare",
+      lastname: claims.family_name || req.body.lastname || "User",
+      provider: "cloudflare",
+      socialId: claims.sub || assertion.slice(0, 20)
+    });
+
+    const { token, session } = await createSessionAndToken(user);
+
+    return res.json({
+      code: 106,
+      message: "Cloudflare Access login successful",
+      mongoid: user._id,
+      userId: user.userid || user.id,
+      userFirstname: user.firstname,
+      userLastname: user.lastname,
+      userUsername: user.username,
+      userEmail: user.email,
+      userRole: user.role,
+      token,
+      sessionId: session._id || session.id,
+      source: "cloudflare",
+      user: safeUserDto(user)
+    });
+  } catch (err) {
+    console.error("loginCloudflareAccess error:", err);
+    return res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
 // ---------- PGP / ENCRYPTED LOGIN ----------
 // Simple Caesar cipher implementation to match your C# "caesar,N" style
 function caesarDecrypt(text, shift) {
