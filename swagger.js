@@ -13,7 +13,7 @@ const options = {
     }
   },
 
-  apis: ["./routes/*.js", "./server.js"]
+  apis: ["./routes/*.js", "./Audit/routes/*.js", "./server.js"]
 };
 
 module.exports = swaggerJsdoc(options);

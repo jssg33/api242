@@ -9,6 +9,39 @@ const cors = require("cors");
 
 const app = express();
 
+/**
+ * @openapi
+ * components:
+ *   parameters:
+ *     FusionUsername:
+ *       in: path
+ *       name: apiusername
+ *       required: true
+ *       schema: { type: string }
+ *       description: FusionAuth-secured route credential (see middleware/fusionAuth.js)
+ *     FusionPassword:
+ *       in: path
+ *       name: apipassword
+ *       required: true
+ *       schema: { type: string }
+ *       description: FusionAuth-secured route credential (see middleware/fusionAuth.js)
+ *     FusionToken:
+ *       in: path
+ *       name: token
+ *       required: true
+ *       schema: { type: string }
+ *       description: FusionAuth-secured route credential (see middleware/fusionAuth.js)
+ *     MongoId:
+ *       in: path
+ *       name: id
+ *       required: true
+ *       schema: { type: string }
+ *       description: MongoDB ObjectId
+ *   responses:
+ *     FusionUnauthorized:
+ *       description: FusionIdentity credential check failed (see middleware/fusionAuth.js)
+ */
+
 // Middleware
 app.use(express.json());
 app.use(morgan("dev"));
