@@ -43,6 +43,7 @@ const userSchema = new mongoose.Schema(
     address2: { type: String, trim: true },
     city: { type: String, trim: true },
     state: { type: String, trim: true },
+    stateregion: { type: String, trim: true }, // Userprofile.StateRegion (G4) — distinct from `state` above
     postalzip: { type: String, trim: true },
     country: { type: String, trim: true },
 
